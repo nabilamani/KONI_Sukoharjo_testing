@@ -181,10 +181,20 @@ class AthleteController extends Controller
     public function showAthletes(Request $request)
     {
         $search = $request->input('search');
-        $athletes = Athlete::when($search, function ($query, $search) {
+        $sportCategory = $request->input('sport_category');
+
+        $query = Athlete::query();
+
+        if ($search) {
             $query->where('name', 'like', "%$search%")
                 ->orWhere('sport_category', 'like', "%$search%");
-        })->paginate(8);
+        }
+
+        if ($sportCategory) {
+            $query->where('sport_category', $sportCategory);
+        }
+
+        $athletes = $query->paginate(8);
 
         // Hitung akumulasi atlet per cabang olahraga
         $categories = Athlete::select('sport_category')
@@ -199,7 +209,10 @@ class AthleteController extends Controller
             $athlete->achievements = $athlete->achievements ?? 'Belum ada prestasi tercatat';
         }
 
-        return view('viewpublik.olahraga.atlet', compact('athletes','categories'));
+        // Ambil semua kategori olahraga untuk dropdown filter
+        $sportCategories = Athlete::select('sport_category')->distinct()->pluck('sport_category');
+
+        return view('viewpublik.olahraga.atlet', compact('athletes','categories','sportCategories'));
     }
 
     public function cariAtlet(Request $request)

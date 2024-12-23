@@ -241,6 +241,14 @@
                                                                             <td>{{ $referee->license ?? '-' }}</td>
                                                                         </tr>
                                                                         <tr>
+                                                                            <td><i class="mdi mdi-whatsapp text-primary"></i> Whatsapp:</td>
+                                                                            <td>{{ $referee->whatsapp ?? '-' }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><i class="mdi mdi-instagram text-primary"></i> Instagram:</td>
+                                                                            <td>{{ $referee->instagram ?? '-' }}</td>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td><i class="mdi mdi-briefcase text-primary"></i> Pengalaman:</td>
                                                                             <td>{{ $referee->experience ?? '-' }}</td>
                                                                         </tr>

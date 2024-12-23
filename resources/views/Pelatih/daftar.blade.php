@@ -143,58 +143,49 @@
                                                 $no = ($coaches->currentPage() - 1) * $coaches->perPage() + 1;
                                             @endphp
                                             @foreach ($coaches as $key => $coach)
-                                                    <tr>
-                                                        <td>{{ $no++ }}</td>
-                                                        <!-- Increment $no to continue numbering -->
-                                                        <td>{{ $coach->id }}</td>
-                                                        <td><img src="{{ $coach->photo }}" width="50"
-                                                                alt=""> {{ $coach->name }}</td>
-                                                        <td>{{ $coach->age }}</td>
-                                                        <td>{{ $coach->address }}</td>
-                                                        <td>{{ $coach->sport_category }}</td>
-                                                        <td>{{ $coach->description }}</td>
-                                                        <td>
-                                                            <div class="dropdown">
-                                                                <button
-                                                                    class="btn btn-outline-primary btn-sm dropdown-toggle"
-                                                                    type="button" data-toggle="dropdown"
-                                                                    aria-expanded="false">
-                                                                    Aksi
-                                                                </button>
-                                                                <div class="dropdown-menu">
-                                                                    <a class="dropdown-item" href=""
-                                                                        data-toggle="modal"
-                                                                        data-target="#coachDetailModal{{ $coach->id }}"><i
-                                                                            class="bx bx-info-circle"></i> Lihat
-                                                                        Detail</a>
-                                                                    <a class="dropdown-item" href=""
-                                                                        data-toggle="modal"
-                                                                        data-target="#coachEditModal{{ $coach->id }}"><i
-                                                                            class="bx bx-edit-alt"></i> Edit</a>
-                                                                    <form action="/delete-pelatih/{{ $coach->id }}"
-                                                                        method="POST" class="d-inline">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit" class="dropdown-item"
-                                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data pelatih ini?')">
-                                                                            <i class="bx bx-trash"></i> Hapus
-                                                                        </button>
-                                                                    </form>
-                                                                    <!-- Delete Message Form -->
-                                                                    <form
-                                                                        action="{{ route('coaches.destroy', $coach->id) }}"
-                                                                        method="POST" class="d-inline">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="button"
-                                                                            class="dropdown-item delete-button">
-                                                                            <i class="bx bx-trash"></i> Hapus
-                                                                        </button>
-                                                                    </form>
-                                                                </div>
+                                                <tr>
+                                                    <td>{{ $no++ }}</td>
+                                                    <!-- Increment $no to continue numbering -->
+                                                    <td>{{ $coach->id }}</td>
+                                                    <td><img src="{{ $coach->photo }}" width="50" alt="">
+                                                        {{ $coach->name }}</td>
+                                                    <td>{{ $coach->age }}</td>
+                                                    <td>{{ $coach->address }}</td>
+                                                    <td>{{ $coach->sport_category }}</td>
+                                                    <td>{{ $coach->description }}</td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button
+                                                                class="btn btn-outline-primary btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-expanded="false">
+                                                                Aksi
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" href=""
+                                                                    data-toggle="modal"
+                                                                    data-target="#coachDetailModal{{ $coach->id }}"><i
+                                                                        class="bx bx-info-circle"></i> Lihat
+                                                                    Detail</a>
+                                                                <a class="dropdown-item" href=""
+                                                                    data-toggle="modal"
+                                                                    data-target="#coachEditModal{{ $coach->id }}"><i
+                                                                        class="bx bx-edit-alt"></i> Edit</a>
+                                                                <!-- Delete Message Form -->
+                                                                <form
+                                                                    action="{{ route('coaches.destroy', $coach->id) }}"
+                                                                    method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button"
+                                                                        class="dropdown-item delete-button">
+                                                                        <i class="bx bx-trash"></i> Hapus
+                                                                    </button>
+                                                                </form>
                                                             </div>
-                                                        </td>
-                                                    </tr>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
 
@@ -325,12 +316,17 @@
                                                                     <div class="form-group">
                                                                         <label for="sport_category">Cabang
                                                                             Olahraga</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="sport_category" name="sport_category"
-                                                                            value="{{ $coach->sport_category }}"
-                                                                            required>
+                                                                        <select id="sportCategorySelect"
+                                                                            name="sport_category"
+                                                                            class="form-control sport-category-select">
+                                                                            <option
+                                                                                value="{{ $coach->sport_category }}"
+                                                                                hidden selected disabled>Pilih
+                                                                                kategori..</option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
+
 
                                                                 <!-- Right column -->
                                                                 <div class="col-md-6">
@@ -409,138 +405,138 @@
 
 
             </div>
-            </div>
-            @include('layouts/footer')
-            <!--**********************************
+        </div>
+        @include('layouts/footer')
+        <!--**********************************
         Main wrapper end
     ***********************************-->
-            <script>
-                function previewNewPhoto() {
-                    const fileInput = document.getElementById('photo');
-                    const preview = document.getElementById('photo-preview');
-                    const noPhotoText = document.getElementById('no-photo-text');
+        <script>
+            function previewNewPhoto() {
+                const fileInput = document.getElementById('photo');
+                const preview = document.getElementById('photo-preview');
+                const noPhotoText = document.getElementById('no-photo-text');
 
-                    if (fileInput.files && fileInput.files[0]) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            preview.src = e.target.result;
-                            preview.classList.remove('d-none');
-                            noPhotoText.classList.add('d-none');
-                        };
-                        reader.readAsDataURL(fileInput.files[0]);
-                    } else {
-                        preview.src = '#';
-                        preview.classList.add('d-none');
-                        noPhotoText.classList.remove('d-none');
-                    }
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.classList.remove('d-none');
+                        noPhotoText.classList.add('d-none');
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    preview.src = '#';
+                    preview.classList.add('d-none');
+                    noPhotoText.classList.remove('d-none');
                 }
-            </script>
-            <!--**********************************
+            }
+        </script>
+        <!--**********************************
         Scripts
     ***********************************-->
-            <!-- Required vendors -->
-            <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
+        <!-- Required vendors -->
+        <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/sport-category.js') }}"></script>
+
+        <!-- Vectormap -->
+        <script src="{{ asset('gambar_aset/vendor/raphael/raphael.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/morris/morris.min.js') }}"></script>
 
 
-            <!-- Vectormap -->
-            <script src="{{ asset('gambar_aset/vendor/raphael/raphael.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/morris/morris.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/circle-progress/circle-progress.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/chart.js') }}/Chart.bundle.min.js') }}"></script>
+
+        <script src="{{ asset('gambar_aset/vendor/gaugeJS/dist/gauge.min.js') }}"></script>
+
+        <!--  flot-chart js -->
+        <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.resize.js') }}"></script>
+
+        <!-- Owl Carousel -->
+        <script src="{{ asset('gambar_aset/vendor/owl-carousel/js/owl.carousel.min.js') }}"></script>
+
+        <!-- Counter Up -->
+        <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.usa.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/jquery.counterup/jquery.counterup.min.js') }}"></script>
 
 
-            <script src="{{ asset('gambar_aset/vendor/circle-progress/circle-progress.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/chart.js') }}/Chart.bundle.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/dashboard/dashboard-1.js') }}"></script>
 
-            <script src="{{ asset('gambar_aset/vendor/gaugeJS/dist/gauge.min.js') }}"></script>
-
-            <!--  flot-chart js -->
-            <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.resize.js') }}"></script>
-
-            <!-- Owl Carousel -->
-            <script src="{{ asset('gambar_aset/vendor/owl-carousel/js/owl.carousel.min.js') }}"></script>
-
-            <!-- Counter Up -->
-            <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.usa.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/jquery.counterup/jquery.counterup.min.js') }}"></script>
-
-
-            <script src="{{ asset('gambar_aset/js/dashboard/dashboard-1.js') }}"></script>
-
-            <!-- Datatable -->
-            <script src="{{ asset('gambar_aset/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/plugins-init/datatables.init.js') }}"></script>
-            <script>
-                $(document).on('click', '.delete-button', function(e) {
-                    e.preventDefault();
-                    let form = $(this).closest('form'); // Form yang menghapus pesan
-                    swal({
-                        title: "Apakah Anda yakin?",
-                        text: "Data Pelatih ini akan dihapus secara permanen!",
-                        icon: "warning",
-                        buttons: {
-                            cancel: {
-                                text: "Batal",
-                                visible: true,
-                                className: "btn btn-secondary"
-                            },
-                            confirm: {
-                                text: "Ya, Hapus",
-                                className: "btn btn-danger"
-                            }
+        <!-- Datatable -->
+        <script src="{{ asset('gambar_aset/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/plugins-init/datatables.init.js') }}"></script>
+        <script>
+            $(document).on('click', '.delete-button', function(e) {
+                e.preventDefault();
+                let form = $(this).closest('form'); // Form yang menghapus pesan
+                swal({
+                    title: "Apakah Anda yakin?",
+                    text: "Data Pelatih ini akan dihapus secara permanen!",
+                    icon: "warning",
+                    buttons: {
+                        cancel: {
+                            text: "Batal",
+                            visible: true,
+                            className: "btn btn-secondary"
                         },
-                        dangerMode: true,
-                    }).then((willDelete) => {
-                        if (willDelete) {
-                            form.submit(); // Kirim formulir untuk menghapus data
-
-                            // Tampilkan notifikasi sukses setelah penghapusan
-                            swal({
-                                title: "Berhasil!",
-                                text: "Data Pelatih berhasil dihapus.",
-                                icon: "success",
-                                button: {
-                                    text: "OK",
-                                    className: "btn btn-primary"
-                                }
-                            });
+                        confirm: {
+                            text: "Ya, Hapus",
+                            className: "btn btn-danger"
                         }
-                    });
-                });
-            </script>
+                    },
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        form.submit(); // Kirim formulir untuk menghapus data
 
-            <!-- Alert -->
-            @if (Session::has('message'))
-                <script>
-                    swal("Berhasil", "{{ Session::get('message') }}", 'success', {
-                        button: true,
-                        button: "Ok",
-                        timer: 5000
-                    });
-                </script>
-            @endif
+                        // Tampilkan notifikasi sukses setelah penghapusan
+                        swal({
+                            title: "Berhasil!",
+                            text: "Data Pelatih berhasil dihapus.",
+                            icon: "success",
+                            button: {
+                                text: "OK",
+                                className: "btn btn-primary"
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+
+        <!-- Alert -->
+        @if (Session::has('message'))
             <script>
-                const searchInput = document.querySelector('#search-coach');
-                const tableRows = document.querySelectorAll('tbody tr');
-
-                searchInput.addEventListener('input', () => {
-                    const searchTerm = searchInput.value.toLowerCase();
-
-                    tableRows.forEach(row => {
-                        const rowText = row.textContent.toLowerCase();
-                        const matches = rowText.includes(searchTerm);
-                        row.classList.toggle('hide', !matches); // Hide rows that don't match
-                    });
-
-                    // Alternate row colors for visible rows
-                    const visibleRows = document.querySelectorAll('tbody tr:not(.hide)');
-                    visibleRows.forEach((row, index) => {
-                        row.style.backgroundColor = index % 2 === 0 ? 'transparent' : '#f9f9f9';
-                    });
+                swal("Berhasil", "{{ Session::get('message') }}", 'success', {
+                    button: true,
+                    button: "Ok",
+                    timer: 5000
                 });
             </script>
+        @endif
+        <script>
+            const searchInput = document.querySelector('#search-coach');
+            const tableRows = document.querySelectorAll('tbody tr');
+
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+
+                tableRows.forEach(row => {
+                    const rowText = row.textContent.toLowerCase();
+                    const matches = rowText.includes(searchTerm);
+                    row.classList.toggle('hide', !matches); // Hide rows that don't match
+                });
+
+                // Alternate row colors for visible rows
+                const visibleRows = document.querySelectorAll('tbody tr:not(.hide)');
+                visibleRows.forEach((row, index) => {
+                    row.style.backgroundColor = index % 2 === 0 ? 'transparent' : '#f9f9f9';
+                });
+            });
+        </script>
 </body>
 
 </html>

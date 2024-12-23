@@ -108,7 +108,6 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>ID</th>
                     <th>Nama</th>
                     <th>Tanggal Lahir</th>
                     <th>Jenis Kelamin</th>
@@ -122,7 +121,6 @@
                 @foreach ($athletes as $index => $athlete)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $athlete->id }}</td>
                         <td>{{ $athlete->name }}</td>
                         <td>{{ $athlete->birth_date }}</td>
                         <td>{{ $athlete->gender }}</td>

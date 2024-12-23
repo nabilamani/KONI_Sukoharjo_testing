@@ -156,8 +156,7 @@
                 <button id="card-view-btn" class="btn btn-primary active">Card View</button>
                 <button id="table-view-btn" class="btn btn-secondary">Table View</button>
             </div>
-
-
+        
             <form hx-get="/api/cari-pelatih" hx-target="#data-wrapper" hx-swap="innerHTML"
                 hx-trigger="change from:select, click from:button[type='submit']" class="d-flex"
                 id="form-sport-category">
@@ -172,13 +171,15 @@
                     @endforeach
                 </select>
                 <!-- Form Pencarian -->
-                <input type="text" name="search" class="form-control me-2" placeholder="Cari pelatih atau cabor..."
+                <input type="text" name="search" class="form-control me-2"
+                    placeholder="Cari pelatih atau cabor..."
                     value="{{ request('search') }}" id="sport-category-search">
                 <!-- View card/table -->
                 <input type="hidden" name="_view" id="active-view" value="card">
                 <button type="submit" class="btn btn-primary">Cari</button>
             </form>
         </div>
+        
 
         <div id="data-wrapper">
             <!-- Tampilan Card -->

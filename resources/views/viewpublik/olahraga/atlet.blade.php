@@ -133,6 +133,26 @@
             .modal-body {
                 padding: 10px;
             }
+
+            .list-view {
+                margin-bottom: 8px;
+            }
+
+            .athlete-card {
+                height: auto;
+                /* Membiarkan kartu menyesuaikan ketinggiannya secara otomatis */
+                display: flex;
+                flex-direction: column;
+            }
+
+            .athlete-photo {
+                height: 150px;
+                /* Default tinggi untuk gambar */
+                object-fit: cover;
+                /* Memastikan gambar proporsional */
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -153,7 +173,7 @@
         <h3 class="text-white mb-3">Akumulasi Atlet Per Cabang Olahraga</h3>
         <div id="athleteCategoryCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                @foreach ($categories->chunk(4) as $chunkIndex => $chunk)
+                @forelse ($categories->chunk(4) as $chunkIndex => $chunk)
                     <div class="carousel-item {{ $chunkIndex == 0 ? 'active' : '' }}">
                         <div class="row">
                             @foreach ($chunk as $category)
@@ -170,7 +190,18 @@
                             @endforeach
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="carousel-item active">
+                        <div class="alert alert-warning text-center p-4">
+                            <i class="mdi mdi-alert-circle-outline fs-3"></i>
+                            <p class="mt-2 mb-0">
+                                <strong>Tidak ada data akumulasi cabor yang tersedia saat ini.</strong>
+                            </p>
+                            <p class="mt-1">Data akan diperbarui secara berkala. Mohon tunggu atau coba lagi nanti.
+                            </p>
+                        </div>
+                    </div>
+                @endforelse
             </div>
 
             <!-- Carousel indicators (dots) -->
@@ -196,6 +227,17 @@
             <form hx-get="/api/cari-atlet" hx-target="#data-wrapper" hx-swap="innerHTML"
                 hx-trigger="change from:select, click from:button[type='submit']" class="d-flex"
                 id="form-sport-category">
+                <!-- Dropdown Filter Kategori Olahraga -->
+                <select class="form-select form-select-sm me-2" name="sport_category">
+                    <option value="">Semua Cabang Olahraga</option>
+                    @foreach ($sportCategories as $category)
+                        <option value="{{ $category }}"
+                            {{ request('sport_category') == $category ? 'selected' : '' }}>
+                            {{ $category }}
+                        </option>
+                    @endforeach
+                </select>
+                <!-- Form Pencarian -->
                 <input id="searchInput" type="text" name="search" class="form-control me-2"
                     placeholder="Cari atlet atau cabor..." value="{{ request('search') }}" id="sport-category-search">
                 <!-- View card/table -->
@@ -232,7 +274,8 @@
                                 <i class="mdi mdi-account-alert me-2 fs-4"></i>
                                 <strong>Belum ada data daftar atlet yang tersedia saat ini.</strong>
                             </div>
-                            <p class="mt-2">Informasi akan diperbarui secara berkala, mohon tunggu beberapa waktu.</p>
+                            <p class="mt-2">Informasi akan diperbarui secara berkala, mohon tunggu beberapa waktu.
+                            </p>
                         </div>
                     </div>
                 @endforelse

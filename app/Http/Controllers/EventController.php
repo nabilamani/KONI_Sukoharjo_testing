@@ -180,13 +180,33 @@ class EventController extends Controller
     public function showEvents(Request $request)
 {
     $search = $request->input('search');
+    $start_date = $request->input('start_date');
+    $end_date = $request->input('end_date');
 
-    // Query pencarian berdasarkan nama atau kategori event
-    $events = Event::where('name', 'like', '%' . $search . '%')
-        ->orWhere('sport_category', 'like', '%' . $search . '%')
-        ->paginate(8);
+    $events = Event::query();
 
-    return view('viewpublik.olahraga.event', compact('events', 'search'));
+    // Filter berdasarkan nama atau kategori event
+    if ($search) {
+        $events->where(function($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('sport_category', 'like', '%' . $search . '%');
+        });
+    }
+
+    // Filter berdasarkan rentang tanggal
+    if ($start_date && $end_date) {
+        $events->whereBetween('event_date', [$start_date, $end_date]);
+    } elseif ($start_date) {
+        $events->where('event_date', '>=', $start_date);
+    } elseif ($end_date) {
+        $events->where('event_date', '<=', $end_date);
+    }
+
+    // Pagination
+    $events = $events->paginate(8);
+
+    return view('viewpublik.olahraga.event', compact('events', 'search', 'start_date', 'end_date'));
 }
+
 
 }

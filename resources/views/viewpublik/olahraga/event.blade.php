@@ -48,6 +48,7 @@
         .hero-overlay:hover {
             transform: scale(1.05);
         }
+
         @media (max-width: 768px) {
 
             #table-view table th,
@@ -74,17 +75,34 @@
     <!-- Event List Section -->
     <section class="container my-5">
         <h2 class="text-center mb-4 text-white">Daftar Event</h2>
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-end mb-4">
             <!-- Tombol untuk mengganti tampilan -->
             <div>
-                <button id="card-view-btn" class="btn btn-primary active">Card View</button>
+                {{-- <button id="card-view-btn" class="btn btn-primary active">Card View</button> --}}
                 <button id="table-view-btn" class="btn btn-secondary">Table View</button>
             </div>
-    
+
             <!-- Form Pencarian -->
-            <form action="{{ route('showEvents') }}" method="GET" class="d-flex">
-                <input type="text" name="search" class="form-control me-2" placeholder="Cari event atau lokasi..." value="{{ request('search') }}">
-                <button type="submit" class="btn btn-primary">Cari</button>
+            <form action="{{ route('showEvents') }}" method="GET" class="d-flex justify-content-end align-items-end">
+                <div class="col-md-4">
+                    <input type="text" name="search" class="form-control me-2"
+                        placeholder="Cari event atau lokasi..." value="{{ request('search') }}">
+                </div>
+                <div class="col-md-3">
+                    <label>Mulai dari</label>
+                    <input type="date" name="start_date" class="form-control"
+                        value="{{ request('start_date') }}">
+                </div>
+                <div class="col-md-3">
+                    <label>Hingga</label>
+                    <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="mdi mdi-filter-outline"></i>
+                        <span class="d-none d-md-inline">Cari</span>
+                    </button>
+                </div>                
             </form>
         </div>
         <div id="table-view" class="table-responsive rounded">
@@ -124,7 +142,8 @@
                                     aria-labelledby="bannerModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
-                                            <div class="modal-header bg-primary d-flex justify-content-between align-items-center">
+                                            <div
+                                                class="modal-header bg-primary d-flex justify-content-between align-items-center">
                                                 <h5 class="modal-title" id="bannerModalLabel">Banner Event -
                                                     {{ $event->name }}</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -153,7 +172,8 @@
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header bg-info text-white">
-                                                    <h5 class="modal-title" id="viewMapModalLabel{{ $event->id }}">Peta
+                                                    <h5 class="modal-title"
+                                                        id="viewMapModalLabel{{ $event->id }}">Peta
                                                         Lokasi :
                                                         {{ $event->name }}</h5>
                                                     <button type="button" class="close" data-bs-dismiss="modal"
@@ -178,10 +198,10 @@
                                         </div>
                                     </div>
                                 @endforeach
-    
+
                             </td>
                         </tr>
-                        @empty
+                    @empty
                         <tr>
                             <td colspan="5" class="text-center">
                                 <div class="d-flex justify-content-center align-items-center my-2">
@@ -189,8 +209,8 @@
                                     <span class="fs-8">Tidak ada event yang tersedia saat ini.</span>
                                 </div>
                             </td>
-                        </tr>                    
-                        @endforelse
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

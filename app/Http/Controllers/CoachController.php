@@ -192,8 +192,13 @@ class CoachController extends Controller
         $query = Coach::query();
 
         if ($search) {
-            $query->where('name', 'like', "%$search%")
-                ->orWhere('sport_category', 'like', "%$search%");
+            $keywords = preg_split('/[\s,]+/', $search); // Memecah kata kunci berdasarkan spasi atau koma
+            $query->where(function ($q) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $q->orWhere('name', 'like', "%$keyword%")
+                        ->orWhere('sport_category', 'like', "%$keyword%");
+                }
+            });
         }
 
         if ($sportCategory) {
@@ -217,8 +222,13 @@ class CoachController extends Controller
         $query = Coach::query();
 
         if ($search) {
-            $query->where('name', 'like', "%$search%")
-                ->orWhere('sport_category', 'like', "%$search%");
+            $keywords = preg_split('/[\s,]+/', $search); // Memecah kata kunci berdasarkan spasi atau koma
+            $query->where(function ($q) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $q->orWhere('name', 'like', "%$keyword%")
+                        ->orWhere('sport_category', 'like', "%$keyword%");
+                }
+            });
         }
 
         if ($sportCategory) {
