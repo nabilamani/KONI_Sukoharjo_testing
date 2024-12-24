@@ -133,6 +133,18 @@
                           </div>
                         </div>
                         <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label" for="whatsapp">WhatsApp</label>
+                          <div class="col-sm-4">
+                            <input type="text" name="whatsapp" class="form-control" id="whatsapp" placeholder="Masukkan nomor WhatsApp.." />
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label" for="instagram">Instagram</label>
+                          <div class="col-sm-4">
+                            <input type="text" name="instagram" class="form-control" id="instagram" placeholder="Masukkan username Instagram.." />
+                          </div>
+                        </div>
+                        <div class="row mb-3">
                           <label class="col-sm-2 col-form-label" for="comment">Deskripsi</label>
                           <div class="col-sm-10">
                             <textarea name="description" class="form-control" rows="3" id="comment" placeholder="Masukkan deskripsi pelatih.. (opsional)"></textarea>

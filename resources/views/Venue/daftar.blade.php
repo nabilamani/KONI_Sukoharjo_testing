@@ -133,7 +133,7 @@
                                             @php
                                                 $no = ($venues->currentPage() - 1) * $venues->perPage() + 1;
                                             @endphp
-                                            @foreach ($venues as $venue)
+                                            @forelse ($venues as $venue)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $venue->name }}</td>
@@ -175,7 +175,16 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                                @empty
+                                                <tr>
+                                                    <td colspan="6" class="text-center">
+                                                        <div class="d-flex justify-content-center align-items-center my-2">
+                                                            <i class="mdi mdi-alert-circle-outline me-2" style="font-size: 20px;"></i>
+                                                            <span class="fs-8">Saat ini belum ada data daftar venue.</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
 

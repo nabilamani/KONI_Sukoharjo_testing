@@ -117,7 +117,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    @foreach ($beritas as $berita)
+                                    @forelse ($beritas as $berita)
                                         <div class="col-md-6 mb-1">
                                             <div class="card border shadow-sm mb-3">
                                                 <div class="row no-gutters align-items-stretch">
@@ -176,7 +176,21 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @empty
+                                        <div class="card col-12 shadow-sm border-0 bg-light text-center py-5 px-3">
+                                            <div class="card-body">
+                                                <i
+                                                    class="mdi mdi-alert-circle-outline text-warning display-1 mb-3"></i>
+                                                <h4 class="text-dark fw-bold">Tidak Ada Daftar Berita</h4>
+                                                <p class="text-muted mb-4">
+                                                    Silahkan tambahkan berita baru untuk menampilkan daftar berita.
+                                                </p>
+                                                <a href="/beritas/create" class="btn btn-primary text-white px-4 py-2">
+                                                    Tambah Berita
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endforelse
                                 </div>
 
                                 <!-- Pagination -->
@@ -204,47 +218,58 @@
                                         <i class="mdi mdi-newspaper me-2"></i> Berita Selengkapnya:
                                         {{ $berita->judul_berita }}
                                     </h5>
-                                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                    <button type="button" class="close text-white" data-dismiss="modal"
+                                        aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                    
+
                                 <!-- Body -->
                                 <div class="modal-body">
                                     <div class="row">
                                         <!-- News Image -->
                                         <div class="col-md-5">
                                             @if ($berita->photo)
-                                            <img src="{{ asset($berita->photo) }}" alt="Foto Berita"
-                                                class="img-fluid rounded shadow-sm mb-3" style="width: 100%; object-fit: cover;">
+                                                <img src="{{ asset($berita->photo) }}" alt="Foto Berita"
+                                                    class="img-fluid rounded shadow-sm mb-3"
+                                                    style="width: 100%; object-fit: cover;">
                                             @else
-                                            <div class="d-flex align-items-center justify-content-center bg-light border rounded shadow-sm"
-                                                style="height: 250px;">
-                                                <i class="mdi mdi-image-off-outline mdi-48px text-muted"></i>
-                                            </div>
+                                                <div class="d-flex align-items-center justify-content-center bg-light border rounded shadow-sm"
+                                                    style="height: 250px;">
+                                                    <i class="mdi mdi-image-off-outline mdi-48px text-muted"></i>
+                                                </div>
                                             @endif
-                    
-                                            <div class="mt-3 p-3 rounded shadow-sm" style="background-color: #f8f9fa;">
+
+                                            <div class="mt-3 p-3 rounded shadow-sm"
+                                                style="background-color: #f8f9fa;">
                                                 <p class="mb-3">
-                                                    <strong class="text-primary"><i class="mdi mdi-bookmark-outline me-2"></i>Judul
+                                                    <strong class="text-primary"><i
+                                                            class="mdi mdi-bookmark-outline me-2"></i>Judul
                                                         Berita:</strong><br>
                                                     <span class="text-dark">{{ $berita->judul_berita }}</span>
                                                 </p>
                                                 <p class="mb-3">
-                                                    <strong class="text-success"><i class="mdi mdi-calendar me-2"></i>Tanggal Waktu:</strong><br>
-                                                    <span class="text-muted">{{ \Carbon\Carbon::parse($berita->tanggal_waktu)->format('d-m-Y H:i') }}</span>
+                                                    <strong class="text-success"><i
+                                                            class="mdi mdi-calendar me-2"></i>Tanggal
+                                                        Waktu:</strong><br>
+                                                    <span
+                                                        class="text-muted">{{ \Carbon\Carbon::parse($berita->tanggal_waktu)->format('d-m-Y H:i') }}</span>
                                                 </p>
                                                 <p class="mb-3">
-                                                    <strong class="text-info"><i class="mdi mdi-map-marker-outline me-2"></i>Lokasi Peristiwa:</strong><br>
+                                                    <strong class="text-info"><i
+                                                            class="mdi mdi-map-marker-outline me-2"></i>Lokasi
+                                                        Peristiwa:</strong><br>
                                                     <span class="text-dark">{{ $berita->lokasi_peristiwa }}</span>
                                                 </p>
                                                 <p class="mb-0">
-                                                    <strong class="text-warning"><i class="mdi mdi-source-branch me-2"></i>Kutipan Sumber:</strong><br>
+                                                    <strong class="text-warning"><i
+                                                            class="mdi mdi-source-branch me-2"></i>Kutipan
+                                                        Sumber:</strong><br>
                                                     <span class="text-muted">{{ $berita->kutipan_sumber }}</span>
                                                 </p>
                                             </div>
                                         </div>
-                    
+
                                         <!-- News Details -->
                                         <div class="col-md-7">
                                             <div class="mb-3 bg-light p-3 rounded shadow-sm">
@@ -253,15 +278,15 @@
                                         </div>
                                     </div>
                                 </div>
-                    
+
                                 <!-- Footer -->
                                 <div class="modal-footer bg-light">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Tutup</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
                 @endforeach
 
 
@@ -282,13 +307,14 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <label for="photo">Foto</label>
-                                            <input type="file" class="form-control-file" id="photo" name="photo" accept="image/*" onchange="previewPhoto(event)">
-                                            <img id="photoPreview" src="{{ old('photo', isset($berita->photo) ? asset($berita->photo) : '') }}" 
-                                                 alt="Foto" 
-                                                 class="img-fluid rounded mt-2"
-                                                 style="width: 100%; object-fit: cover;">
+                                            <input type="file" class="form-control-file" id="photo"
+                                                name="photo" accept="image/*" onchange="previewPhoto(event)">
+                                            <img id="photoPreview"
+                                                src="{{ old('photo', isset($berita->photo) ? asset($berita->photo) : '') }}"
+                                                alt="Foto" class="img-fluid rounded mt-2"
+                                                style="width: 100%; object-fit: cover;">
                                         </div>
-                                        
+
                                         <div class="col-md-7">
                                             <div class="form-group">
                                                 <label for="judul_berita">Judul Berita</label>
@@ -347,51 +373,51 @@
 
             </div>
         </div>
-            @include('layouts/footer')
-            <!--**********************************
+        @include('layouts/footer')
+        <!--**********************************
         Main wrapper end
     ***********************************-->
 
-            <!--**********************************
+        <!--**********************************
         Scripts
     ***********************************-->
-            <!-- Required vendors -->
-            <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
+        <!-- Required vendors -->
+        <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
 
 
-            <!-- Vectormap -->
-            <script src="{{ asset('gambar_aset/vendor/raphael/raphael.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/morris/morris.min.js') }}"></script>
+        <!-- Vectormap -->
+        <script src="{{ asset('gambar_aset/vendor/raphael/raphael.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/morris/morris.min.js') }}"></script>
 
 
-            <script src="{{ asset('gambar_aset/vendor/circle-progress/circle-progress.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/chart.js') }}/Chart.bundle.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/circle-progress/circle-progress.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/chart.js') }}/Chart.bundle.min.js') }}"></script>
 
-            <script src="{{ asset('gambar_aset/vendor/gaugeJS/dist/gauge.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/gaugeJS/dist/gauge.min.js') }}"></script>
 
-            <!--  flot-chart js -->
-            <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.resize.js') }}"></script>
+        <!--  flot-chart js -->
+        <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.resize.js') }}"></script>
 
-            <!-- Owl Carousel -->
-            <script src="{{ asset('gambar_aset/vendor/owl-carousel/js/owl.carousel.min.js') }}"></script>
+        <!-- Owl Carousel -->
+        <script src="{{ asset('gambar_aset/vendor/owl-carousel/js/owl.carousel.min.js') }}"></script>
 
-            <!-- Counter Up -->
-            <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.usa.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/jquery.counterup/jquery.counterup.min.js') }}"></script>
-
-
-            <script src="{{ asset('gambar_aset/js/dashboard/dashboard-1.js') }}"></script>
-
-            <!-- Datatable -->
-            <script src="{{ asset('gambar_aset/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/plugins-init/datatables.init.js') }}"></script>
+        <!-- Counter Up -->
+        <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.usa.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/jquery.counterup/jquery.counterup.min.js') }}"></script>
 
 
-            <script type="importmap">
+        <script src="{{ asset('gambar_aset/js/dashboard/dashboard-1.js') }}"></script>
+
+        <!-- Datatable -->
+        <script src="{{ asset('gambar_aset/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/plugins-init/datatables.init.js') }}"></script>
+
+
+        <script type="importmap">
                 {
                     "imports": {
                         "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.js",
@@ -399,7 +425,7 @@
                     }
                 }
             </script>
-            {{-- <script type="module">
+        {{-- <script type="module">
                 import {
                     ClassicEditor,
                     Essentials,
@@ -420,66 +446,66 @@
                     .then( /* ... */ )
                     .catch( /* ... */ );
             </script> --}}
-            <script type="module">
-                document.addEventListener('DOMContentLoaded', function() {
-                    let editorInstance;
+        <script type="module">
+            document.addEventListener('DOMContentLoaded', function() {
+                let editorInstance;
 
-                    let form = document.getElementById('newsEditForm');
-                    let photoPreview = document.getElementById('photoPreview');
-                    let titleInput = document.getElementById('judul_berita');
-                    let dateInput = document.getElementById('tanggal_waktu');
-                    let locationInput = document.getElementById('lokasi_peristiwa');
-                    let sourceInput = document.getElementById('kutipan_sumber');
+                let form = document.getElementById('newsEditForm');
+                let photoPreview = document.getElementById('photoPreview');
+                let titleInput = document.getElementById('judul_berita');
+                let dateInput = document.getElementById('tanggal_waktu');
+                let locationInput = document.getElementById('lokasi_peristiwa');
+                let sourceInput = document.getElementById('kutipan_sumber');
 
-                    document.querySelectorAll('[data-toggle="modal"]').forEach(function(button) {
-                        button.addEventListener('click', async function() {
-                            let id = button.getAttribute('data-id');
-                            let title = button.getAttribute('data-title');
-                            let date = button.getAttribute('data-date');
-                            let location = button.getAttribute('data-location');
-                            let content = button.getAttribute('data-content');
-                            let source = button.getAttribute('data-source');
-                            let photo = button.getAttribute('data-photo');
+                document.querySelectorAll('[data-toggle="modal"]').forEach(function(button) {
+                    button.addEventListener('click', async function() {
+                        let id = button.getAttribute('data-id');
+                        let title = button.getAttribute('data-title');
+                        let date = button.getAttribute('data-date');
+                        let location = button.getAttribute('data-location');
+                        let content = button.getAttribute('data-content');
+                        let source = button.getAttribute('data-source');
+                        let photo = button.getAttribute('data-photo');
 
-                            form.setAttribute('action', '/edit-berita/' + id);
-                            titleInput.value = title;
-                            dateInput.value = date;
-                            locationInput.value = location;
-                            sourceInput.value = source;
-                            photoPreview.src = photo || '';
+                        form.setAttribute('action', '/edit-berita/' + id);
+                        titleInput.value = title;
+                        dateInput.value = date;
+                        locationInput.value = location;
+                        sourceInput.value = source;
+                        photoPreview.src = photo || '';
 
-                            if (!editorInstance) {
-                                const {
-                                    ClassicEditor,
-                                    Essentials,
-                                    Bold,
-                                    Italic,
-                                    Font,
-                                    Paragraph,
+                        if (!editorInstance) {
+                            const {
+                                ClassicEditor,
+                                Essentials,
+                                Bold,
+                                Italic,
+                                Font,
+                                Paragraph,
+                                Alignment
+                            } = await import('ckeditor5');
+                            editorInstance = await ClassicEditor.create(document.querySelector(
+                                '#isi_berita'), {
+                                plugins: [Essentials, Bold, Italic, Font, Paragraph,
                                     Alignment
-                                } = await import('ckeditor5');
-                                editorInstance = await ClassicEditor.create(document.querySelector(
-                                    '#isi_berita'), {
-                                    plugins: [Essentials, Bold, Italic, Font, Paragraph,
-                                        Alignment
-                                    ],
-                                    toolbar: [
-                                        'undo', 'redo', '|', 'bold', 'italic', '|',
-                                        'fontSize', 'fontFamily', 'fontColor',
-                                        'fontBackgroundColor', '|', 'alignment'
-                                    ],
-                                    alignment: {
-                                        options: ['left', 'center', 'right', 'justify']
-                                    },
-                                });
-                            }
+                                ],
+                                toolbar: [
+                                    'undo', 'redo', '|', 'bold', 'italic', '|',
+                                    'fontSize', 'fontFamily', 'fontColor',
+                                    'fontBackgroundColor', '|', 'alignment'
+                                ],
+                                alignment: {
+                                    options: ['left', 'center', 'right', 'justify']
+                                },
+                            });
+                        }
 
-                            editorInstance.setData(content);
-                        });
+                        editorInstance.setData(content);
                     });
                 });
-            </script>
-            @if (Session::has('message'))
+            });
+        </script>
+        @if (Session::has('message'))
             <script>
                 swal("Berhasil", "{{ Session::get('message') }}", 'success', {
                     button: true,

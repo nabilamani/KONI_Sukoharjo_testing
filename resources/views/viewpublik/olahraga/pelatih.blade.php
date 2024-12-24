@@ -129,7 +129,33 @@
                 font-size: 16px;
                 text-align: center;
             }
+            .list-view {
+                margin-bottom: 8px;
+            }
+            #coachDetailModal img {
+                width: 100%;
+                height: auto;
+            }
 
+            #coachName {
+                font-size: 16px;
+                text-align: center;
+            }
+            .coach-card {
+                height: auto;
+                /* Membiarkan kartu menyesuaikan ketinggiannya secara otomatis */
+                display: flex;
+                flex-direction: column;
+            }
+
+            .coach-photo {
+                height: 150px;
+                /* Default tinggi untuk gambar */
+                object-fit: cover;
+                /* Memastikan gambar proporsional */
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -185,13 +211,13 @@
             <!-- Tampilan Card -->
             <div id="card-view" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                 @forelse ($coaches as $coach)
-                    <div class="col-md-3">
+                <div class="col-6 col-sm-4 col-md-3">
                         <div class="card coach-card">
                             <img src="{{ $coach->photo ? asset($coach->photo) : 'https://via.placeholder.com/300x200' }}"
                                 alt="{{ $coach->name }}" class="coach-photo">
                             <div class="coach-details text-center p-3">
-                                <h5 class="text-dark">{{ $coach->name }}</h5>
-                                <p class="text-muted">Cabang: {{ $coach->sport_category }}</p>
+                                <h6 class="text-dark mb-1">{{ $coach->name }}</h6>
+                                <p class="text-muted small mb-2">Cabang: {{ $coach->sport_category }}</p>
                                 <a href="#" class="btn btn-primary btn-sm"
                                     onclick="showCoachDetails({{ json_encode($coach) }})" data-bs-toggle="modal"
                                     data-bs-target="#coachDetailModal">Detail</a>
@@ -299,6 +325,16 @@
                                             <td><span id="coachAge">-</span> tahun</td>
                                         </tr>
                                         <tr>
+                                            <td><i class="mdi mdi-whatsapp text-primary"></i></td>
+                                            <td><strong>WhatsApp</strong></td>
+                                            <td id="coachWhatsapp">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="mdi mdi-instagram text-primary"></i></td>
+                                            <td><strong>Instagram</strong></td>
+                                            <td id="coachInstagram">-</td>
+                                        </tr>
+                                        <tr>
                                             <td><i class="mdi mdi-information text-primary"></i></td>
                                             <td><strong>Deskripsi</strong></td>
                                             <td id="coachDescription">-</td>
@@ -370,6 +406,8 @@
             document.getElementById('coachSportCategory').textContent = coach.sport_category;
             document.getElementById('coachAddress').textContent = coach.address || 'Tidak Diketahui';
             document.getElementById('coachAge').textContent = coach.age || 'Tidak Diketahui';
+            document.getElementById('coachWhatsapp').textContent = coach.whatsapp || 'Tidak Diketahui';
+            document.getElementById('coachInstagram').textContent = coach.instagram || 'Tidak Diketahui';
             document.getElementById('coachDescription').textContent = coach.description || 'Tidak Diketahui';
         }
     </script>

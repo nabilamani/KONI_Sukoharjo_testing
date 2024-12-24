@@ -142,6 +142,29 @@
             #toggleCategories {
                 align-self: center;
             }
+
+            .gallery-item img,
+            .gallery-item video {
+                max-height: 125px;
+            }
+
+            .gallery-item .card-title {
+                font-size: 0.85rem;
+            }
+
+            .gallery-item .card-text {
+                font-size: 0.75rem;
+            }
+
+            .gallery-item .btn {
+                font-size: 0.75rem;
+            }
+            .timestamp {
+                font-size: 10px;
+            }
+            .timestamp p{
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -187,7 +210,7 @@
         </div>
         <div class="row g-4">
             @forelse ($galleries as $gallery)
-                <div class="col-lg-4 col-md-6 gallery-item" data-category="{{ $gallery->sport_category }}">
+                <div class="col-6 col-lg-4 col-md-6 gallery-item" data-category="{{ $gallery->sport_category }}">
                     <div class="card shadow-sm border-0 h-80 overflow-hidden">
                         @if ($gallery->media_type === 'photo')
                             <img src="{{ asset($gallery->media_path) }}" class="card-img-top img-fluid"
@@ -202,7 +225,8 @@
                             <h5 class="card-title fw-bold text-primary">{{ $gallery->title }}</h5>
                             <p class="card-text text-muted small">
                                 <span class="badge bg-primary mb-2">{{ $gallery->sport_category }}</span>
-                                <br>{{ $gallery->date }} | {{ $gallery->location }}
+                                <br>
+                                <span class="timestamp">{{ $gallery->date }} | {{ $gallery->location }}</span>
                             </p>
                             <button type="button" class="btn btn-warning btn-sm mt-auto" data-bs-toggle="modal"
                                 data-bs-target="#modalDetail{{ $gallery->id }}">
@@ -245,7 +269,7 @@
                                         <i class="mdi mdi-soccer me-1"></i>{{ $gallery->sport_category }}
                                     </span>
                                 </p>
-                                <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-center timestamp">
                                     <p>
                                         <i class="mdi mdi-calendar me-2 text-primary"></i>
                                         <strong>Tanggal:</strong> {{ $gallery->date }}

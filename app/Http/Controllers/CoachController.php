@@ -81,6 +81,8 @@ class CoachController extends Controller
             'sport_category' => ['required', 'string'],
             'age' => ['required', 'integer'],
             'address' => ['required', 'string'],
+            'whatsapp' => ['required', 'string'],
+            'instagram' => ['required', 'string'],
             'description' => ['required', 'string'],
             'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ]);
@@ -140,6 +142,8 @@ class CoachController extends Controller
             'name' => 'required|string',
             'sport_category' => 'required|string',
             'age' => 'required|integer',
+            'whatsapp' => 'required|string',
+            'instagram' => 'required|string',
             'address' => 'required|string',
             'description' => 'required|string',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',

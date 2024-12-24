@@ -140,7 +140,7 @@
                                             @php
                                                 $no = ($achievements->currentPage() - 1) * $achievements->perPage() + 1;
                                             @endphp
-                                            @foreach ($achievements as $achievement)
+                                            @forelse ($achievements as $achievement)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $achievement->id }}</td>
@@ -179,7 +179,16 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                                @empty
+                                                <tr>
+                                                    <td colspan="7" class="text-center">
+                                                        <div class="d-flex justify-content-center align-items-center my-2">
+                                                            <i class="mdi mdi-alert-circle-outline me-2" style="font-size: 20px;"></i>
+                                                            <span class="fs-8">Saat ini belum ada data daftar prestasi.</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                 

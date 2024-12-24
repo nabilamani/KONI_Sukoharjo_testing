@@ -126,6 +126,25 @@
                 font-size: 16px;
                 text-align: center;
             }
+
+            .list-view {
+                margin-bottom: 8px;
+            }
+            .referee-card {
+                height: auto;
+                /* Membiarkan kartu menyesuaikan ketinggiannya secara otomatis */
+                display: flex;
+                flex-direction: column;
+            }
+
+            .referee-photo {
+                height: 150px;
+                /* Default tinggi untuk gambar */
+                object-fit: cover;
+                /* Memastikan gambar proporsional */
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -163,13 +182,13 @@
         <!-- Tampilan Card -->
         <div id="card-view" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             @forelse ($referees as $referee)
-                <div class="col-md-3">
+                <div class="col-6 col-sm-4 col-md-3">
                     <div class="card referee-card">
                         <img src="{{ $referee->photo ? asset($referee->photo) : 'https://via.placeholder.com/300x200' }}"
                             alt="{{ $referee->name }}" class="referee-photo">
                         <div class="referee-details text-center p-3">
-                            <h5 class="text-dark">{{ $referee->name }}</h5>
-                            <p class="text-muted">Cabang: {{ $referee->sport_category }}</p>
+                            <h6 class="text-dark mb-1">{{ $referee->name }}</h6>
+                            <p class="text-muted small mb-2">Cabang: {{ $referee->sport_category }}</p>
                             <a href="#" class="btn btn-primary btn-sm"
                                 onclick="showRefereeDetails({{ json_encode($referee) }})" data-bs-toggle="modal"
                                 data-bs-target="#refereeDetailModal">Detail</a>

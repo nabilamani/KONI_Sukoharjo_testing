@@ -238,12 +238,13 @@
                     @endforeach
                 </select>
                 <!-- Form Pencarian -->
-                <input id="searchInput" type="text" name="search" class="form-control me-2"
-                    placeholder="Cari atlet atau cabor..." value="{{ request('search') }}" id="sport-category-search">
+                <input type="text" name="search" class="form-control me-2" placeholder="Cari atlet atau cabor..."
+                    value="{{ request('search') }}" id="sport-category-search">
                 <!-- View card/table -->
                 <input type="hidden" name="_view" id="active-view" value="card">
                 <button type="submit" class="btn btn-primary">Cari</button>
             </form>
+
 
         </div>
 

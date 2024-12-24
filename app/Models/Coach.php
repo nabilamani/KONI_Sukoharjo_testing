@@ -9,7 +9,7 @@ class Coach extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'name', 'sport_category', 'address', 'age', 'description', 'photo'];
+    protected $fillable = ['id', 'name', 'sport_category', 'address', 'age', 'whatsapp','instagram','description', 'photo'];
     protected $keyType = 'string';
     public $incrementing = false;
     

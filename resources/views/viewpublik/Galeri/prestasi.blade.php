@@ -112,6 +112,14 @@
             .hero-subtitle {
                 font-size: 12px;
             }
+            #table-view table th,
+            #table-view table td {
+                font-size: 12px;
+                padding: 5px;
+            }
+            .list-view {
+                margin-bottom: 8px;
+            }
         }
     </style>
 </head>
@@ -154,7 +162,7 @@
         <!-- Tombol untuk mengganti tampilan -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <!-- Tombol untuk mengganti tampilan -->
-            <div>
+            <div class="list-view">
                 <button id="card-view-btn" class="btn btn-primary active">Card View</button>
                 <button id="table-view-btn" class="btn btn-secondary">Table View</button>
             </div>
@@ -197,7 +205,7 @@
 
         <!-- Tampilan Tabel -->
         <div id="table-view" class="table-responsive rounded" style="display: none;">
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped" style="min-width: 500px;">
                 <thead>
                     <tr>
                         <th>No</th>

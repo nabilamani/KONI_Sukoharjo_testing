@@ -35,7 +35,7 @@
             justify-content: center;
             position: relative;
             color: white;
-            
+
         }
 
         .hero-overlay {
@@ -59,24 +59,54 @@
             transform: scale(1.05);
             /* Slight zoom-in */
         }
+
         .card {
             border-top: 5px solid #FF9800;
             border-radius: 15px;
         }
+
         .sport-logo {
             width: 80px;
             height: 80px;
             object-fit: contain;
         }
+
         .breadcrumb {
             border-top: 5px solid #FF9800;
             border-radius: 15px;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 12px;
+                /* Reduces font size for smaller screens */
+            }
+            .table th,
+            .table td {
+                padding: 8px;
+                /* Adjust padding for smaller screens */
+            }
+            .table-responsive {
+                overflow-x: auto;
+                /* Ensure horizontal scrolling if needed */
+            }
+            .table thead {
+                font-size: 12px;
+                /* Header text size */
+            }
+            .table tbody {
+                font-size: 12px;
+                /* Body text size */
+            }
+            .card h4{
+                font-size: 15px;
+            }
         }
     </style>
 </head>
 
 <body>
-    
+
     @include('viewpublik/layouts/navbar')
 
     <!-- Hero Section -->
@@ -101,10 +131,9 @@
         <div class="card p-4">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <img src="{{ asset($SportCategory->logo ?? 'img/default.png') }}" 
-                         alt="{{ $SportCategory->nama_cabor }}" 
-                         class="img-fluid mb-3" 
-                         style="width: 150px; height: 150px; object-fit: contain;">
+                    <img src="{{ asset($SportCategory->logo ?? 'img/default.png') }}"
+                        alt="{{ $SportCategory->nama_cabor }}" class="img-fluid mb-3"
+                        style="width: 150px; height: 150px; object-fit: contain;">
                 </div>
                 <div class="col-md-8">
                     <table class="table table-bordered">
@@ -132,22 +161,23 @@
                 </div>
             </div>
         </div>
-    
+
         <!-- Display Athlete Data -->
-        
+
         <div class="card mt-5 p-4">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>Daftar Atlet</h4>
-                
+
                 <!-- Form Pencarian di Kanan -->
                 <form action="{{ route('cabor.show', $SportCategory->id) }}" method="GET" class="d-flex">
-                    <input type="text" name="search" class="form-control me-2" 
-                           placeholder="Cari atlet..." value="{{ request('search') }}">
+                    <input type="text" name="search" class="form-control me-2" placeholder="Cari atlet..."
+                        value="{{ request('search') }}">
                     <button type="submit" class="btn btn-primary">Cari</button>
                 </form>
             </div>
             <div class="table-responsive">
-                <table id="athleteTable" class="table table-bordered table-striped table-hover mt-3" style="min-width: 845px;">
+                <table id="athleteTable" class="table table-bordered table-striped table-hover mt-3"
+                    style="min-width: 845px;">
                     <thead class="bg-primary text-white">
                         <tr>
                             <th>No</th>
@@ -179,7 +209,7 @@
                                     <a href="{{ route('', $athlete->id) }}" class="btn btn-info btn-sm">Detail</a>
                                 </td> --}}
                             </tr>
-                            @empty
+                        @empty
                             <tr>
                                 <td colspan="8" class="text-center">
                                     <div class="d-flex justify-content-center align-items-center my-2">
@@ -192,16 +222,16 @@
                     </tbody>
                 </table>
             </div>
-            
-            
+
+
             {{ $athletes->links() }} <!-- Pagination links -->
         </div>
-    
+
         <a href="{{ route('home') }}" class="btn btn-secondary">Kembali</a>
     </div>
-    
-    
-    
+
+
+
 
     @include('viewpublik/layouts/footer')
 

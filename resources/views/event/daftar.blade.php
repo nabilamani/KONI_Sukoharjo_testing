@@ -138,7 +138,7 @@
                                             @php
                                                 $no = ($events->currentPage() - 1) * $events->perPage() + 1;
                                             @endphp
-                                            @foreach ($events as $event)
+                                            @forelse ($events as $event)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $event->name }}</td>
@@ -190,7 +190,16 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                                @empty
+                                                <tr>
+                                                    <td colspan="7" class="text-center">
+                                                        <div class="d-flex justify-content-center align-items-center my-2">
+                                                            <i class="mdi mdi-alert-circle-outline me-2" style="font-size: 20px;"></i>
+                                                            <span class="fs-8">Saat ini belum ada data daftar event.</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                     {{ $events->appends(request()->except('page'))->links() }}

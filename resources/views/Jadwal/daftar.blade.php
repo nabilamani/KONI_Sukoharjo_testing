@@ -134,7 +134,7 @@
                                             @php
                                                 $no = ($schedules->currentPage() - 1) * $schedules->perPage() + 1;
                                             @endphp
-                                            @foreach ($schedules as $schedule)
+                                            @forelse ($schedules as $schedule)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $schedule->name }}</td>
@@ -178,7 +178,16 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                                @empty
+                                                <tr>
+                                                    <td colspan="7" class="text-center">
+                                                        <div class="d-flex justify-content-center align-items-center my-2">
+                                                            <i class="mdi mdi-alert-circle-outline me-2" style="font-size: 20px;"></i>
+                                                            <span class="fs-8">Saat ini belum ada data daftar jadwal pertandingan.</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
 

@@ -112,6 +112,10 @@
             .sport-category {
                 font-size: 11px;
             }
+            .deskripsi {
+                font-size: 11px;
+                margin: 0px 20px;
+            }
         }
     </style>
 </head>
@@ -160,7 +164,7 @@
                 <span class="breadcrumb-item active text-primary">Cabor</span>
             </nav>
             <h2 class="text-center">Ragam Cabang Olahraga</h2>
-            <p class="text-center mb-4 text-dark">Temukan berbagai cabang olahraga yang tersedia untuk mendukung
+            <p class="text-center mb-4 text-dark deskripsi">Temukan berbagai cabang olahraga yang tersedia untuk mendukung
                 aktivitas dan prestasi Anda.</p>
             <div class="row g-4 justify-content-center">
                 @forelse($SportCategories as $SportCategory)

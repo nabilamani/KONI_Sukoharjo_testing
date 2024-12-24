@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('sport_category');
             $table->mediumText('address');
             $table->integer('age');
+            $table->string('whatsapp');
+            $table->string('instagram');
             $table->longText('description')->nullable();
             $table->string('photo')->nullable();
             $table->timestamps();

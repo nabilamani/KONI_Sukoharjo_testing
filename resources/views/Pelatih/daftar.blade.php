@@ -142,7 +142,7 @@
                                             @php
                                                 $no = ($coaches->currentPage() - 1) * $coaches->perPage() + 1;
                                             @endphp
-                                            @foreach ($coaches as $key => $coach)
+                                            @forelse ($coaches as $key => $coach)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <!-- Increment $no to continue numbering -->
@@ -186,7 +186,16 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                                @empty
+                                                <tr>
+                                                    <td colspan="8" class="text-center">
+                                                        <div class="d-flex justify-content-center align-items-center my-2">
+                                                            <i class="mdi mdi-alert-circle-outline me-2" style="font-size: 20px;"></i>
+                                                            <span class="fs-8">Saat ini belum ada data daftar pelatih.</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforelse
                                         </tbody>
 
                                     </table>
@@ -237,6 +246,25 @@
                                                                             </th>
                                                                             <td>{{ $coach->age }}</td>
                                                                         </tr>
+                                                                        <tr>
+                                                                            <th scope="row">
+                                                                                <i
+                                                                                    class="mdi mdi-whatsapp text-primary"></i>
+                                                                                WhatsApp:
+                                                                            </th>
+                                                                            <td>{{ $coach->whatsapp ?: 'Belum diketahui' }}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="row">
+                                                                                <i
+                                                                                    class="mdi mdi-instagram text-primary"></i>
+                                                                                Instagram:
+                                                                            </th>
+                                                                            <td>{{ $coach->instagram ?: 'Belum diketahui' }}
+                                                                            </td>
+                                                                        </tr>
+
                                                                         <tr>
                                                                             <th scope="row">
                                                                                 <i
@@ -313,6 +341,21 @@
                                                                             id="age" name="age"
                                                                             value="{{ $coach->age }}" required>
                                                                     </div>
+                                                                    <div class="form-group">
+                                                                        <label for="whatsapp">WhatsApp</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="whatsapp" name="whatsapp"
+                                                                            value="{{ $coach->whatsapp }}"
+                                                                            required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="instagram">Instagram</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="instagram" name="instagram"
+                                                                            value="{{ $coach->instagram }}"
+                                                                            required>
+                                                                    </div>
+
                                                                     <div class="form-group">
                                                                         <label for="sport_category">Cabang
                                                                             Olahraga</label>

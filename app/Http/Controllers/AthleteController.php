@@ -186,8 +186,13 @@ class AthleteController extends Controller
         $query = Athlete::query();
 
         if ($search) {
-            $query->where('name', 'like', "%$search%")
-                ->orWhere('sport_category', 'like', "%$search%");
+            $keywords = preg_split('/[\s,]+/', $search); // Memecah kata kunci berdasarkan spasi atau koma
+            $query->where(function ($q) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $q->orWhere('name', 'like', "%$keyword%")
+                        ->orWhere('sport_category', 'like', "%$keyword%");
+                }
+            });
         }
 
         if ($sportCategory) {
@@ -202,18 +207,12 @@ class AthleteController extends Controller
             ->groupBy('sport_category')
             ->get();
 
-        $SportCategories = SportCategory::all();
-
-        foreach ($athletes as $athlete) {
-            $athlete->age = $athlete->age; // Hitung umur
-            $athlete->achievements = $athlete->achievements ?? 'Belum ada prestasi tercatat';
-        }
-
         // Ambil semua kategori olahraga untuk dropdown filter
         $sportCategories = Athlete::select('sport_category')->distinct()->pluck('sport_category');
 
-        return view('viewpublik.olahraga.atlet', compact('athletes','categories','sportCategories'));
+        return view('viewpublik.olahraga.atlet', compact('athletes', 'categories', 'sportCategories'));
     }
+
 
     public function cariAtlet(Request $request)
     {
@@ -224,8 +223,13 @@ class AthleteController extends Controller
         $query = Athlete::query();
 
         if ($search) {
-            $query->where('name', 'like', "%$search%")
-                ->orWhere('sport_category', 'like', "%$search%");
+            $keywords = preg_split('/[\s,]+/', $search); // Memecah kata kunci berdasarkan spasi atau koma
+            $query->where(function ($q) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $q->orWhere('name', 'like', "%$keyword%")
+                        ->orWhere('sport_category', 'like', "%$keyword%");
+                }
+            });
         }
 
         if ($sportCategory) {
