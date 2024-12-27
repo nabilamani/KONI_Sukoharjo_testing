@@ -56,7 +56,8 @@
             <a href="/coba" class="brand-logo">
                 <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt=""
                     style="margin-left: 10px; border-radius: 50%; ">
-                <span class="fw-bolder " style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
+                <span class="fw-bolder d-none d-md-inline"
+                    style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
                     KONI</span>
             </a>
 
@@ -279,12 +280,14 @@
                                                                             <div class="form-group">
                                                                                 <label for="sport_category">Cabang
                                                                                     Olahraga</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
-                                                                                    id="sport_category"
+                                                                                <select id="sportCategorySelect"
                                                                                     name="sport_category"
-                                                                                    value="{{ $athlete->sport_category }}"
-                                                                                    required>
+                                                                                    class="form-control sport-category-select">
+                                                                                    <option value="" hidden
+                                                                                        selected disabled>Pilih
+                                                                                        kategori..
+                                                                                    </option>
+                                                                                </select>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="birth_date">Tanggal
@@ -407,81 +410,82 @@
 
             </div>
         </div>
-            @include('layouts/footer')
-            <!--**********************************
+        @include('layouts/footer')
+        <!--**********************************
         Main wrapper end
     ***********************************-->
 
-            <!--**********************************
+        <!--**********************************
         Scripts
     ***********************************-->
-            <!-- Required vendors -->
-            <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
+        <!-- Required vendors -->
+        <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/sport-category.js') }}"></script>
 
 
-            <!-- Vectormap -->
-            <script src="{{ asset('gambar_aset/vendor/raphael/raphael.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/morris/morris.min.js') }}"></script>
+        <!-- Vectormap -->
+        <script src="{{ asset('gambar_aset/vendor/raphael/raphael.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/morris/morris.min.js') }}"></script>
 
 
-            <script src="{{ asset('gambar_aset/vendor/circle-progress/circle-progress.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/chart.js') }}/Chart.bundle.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/circle-progress/circle-progress.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/chart.js') }}/Chart.bundle.min.js') }}"></script>
 
-            <script src="{{ asset('gambar_aset/vendor/gaugeJS/dist/gauge.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/gaugeJS/dist/gauge.min.js') }}"></script>
 
-            <!--  flot-chart js -->
-            <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.resize.js') }}"></script>
+        <!--  flot-chart js -->
+        <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.resize.js') }}"></script>
 
-            <!-- Owl Carousel -->
-            <script src="{{ asset('gambar_aset/vendor/owl-carousel/js/owl.carousel.min.js') }}"></script>
+        <!-- Owl Carousel -->
+        <script src="{{ asset('gambar_aset/vendor/owl-carousel/js/owl.carousel.min.js') }}"></script>
 
-            <!-- Counter Up -->
-            <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.usa.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/jquery.counterup/jquery.counterup.min.js') }}"></script>
+        <!-- Counter Up -->
+        <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.usa.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/jquery.counterup/jquery.counterup.min.js') }}"></script>
 
 
 
-            <script src="{{ asset('gambar_aset/js/dashboard/dashboard-1.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/dashboard/dashboard-1.js') }}"></script>
 
-            <!-- Datatable -->
-            <script src="{{ asset('gambar_aset/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+        <!-- Datatable -->
+        <script src="{{ asset('gambar_aset/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
 
-            {{-- <!-- DataTables JavaScript -->
+        {{-- <!-- DataTables JavaScript -->
             <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 
             <!-- DataTables Bootstrap 5 integration -->
             <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script> --}}
 
 
+        <script>
+            $(document).ready(function() {
+                $('#athleteTable').DataTable({
+                    paging: true, // Enable pagination
+                    pageLength: 5, // Display 5 rows per page
+                    searching: true, // Enable search
+                    info: true, // Show table information
+                    order: [], // No default column sorting
+                    columnDefs: [{
+                        orderable: false,
+                        targets: 8 // Disable sorting for the "actions" column
+                    }]
+                });
+            });
+        </script>
+
+        @if (Session::has('message'))
             <script>
-                $(document).ready(function() {
-                    $('#athleteTable').DataTable({
-                        paging: true, // Enable pagination
-                        pageLength: 5, // Display 5 rows per page
-                        searching: true, // Enable search
-                        info: true, // Show table information
-                        order: [], // No default column sorting
-                        columnDefs: [{
-                            orderable: false,
-                            targets: 8 // Disable sorting for the "actions" column
-                        }]
-                    });
+                swal("Berhasil", "{{ Session::get('message') }}", 'success', {
+                    button: true,
+                    button: "Ok",
+                    timer: 5000
                 });
             </script>
-
-            @if (Session::has('message'))
-                <script>
-                    swal("Berhasil", "{{ Session::get('message') }}", 'success', {
-                        button: true,
-                        button: "Ok",
-                        timer: 5000
-                    });
-                </script>
-            @endif
+        @endif
 
 </body>
 
