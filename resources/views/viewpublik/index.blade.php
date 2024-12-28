@@ -23,7 +23,7 @@
         /* Hero Section with Parallax Effect */
         .hero-section {
             height: 100vh;
-            background: url('https://image.kemenpora.go.id/images/content/2021/08/02/787/2261Air-Mata-Sejarah-Greysia-Apriyani-Terukir-di-Olimpiade-Tokyo-2020.jpg') no-repeat center center;
+            background: url('/gambar_aset/bg-beranda.jpg') no-repeat center center;
             background-size: cover;
             background-attachment: fixed;
             display: flex;

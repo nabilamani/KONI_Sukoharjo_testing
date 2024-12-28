@@ -77,6 +77,12 @@
         }
 
         @media (max-width: 768px) {
+            .hero-title{
+                font-size: 20px;
+            }
+            .hero-subtitle{
+                font-size: 12px;
+            }
             table {
                 font-size: 12px;
                 /* Reduces font size for smaller screens */

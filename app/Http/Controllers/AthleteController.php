@@ -35,7 +35,7 @@ class AthleteController extends Controller
             ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
             ->get(); // Display 4 items per page
 
-        return view('Atlet.daftar', ['athletes' => $athletes, 'search' => $search]);
+        return view('atlet.daftar', ['athletes' => $athletes, 'search' => $search]);
     }
 
     /**
@@ -45,7 +45,7 @@ class AthleteController extends Controller
      */
     public function create()
     {
-        return view('Atlet.tambah');
+        return view('atlet.tambah');
     }
 
     public function cetakAthlete()

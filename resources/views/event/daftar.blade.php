@@ -54,7 +54,8 @@
             <a href="/coba" class="brand-logo">
                 <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt=""
                     style="margin-left: 10px; border-radius: 50%; ">
-                <span class="fw-bolder d-none d-md-inline" style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
+                <span class="fw-bolder d-none d-md-inline"
+                    style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
                     KONI</span>
             </a>
 
@@ -190,12 +191,15 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                @empty
+                                            @empty
                                                 <tr>
                                                     <td colspan="7" class="text-center">
-                                                        <div class="d-flex justify-content-center align-items-center my-2">
-                                                            <i class="mdi mdi-alert-circle-outline me-2" style="font-size: 20px;"></i>
-                                                            <span class="fs-8">Saat ini belum ada data daftar event.</span>
+                                                        <div
+                                                            class="d-flex justify-content-center align-items-center my-2">
+                                                            <i class="mdi mdi-alert-circle-outline me-2"
+                                                                style="font-size: 20px;"></i>
+                                                            <span class="fs-8">Saat ini belum ada data daftar
+                                                                event.</span>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -346,9 +350,12 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="sport_category">Cabang Olahraga</label>
-                                                    <input type="text" class="form-control" id="sport_category"
-                                                        name="sport_category" value="{{ $event->sport_category }}"
-                                                        required>
+                                                    <select id="sportCategorySelect" name="sport_category"
+                                                        class="form-control sport-category-select">
+                                                        <option value="{{ $event->sport_category }}" hidden
+                                                            selected disabled>{{ $event->sport_category }}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="location">Lokasi</label>
@@ -429,7 +436,7 @@
         <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
         <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
         <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
-
+        <script src="{{ asset('gambar_aset/js/sport-category.js') }}"></script>
 
         <!-- Vectormap -->
         <script src="{{ asset('gambar_aset/vendor/raphael/raphael.min.js') }}"></script>
@@ -461,14 +468,14 @@
         <script src="{{ asset('gambar_aset/js/plugins-init/datatables.init.js') }}"></script>
 
         @if (Session::has('message'))
-                <script>
-                    swal("Berhasil", "{{ Session::get('message') }}", 'success', {
-                        button: true,
-                        button: "Ok",
-                        timer: 5000
-                    });
-                </script>
-            @endif
+            <script>
+                swal("Berhasil", "{{ Session::get('message') }}", 'success', {
+                    button: true,
+                    button: "Ok",
+                    timer: 5000
+                });
+            </script>
+        @endif
 </body>
 
 </html>

@@ -320,10 +320,11 @@
                                                                     <div class="form-group">
                                                                         <label for="sport_category">Nama
                                                                             Kategori</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="sport_category" name="sport_category"
-                                                                            value="{{ $SportCategory->sport_category }}"
-                                                                            required>
+                                                                            <select id="sportCategorySelect" name="sport_category"
+                                                                            class="form-control sport-category-select">
+                                                                            <option value="{{ $SportCategory->sport_category }}"
+                                                                                hidden selected disabled>{{ $SportCategory->sport_category }}</option>
+                                                                        </select>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="puslatcab">Pusat Latihan
@@ -422,6 +423,7 @@
         <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
         <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
         <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/sport-category.js') }}"></script>
 
 
         <!-- Vectormap -->

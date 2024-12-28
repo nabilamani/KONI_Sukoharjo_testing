@@ -18,7 +18,7 @@ class MessageController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);  // Paginate results with 10 per page
 
-        return view('pesan.daftar', compact('messages', 'search'));
+        return view('Pesan.daftar', compact('messages', 'search'));
     }
 
     public function create()

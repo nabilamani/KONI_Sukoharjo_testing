@@ -40,7 +40,7 @@ class GaleriController extends Controller
      */
     public function create()
     {
-        return view('galeri.tambah');
+        return view('Galeri.tambah');
     }
 
     /**

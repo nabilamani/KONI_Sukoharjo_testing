@@ -26,7 +26,7 @@
 
         .hero-section {
             height: 100vh;
-            background: url('https://portal.sukoharjokab.go.id/wp-content/uploads/2024/01/20240111-peresmian-gor-dprri1.jpg') no-repeat center center;
+            background: url('/gambar_aset/bg-olahraga.jpg') no-repeat center center;
             background-size: cover;
             background-attachment: fixed;
             display: flex;
@@ -105,7 +105,12 @@
         }
 
         @media (max-width: 768px) {
-
+            .hero-title{
+                font-size: 20px;
+            }
+            .hero-subtitle{
+                font-size: 12px;
+            }
             #table-view table th,
             #table-view table td {
                 font-size: 12px;

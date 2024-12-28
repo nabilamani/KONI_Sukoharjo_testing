@@ -21,7 +21,7 @@
 
         .hero-section {
             height: 100vh;
-            background: url('https://portal.sukoharjokab.go.id/wp-content/uploads/2024/01/20240111-peresmian-gor-dprri1.jpg') no-repeat center center;
+            background: url('/gambar_aset/bg-olahraga.jpg') no-repeat center center;
             background-size: cover;
             background-attachment: fixed;
             display: flex;

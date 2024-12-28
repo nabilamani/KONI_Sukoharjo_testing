@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function create()
     {
-        return view('akun.tambah'); // Assuming a view named 'register'
+        return view('Akun.tambah'); // Assuming a view named 'register'
     }
 
     public function store(Request $request)

@@ -364,8 +364,7 @@
                                                                             class="form-control sport-category-select">
                                                                             <option
                                                                                 value="{{ $coach->sport_category }}"
-                                                                                hidden selected disabled>Pilih
-                                                                                kategori..</option>
+                                                                                hidden selected disabled>{{ $coach->sport_category }}</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>

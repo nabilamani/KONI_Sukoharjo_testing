@@ -33,7 +33,7 @@ class EventController extends Controller
             ->orderBy('created_at', 'asc')
             ->paginate(4);
 
-        return view('Event.daftar', ['events' => $events, 'search' => $search]);
+        return view('event.daftar', ['events' => $events, 'search' => $search]);
     }
 
 
@@ -53,7 +53,7 @@ class EventController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
 
-        return view('Event.cetak-event', compact('events'));
+        return view('event.cetak-event', compact('events'));
     }
 
     /**
@@ -63,7 +63,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('Event.tambah');
+        return view('event.tambah');
     }
 
     /**
@@ -109,7 +109,7 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::findOrFail($id);
-        return view('Event.detail', compact('event'));
+        return view('event.detail', compact('event'));
     }
 
     /**
@@ -121,7 +121,7 @@ class EventController extends Controller
     public function edit($id)
     {
         $event = Event::findOrFail($id);
-        return view('Event.edit', compact('event'));
+        return view('event.edit', compact('event'));
     }
 
     /**
