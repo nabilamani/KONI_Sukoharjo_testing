@@ -52,7 +52,8 @@
             <a href="/coba" class="brand-logo">
                 <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt=""
                     style="margin-left: 10px; border-radius: 50%; ">
-                <span class="fw-bolder d-none d-md-inline" style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
+                <span class="fw-bolder d-none d-md-inline"
+                    style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
                     KONI</span>
             </a>
 
@@ -268,7 +269,8 @@
                                                                 <select id="sportCategorySelect" name="sport_category"
                                                                     class="form-control sport-category-select">
                                                                     <option value="{{ $gallery->sport_category }}"
-                                                                        hidden selected disabled>{{ $gallery->sport_category }}</option>
+                                                                        selected>{{ $gallery->sport_category }}
+                                                                    </option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group mb-3">

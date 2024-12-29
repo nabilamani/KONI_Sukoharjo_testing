@@ -108,12 +108,14 @@
         }
 
         @media (max-width: 768px) {
-            .hero-title{
+            .hero-title {
                 font-size: 20px;
             }
-            .hero-subtitle{
+
+            .hero-subtitle {
                 font-size: 12px;
             }
+
             #table-view table th,
             #table-view table td {
                 font-size: 12px;
@@ -532,7 +534,7 @@
             });
         }
     </script> --}}
-
+    
 </body>
 
 </html>

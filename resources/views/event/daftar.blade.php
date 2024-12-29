@@ -352,8 +352,8 @@
                                                     <label for="sport_category">Cabang Olahraga</label>
                                                     <select id="sportCategorySelect" name="sport_category"
                                                         class="form-control sport-category-select">
-                                                        <option value="{{ $event->sport_category }}" hidden
-                                                            selected disabled>{{ $event->sport_category }}
+                                                        <option value="{{ $event->sport_category }}" selected>
+                                                            {{ $event->sport_category }}
                                                         </option>
                                                     </select>
                                                 </div>

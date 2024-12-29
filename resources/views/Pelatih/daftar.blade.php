@@ -57,7 +57,8 @@
             <a href="/coba" class="brand-logo">
                 <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt=""
                     style="margin-left: 10px; border-radius: 50%; ">
-                <span class="fw-bolder d-none d-md-inline" style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
+                <span class="fw-bolder d-none d-md-inline"
+                    style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
                     KONI</span>
             </a>
 
@@ -186,12 +187,15 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                @empty
+                                            @empty
                                                 <tr>
                                                     <td colspan="8" class="text-center">
-                                                        <div class="d-flex justify-content-center align-items-center my-2">
-                                                            <i class="mdi mdi-alert-circle-outline me-2" style="font-size: 20px;"></i>
-                                                            <span class="fs-8">Saat ini belum ada data daftar pelatih.</span>
+                                                        <div
+                                                            class="d-flex justify-content-center align-items-center my-2">
+                                                            <i class="mdi mdi-alert-circle-outline me-2"
+                                                                style="font-size: 20px;"></i>
+                                                            <span class="fs-8">Saat ini belum ada data daftar
+                                                                pelatih.</span>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -345,15 +349,13 @@
                                                                         <label for="whatsapp">WhatsApp</label>
                                                                         <input type="text" class="form-control"
                                                                             id="whatsapp" name="whatsapp"
-                                                                            value="{{ $coach->whatsapp }}"
-                                                                            required>
+                                                                            value="{{ $coach->whatsapp }}" required>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="instagram">Instagram</label>
                                                                         <input type="text" class="form-control"
                                                                             id="instagram" name="instagram"
-                                                                            value="{{ $coach->instagram }}"
-                                                                            required>
+                                                                            value="{{ $coach->instagram }}" required>
                                                                     </div>
 
                                                                     <div class="form-group">
@@ -364,7 +366,8 @@
                                                                             class="form-control sport-category-select">
                                                                             <option
                                                                                 value="{{ $coach->sport_category }}"
-                                                                                hidden selected disabled>{{ $coach->sport_category }}</option>
+                                                                                selected>{{ $coach->sport_category }}
+                                                                            </option>
                                                                         </select>
                                                                     </div>
                                                                 </div>

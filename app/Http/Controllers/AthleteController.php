@@ -17,26 +17,37 @@ class AthleteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $user = Auth::user();
-        $search = $request->input('search'); // Capture the search input from the request
+{
+    $user = Auth::user();
+    $search = $request->input('search'); // Capture the search input from the request
 
-        // Filter athletes based on user level and search query if provided
-        $athletes = Athlete::when($user->level !== 'Admin', function ($query) use ($user) {
-            // Extract sport category from user level if not an Admin
-            $sportCategory = str_replace('Pengurus Cabor ', '', $user->level);
-            $query->where('sport_category', $sportCategory);
+    // Filter athletes based on user level and search query if provided
+    $athletes = Athlete::when($user->level !== 'Admin', function ($query) use ($user) {
+        // Extract sport category from user level if not an Admin
+        $sportCategory = str_replace('Pengurus Cabor ', '', $user->level);
+        $query->where('sport_category', $sportCategory);
+    })
+        ->when($search, function ($query) use ($search) {
+            // Apply search filter on name and sport category fields
+            $query->where('name', 'like', "%$search%")
+                ->orWhere('sport_category', 'like', "%$search%");
         })
-            ->when($search, function ($query) use ($search) {
-                // Apply search filter on name and sport category fields
-                $query->where('name', 'like', "%$search%")
-                    ->orWhere('sport_category', 'like', "%$search%");
-            })
-            ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
-            ->get(); // Display 4 items per page
+        ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
+        ->get();
 
-        return view('atlet.daftar', ['athletes' => $athletes, 'search' => $search]);
-    }
+    // Calculate athlete count per sport category
+    $categories = Athlete::select('sport_category')
+        ->selectRaw('COUNT(*) as total')
+        ->groupBy('sport_category')
+        ->get();
+
+    return view('atlet.daftar', [
+        'athletes' => $athletes,
+        'search' => $search,
+        'categories' => $categories // Pass the categories data to the view
+    ]);
+}
+
 
     /**
      * Show the form for creating a new athlete.

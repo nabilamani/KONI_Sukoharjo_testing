@@ -53,7 +53,8 @@
             <a href="/coba" class="brand-logo">
                 <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt=""
                     style="margin-left: 10px; border-radius: 50%; ">
-                <span class="fw-bolder d-none d-md-inline" style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
+                <span class="fw-bolder d-none d-md-inline"
+                    style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
                     KONI</span>
             </a>
 
@@ -178,12 +179,15 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                @empty
+                                            @empty
                                                 <tr>
                                                     <td colspan="7" class="text-center">
-                                                        <div class="d-flex justify-content-center align-items-center my-2">
-                                                            <i class="mdi mdi-alert-circle-outline me-2" style="font-size: 20px;"></i>
-                                                            <span class="fs-8">Saat ini belum ada data daftar jadwal pertandingan.</span>
+                                                        <div
+                                                            class="d-flex justify-content-center align-items-center my-2">
+                                                            <i class="mdi mdi-alert-circle-outline me-2"
+                                                                style="font-size: 20px;"></i>
+                                                            <span class="fs-8">Saat ini belum ada data daftar jadwal
+                                                                pertandingan.</span>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -296,7 +300,8 @@
                                                                 <select id="sportCategorySelect" name="sport_category"
                                                                     class="form-control sport-category-select">
                                                                     <option value="{{ $schedule->sport_category }}"
-                                                                        hidden selected disabled>{{ $schedule->sport_category }}</option>
+                                                                        selected>{{ $schedule->sport_category }}
+                                                                    </option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group mb-3">

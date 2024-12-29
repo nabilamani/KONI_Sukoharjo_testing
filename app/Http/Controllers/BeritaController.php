@@ -140,17 +140,34 @@ class BeritaController extends Controller
         return redirect()->back()->with('message', 'News article successfully deleted!');
     }
 
-    public function publik()
+    public function publik(Request $request)
     {
-        // Ambil berita utama sebagai "Berita Utama" (misalnya 1 artikel terbaru)
-        $beritaUtama = Berita::orderBy('tanggal_waktu', 'desc')
-            ->first(); // Ambil berita paling baru
+        // Ambil kata kunci pencarian dari query string
+        $search = $request->input('search');
 
-        // Ambil berita lainnya sebagai "Berita Latepost" (dikecualikan berita utama)
-        $beritaLatepost = Berita::orderBy('tanggal_waktu', 'desc')
-            ->skip(1) // Lewati berita utama yang sudah diambil
-            ->take(4) // Ambil 4 berita berikutnya
-            ->get();
+        // Jika ada kata kunci pencarian, cari berita yang sesuai
+        if ($search) {
+            $beritaUtama = Berita::where('judul_berita', 'like', '%' . $search . '%')
+                ->orWhere('lokasi_peristiwa', 'like', '%' . $search . '%')
+                ->orderBy('tanggal_waktu', 'desc')
+                ->first();
+
+            $beritaLatepost = Berita::where('judul_berita', 'like', '%' . $search . '%')
+                ->orWhere('lokasi_peristiwa', 'like', '%' . $search . '%')
+                ->orderBy('tanggal_waktu', 'desc')
+                ->skip(1)
+                ->take(4)
+                ->get();
+        } else {
+            // Ambil berita utama sebagai "Berita Utama" (misalnya 1 artikel terbaru)
+            $beritaUtama = Berita::orderBy('tanggal_waktu', 'desc')->first();
+
+            // Ambil berita lainnya sebagai "Berita Latepost" (dikecualikan berita utama)
+            $beritaLatepost = Berita::orderBy('tanggal_waktu', 'desc')
+                ->skip(1) // Lewati berita utama yang sudah diambil
+                ->take(4) // Ambil 4 berita berikutnya
+                ->get();
+        }
 
         // Ambil event mendatang (future events) yang tanggal_event > sekarang
         $upcomingEvents = Event::where('event_date', '>=', now()->startOfDay())
@@ -159,8 +176,9 @@ class BeritaController extends Controller
             ->get();
 
         // Kirim data ke view
-        return view('viewpublik.berita.home', compact('beritaUtama', 'beritaLatepost', 'upcomingEvents'));
+        return view('viewpublik.berita.home', compact('beritaUtama', 'beritaLatepost', 'upcomingEvents', 'search'));
     }
+
 
     public function daftarberita(Request $request)
     {

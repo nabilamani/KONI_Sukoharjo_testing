@@ -273,14 +273,14 @@
                                 <h5 class="card-title">Berita Terbaru</h5>
                                 <hr>
                                 <div class="mb-4">
-                                    <form>
+                                    <form action="{{ url()->current() }}" method="GET">
                                         <label for="search" class="form-label">Cari Berita</label>
                                         <div class="input-group shadow-sm">
-                                            <input type="text" class="form-control" id="search"
-                                                placeholder="Cari berita...">
+                                            <input type="text" class="form-control" id="search" name="search" 
+                                                placeholder="Cari berita..." value="{{ request('search') }}">
                                             <button type="submit" class="btn btn-primary text-white">Cari</button>
                                         </div>
-                                    </form>
+                                    </form>                                    
                                 </div>
                                 @forelse ($beritaLatepost as $berita)
                                     <div class="d-flex align-items-start mb-3 berita-item p-1"

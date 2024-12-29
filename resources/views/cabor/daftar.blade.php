@@ -144,7 +144,7 @@
                                                         @if ($SportCategory->logo)
                                                             <img src="{{ asset($SportCategory->logo) }}"
                                                                 alt="Logo {{ $SportCategory->nama_cabor }}"
-                                                                style="width: 50px; height: 50px; object-fit: cover;">
+                                                                style="width: 50px; height: 50px; object-fit: contain;">
                                                         @else
                                                             <span class="text-muted">Tidak ada logo</span>
                                                         @endif
@@ -322,8 +322,10 @@
                                                                             Kategori</label>
                                                                             <select id="sportCategorySelect" name="sport_category"
                                                                             class="form-control sport-category-select">
-                                                                            <option value="{{ $SportCategory->sport_category }}"
-                                                                                hidden selected disabled>{{ $SportCategory->sport_category }}</option>
+                                                                            <option
+                                                                                value="{{ $SportCategory->sport_category }}"
+                                                                                selected>{{ $SportCategory->sport_category }}
+                                                                            </option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="form-group">

@@ -112,6 +112,7 @@
                     <!-- Basic Layout -->
                     <div class="col-12">
                         <div class="card">
+                            <div id="chart" class="my-5"></div>
                             <div class="card-header">
                                 <h4 class="card-title">Daftar Atlet</h4>
                                 <form action="{{ route('athletes.index') }}" method="GET" class="form-inline">
@@ -283,8 +284,10 @@
                                                                                 <select id="sportCategorySelect"
                                                                                     name="sport_category"
                                                                                     class="form-control sport-category-select">
-                                                                                    <option value="{{ $athlete->sport_category }}" hidden
-                                                                                        selected disabled>{{ $athlete->sport_category }}
+                                                                                    <option
+                                                                                        value="{{ $athlete->sport_category }}"
+                                                                                        selected>
+                                                                                        {{ $athlete->sport_category }}
                                                                                     </option>
                                                                                 </select>
                                                                             </div>
@@ -485,6 +488,41 @@
                 });
             </script>
         @endif
+
+        <!-- ApexCharts -->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var options = {
+                    chart: {
+                        type: 'bar',
+                        height: 350
+                    },
+                    series: [{
+                        name: 'Jumlah Atlet',
+                        data: @json($categories->pluck('total')) // Data jumlah atlet per kategori
+                    }],
+                    xaxis: {
+                        categories: @json($categories->pluck('sport_category')), // Nama kategori olahraga
+                        labels: {
+                            style: {
+                                fontSize: '10px' // Ukuran font untuk label kategori
+                            }
+                        }
+                    },
+                    colors: ['#FFA500'], // Warna oranye
+                    title: {
+                        text: 'Statistik Atlet per Kategori Olahraga',
+                        align: 'center'
+                    }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+            });
+        </script>
+
+
 
 </body>
 

@@ -166,7 +166,7 @@
             <h2 class="text-center">Ragam Cabang Olahraga</h2>
             <p class="text-center mb-4 text-dark deskripsi">Temukan berbagai cabang olahraga yang tersedia untuk mendukung
                 aktivitas dan prestasi Anda.</p>
-            <div class="row g-4 justify-content-center">
+            <div class="row g-4">
                 @forelse($SportCategories as $SportCategory)
                     <div class="col-6 col-sm-4 col-md-3 col-lg-3 d-flex justify-content-center">
                         <a href="{{ route('cabor.show', $SportCategory->id) }}" class="text-decoration-none w-100">

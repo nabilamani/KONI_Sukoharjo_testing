@@ -334,7 +334,8 @@
                                                                             class="form-control sport-category-select">
                                                                             <option
                                                                                 value="{{ $referee->sport_category }}"
-                                                                                hidden selected disabled>{{ $referee->sport_category }}</option>
+                                                                                selected>{{ $referee->sport_category }}
+                                                                            </option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="form-group">

@@ -272,7 +272,8 @@
                                                                 <select id="sportCategorySelect" name="sport_category"
                                                                     class="form-control sport-category-select">
                                                                     <option value="{{ $achievement->sport_category }}"
-                                                                        hidden selected disabled>{{ $achievement->sport_category }}</option>
+                                                                        selected>{{ $achievement->sport_category }}
+                                                                    </option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
