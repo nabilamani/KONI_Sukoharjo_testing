@@ -112,7 +112,8 @@
                     <!-- Basic Layout -->
                     <div class="col-12">
                         <div class="card">
-                            <div id="chart" class="my-5"></div>
+                            <div id="chart" class="mt-5"></div>
+                            <hr class="mx-4">
                             <div class="card-header">
                                 <h4 class="card-title">Daftar Atlet</h4>
                                 <form action="{{ route('athletes.index') }}" method="GET" class="form-inline">

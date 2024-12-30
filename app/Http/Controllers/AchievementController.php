@@ -163,6 +163,6 @@ class AchievementController extends Controller
                 ->orWhere('sport_category', 'like', "%$search%");
         })->paginate(8);
 
-        return view('viewpublik.galeri.prestasi', compact('achievements'));
+        return view('viewpublik.Galeri.prestasi', compact('achievements'));
     }
 }

@@ -520,35 +520,37 @@
                                         <h5 class="card-title">Rekapan Prestasi Cabang Olahraga</h5>
                                     </div>
                                     <div class="card-body">
-                                        <table class="table table-bordered bg-white">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th>Cabang Olahraga</th>
-                                                    <th>Jenis Event</th>
-                                                    <th>Nama Atlet/Team</th>
-                                                    <th>Keterangan</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="color: rgb(114, 114, 114)">
-                                                @if ($achievements->isEmpty())
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered bg-white" style="min-width: 500px;">
+                                                <thead class="thead-dark">
                                                     <tr>
-                                                        <td colspan="4" class="text-center text-muted">
-                                                            <i class="mdi mdi-information-outline me-1"></i>
-                                                            Belum ada data prestasi yang tersedia.
-                                                        </td>
+                                                        <th>Cabang Olahraga</th>
+                                                        <th>Jenis Event</th>
+                                                        <th>Nama Atlet/Team</th>
+                                                        <th>Keterangan</th>
                                                     </tr>
-                                                @else
-                                                    @foreach ($achievements as $achievement)
+                                                </thead>
+                                                <tbody style="color: rgb(114, 114, 114)">
+                                                    @if ($achievements->isEmpty())
                                                         <tr>
-                                                            <td>{{ $achievement->sport_category }}</td>
-                                                            <td>{{ $achievement->event_type }}</td>
-                                                            <td>{{ $achievement->athlete_name }}</td>
-                                                            <td>{{ $achievement->description }}</td>
+                                                            <td colspan="4" class="text-center text-muted">
+                                                                <i class="mdi mdi-information-outline me-1"></i>
+                                                                Belum ada data prestasi yang tersedia.
+                                                            </td>
                                                         </tr>
-                                                    @endforeach
-                                                @endif
-                                            </tbody>
-                                        </table>
+                                                    @else
+                                                        @foreach ($achievements as $achievement)
+                                                            <tr>
+                                                                <td>{{ $achievement->sport_category }}</td>
+                                                                <td>{{ $achievement->event_type }}</td>
+                                                                <td>{{ $achievement->athlete_name }}</td>
+                                                                <td>{{ $achievement->description }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

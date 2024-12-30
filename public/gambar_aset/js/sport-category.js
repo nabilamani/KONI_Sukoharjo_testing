@@ -3,7 +3,7 @@
 // Daftar kategori olahraga
 const sportCategories = [
     "Semua","Badminton", "Sepak Bola", "Bola Basket", "Bola Voli",
-    "Balap Sepeda", "Atletik", "Renang", "Tinju", "Pencak Silat","Futsal","Catur","Tenis Meja","Angkat Besi","Berkuda","Gulat","Menembak","Motor Balap","Panahan",
+    "Balap Sepeda", "Atletik", "Renang", "Tinju", "Pencak Silat","Futsal","Catur","Tenis Meja","Angkat Besi","Berkuda","Gulat","Menembak","Motor Balap","Panahan","Paralayang",
   ];
 
   // Simulate the Auth user and coach object (you would typically get this data from the server)
@@ -40,6 +40,7 @@ function canAccessSportCategory(userLevel, coachCategory) {
     'Pengurus Cabor Menembak': 'Menembak',
     'Pengurus Cabor Motor Balap': 'Motor Balap',
     'Pengurus Cabor Panahan': 'Panahan',
+    'Pengurus Cabor Paralayang': 'Paralayang',
   };
 
   return userLevel === 'Pengurus Cabor ' + coachCategory && sportCategoryAccess[userLevel] === coachCategory;
@@ -92,6 +93,7 @@ const sportCategoryAccessLevels = [
   'Pengurus Cabor Menembak',
   'Pengurus Cabor Motor Balap',
   'Pengurus Cabor Panahan',
+  'Pengurus Cabor Paralayang',
 ];
 
 // Fungsi untuk mengisi elemen select dengan level/pengurus

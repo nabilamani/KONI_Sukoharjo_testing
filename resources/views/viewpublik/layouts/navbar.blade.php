@@ -180,6 +180,8 @@
                                 href="{{ url('/galeri/video') }}">Video</a></li> --}}
                         <li><a class="dropdown-item {{ Request::is('galeri/prestasi') ? 'active' : '' }}"
                                 href="{{ url('/galeri/prestasi') }}">Prestasi</a></li>
+                        <li><a class="dropdown-item {{ Request::is('galeri/calender') ? 'active' : '' }}"
+                                href="{{ url('/galeri/calender') }}">Calender</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">

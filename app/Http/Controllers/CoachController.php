@@ -35,8 +35,19 @@ class CoachController extends Controller
             ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
             ->paginate(4); // Display 4 items per page
 
-        return view('Pelatih.daftar', ['coaches' => $coaches, 'search' => $search]);
+        // Calculate coach count per sport category
+        $categories = Coach::select('sport_category')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('sport_category')
+            ->get();
+
+        return view('Pelatih.daftar', [
+            'coaches' => $coaches,
+            'search' => $search,
+            'categories' => $categories // Pass the categories data to the view
+        ]);
     }
+
 
     public function cetakPelatih()
     {

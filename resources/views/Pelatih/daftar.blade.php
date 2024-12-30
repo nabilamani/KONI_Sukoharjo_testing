@@ -113,6 +113,8 @@
                     <!-- Basic Layout -->
                     <div class="col-12">
                         <div class="card">
+                            <div id="chart" class="mt-5"></div>
+                            <hr class="mx-4">
                             <div class="card-header">
                                 <h4 class="card-title">Daftar Pelatih</h4>
                                 <form action="{{ route('coaches.index') }}" method="GET" class="form-inline">
@@ -582,6 +584,39 @@
                 });
             });
         </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var options = {
+                    chart: {
+                        type: 'bar',
+                        height: 350
+                    },
+                    series: [{
+                        name: 'Jumlah Pelatih',
+                        data: @json($categories->pluck('total')) // Data jumlah pelatih per kategori
+                    }],
+                    xaxis: {
+                        categories: @json($categories->pluck('sport_category')), // Nama kategori olahraga
+                        labels: {
+                            style: {
+                                fontSize: '10px' // Ukuran font untuk label kategori
+                            }
+                        }
+                    },
+                    colors: ['#FFA500'],
+                    title: {
+                        text: 'Statistik Pelatih per Kategori Olahraga',
+                        align: 'center'
+                    }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+            });
+        </script>
+
 </body>
 
 </html>

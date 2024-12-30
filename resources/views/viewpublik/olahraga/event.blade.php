@@ -14,6 +14,9 @@
     <link href="{{ asset('gambar_aset/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('gambar_aset/assets/vendor/fonts/boxicons.css') }}" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+
     <style>
         body {
             overflow-x: hidden;
@@ -50,12 +53,14 @@
         }
 
         @media (max-width: 768px) {
-            .hero-title{
+            .hero-title {
                 font-size: 20px;
             }
-            .hero-subtitle{
+
+            .hero-subtitle {
                 font-size: 12px;
             }
+
             #table-view table th,
             #table-view table td {
                 font-size: 12px;
@@ -90,15 +95,14 @@
             <!-- Form Pencarian -->
             <form action="{{ route('showEvents') }}" method="GET" class="d-flex justify-content-end align-items-end">
                 <div class="col-md-4">
-                    <input type="text" name="search" class="form-control me-2"
+                    <input type="text" name="search" class="form-control me-2 d-none d-md-inline"
                         placeholder="Cari event atau lokasi..." value="{{ request('search') }}">
                 </div>
-                <div class="col-md-3">
+                <div class="col-6 col-md-3">
                     <label>Mulai dari</label>
-                    <input type="date" name="start_date" class="form-control"
-                        value="{{ request('start_date') }}">
+                    <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
                 </div>
-                <div class="col-md-3">
+                <div class="col-6 col-md-3">
                     <label>Hingga</label>
                     <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
                 </div>
@@ -107,7 +111,7 @@
                         <i class="mdi mdi-filter-outline"></i>
                         <span class="d-none d-md-inline">Cari</span>
                     </button>
-                </div>                
+                </div>
             </form>
         </div>
         <div id="table-view" class="table-responsive rounded">
@@ -229,6 +233,10 @@
     <script>
         AOS.init();
     </script>
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/id.js"></script>
+
 </body>
 
 </html>

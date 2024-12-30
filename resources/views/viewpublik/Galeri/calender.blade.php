@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KONI Sukoharjo</title>
+    <title>Daftar Event - KONI Sukoharjo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('gambar_aset/images/koni.png') }}">
     <link rel="stylesheet" href="{{ asset('gambar_aset/vendor/owl-carousel/css/owl.carousel.min.css') }}">
@@ -14,9 +14,13 @@
     <link href="{{ asset('gambar_aset/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('gambar_aset/assets/vendor/fonts/boxicons.css') }}" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/main.min.css" rel="stylesheet">
     <style>
         body {
             overflow-x: hidden;
+            background: url('/gambar_aset/background_2.png') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
         }
 
         .hero-section {
@@ -29,7 +33,6 @@
             justify-content: center;
             position: relative;
             color: white;
-
         }
 
         .hero-overlay {
@@ -68,29 +71,23 @@
             transition: transform 0.3s ease;
         }
 
+        .profile-section {
+            background-color: #f8f9fa;
+        }
 
-        .sport-card {
+        .profile-section h2 {
+            color: #2c3e50;
+        }
+
+        .profile-section img {
+            max-width: 250px;
+            height: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease;
-            border-top: solid 3px #E00818;
         }
-
-        .sport-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .sport-logo {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-        }
-
         .breadcrumb {
-            border-right: 5px solid #E00818;
+            border-right: 5px solid #FF9800;
             border-radius: 15px;
         }
-
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 16px;
@@ -99,33 +96,11 @@
             .hero-subtitle {
                 font-size: 12px;
             }
-
-            .sport-logo {
-                max-width: 60px;
-                max-height: 60px;
-            }
-
-            .sport-name {
-                font-size: 12px;
-            }
-
-            .sport-category {
-                font-size: 11px;
-            }
-
-            .deskripsi {
-                font-size: 11px;
-                margin: 0px 20px;
-            }
-            .sport-card{
-                margin-bottom: 0px;
-            }
         }
     </style>
 </head>
 
 <body>
-
     @include('viewpublik/layouts/navbar')
 
     <!-- Hero Section -->
@@ -135,76 +110,68 @@
             <!-- Lottie Player -->
             <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
             <div class="lottie-container mb-4">
-                <dotlottie-player src="https://lottie.host/55b08a51-c7ba-4378-b360-11de20d377bd/GAHH8rAzYz.lottie"
-                    background="transparent" speed="1" style="width: 250px; height: 250px" loop
-                    autoplay></dotlottie-player>
+                <dotlottie-player src="https://lottie.host/f7e21688-11aa-41f4-bfc3-885a4483adf5/lK6R71kTw0.lottie" background="transparent" speed="1" style="width: 250px; height: 250px" loop autoplay></dotlottie-player>
             </div>
 
             <!-- Hero Title -->
             <h1 class="hero-title text-white fst-italic mb-3" data-aos="zoom-in" data-aos-delay="200">
-                #CABOR_KONI_SKH
+                #TENTANG_KONI_SKH
             </h1>
 
             <!-- Subtitle -->
             <p class="hero-subtitle text-white mb-4" data-aos="zoom-in" data-aos-delay="400">
-                KONI Sukoharjo, wujudkan Peluang Emas untuk Para Atlet Muda Sukoharjo.
+                KONI Sukoharjo, wujudkan olahraga yang berprestasi dan menjunjung tinggi
+                sportivitas.
             </p>
 
             <!-- Button -->
-            <a href="#cabor-section" class="btn btn btn-warning px-4 py-2" data-aos="zoom-in" data-aos-delay="600">
+            <a href="#tentang-section" class="btn btn btn-warning px-4 py-2" data-aos="zoom-in" data-aos-delay="600">
                 Selengkapnya
             </a>
         </div>
     </section>
 
+    <div class="container mt-5">
+        <h1 class="mb-4">Event Calendar</h1>
+        <div id="calendar"></div>
+    </div>
 
 
-
-    <section id="cabor-section">
-        <div class="container my-4">
-            <nav class="breadcrumb bg-transparent px-3 py-3 shadow-sm">
-                <a class="breadcrumb-item text-decoration-none" href="/">Home</a>
-                <span class="breadcrumb-item active text-primary">Olahraga</span>
-                <span class="breadcrumb-item active text-primary">Cabor</span>
-            </nav>
-            <h2 class="text-center">Ragam Cabang Olahraga</h2>
-            <p class="text-center mb-4 text-dark deskripsi">Temukan berbagai cabang olahraga yang tersedia untuk
-                mendukung
-                aktivitas dan prestasi Anda.</p>
-            <div class="row g-4">
-                @forelse($SportCategories as $SportCategory)
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-3 d-flex justify-content-center">
-                        <a href="{{ route('cabor.show', $SportCategory->id) }}" class="text-decoration-none w-100">
-                            <div class="card text-center p-3 sport-card h-80">
-                                <img src="{{ asset($SportCategory->logo ?? 'img/default.png') }}"
-                                    alt="{{ $SportCategory->nama_cabor }}" class="sport-logo mx-auto mb-3"
-                                    style="width: 80px; height: 80px; object-fit: contain; background-color: #ffff;">
-                                <h5 class="text-dark sport-name">{{ Str::words($SportCategory->nama_cabor, 5, '...') }}
-                                </h5>
-                                <p class="text-muted sport-category">{{ $SportCategory->sport_category }}</p>
-                            </div>
-                        </a>
-                    </div>
-                @empty
-                    <div class="col-12 d-flex flex-column align-items-center py-5">
-                        <i class="mdi mdi-alert-circle-outline text-warning display-3 mb-3"></i>
-                        <h5 class="text-muted text-center">Belum ada data cabang olahraga yang tersedia saat ini.</h5>
-                        <a href="/" class="btn btn-primary mt-4 px-4">
-                            Kembali ke Beranda
-                        </a>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </section>
 
 
 
     @include('viewpublik/layouts/footer')
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
+
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/main.min.js"></script>
+<!-- jQuery (Required for FullCalendar interaction) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+        const events = @json($calendarEvents);
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: events, // Mengisi event pada kalender
+            headerToolbar: {
+                start: 'prev,next today',
+                center: 'title',
+                end: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            eventClick: function (info) {
+                alert(`Event: ${info.event.title}\nLocation: ${info.event.extendedProps.description}`);
+            }
+        });
+
+        calendar.render();
+    });
+</script>
 </body>
 
 </html>

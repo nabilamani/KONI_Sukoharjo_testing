@@ -172,41 +172,55 @@ class EventController extends Controller
         if ($event->banner) {
             Storage::delete(str_replace('storage/', 'public/', $event->banner));
         }
-        
+
         $event->delete();
 
         return redirect()->back()->with('message', 'Event berhasil dihapus');
     }
     public function showEvents(Request $request)
-{
-    $search = $request->input('search');
-    $start_date = $request->input('start_date');
-    $end_date = $request->input('end_date');
+    {
+        $search = $request->input('search');
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
 
-    $events = Event::query();
+        $events = Event::query();
 
-    // Filter berdasarkan nama atau kategori event
-    if ($search) {
-        $events->where(function($query) use ($search) {
-            $query->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('sport_category', 'like', '%' . $search . '%');
+        // Filter berdasarkan nama atau kategori event
+        if ($search) {
+            $events->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('sport_category', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Filter berdasarkan rentang tanggal
+        if ($start_date && $end_date) {
+            $events->whereBetween('event_date', [$start_date, $end_date]);
+        } elseif ($start_date) {
+            $events->where('event_date', '>=', $start_date);
+        } elseif ($end_date) {
+            $events->where('event_date', '<=', $end_date);
+        }
+
+        // Pagination
+        $events = $events->paginate(8);
+
+        return view('viewpublik.olahraga.event', compact('events', 'search', 'start_date', 'end_date'));
+    }
+    public function showCalender()
+    {
+        $events = Event::all(['id', 'name', 'event_date', 'location']);
+
+        // Format data event untuk FullCalendar
+        $calendarEvents = $events->map(function ($event) {
+            return [
+                'id' => $event->id,
+                'title' => $event->name,
+                'start' => $event->event_date,
+                'description' => $event->location, // Opsional untuk tooltip
+            ];
         });
+
+        return view('viewpublik.Galeri.calender', ['calendarEvents' => $calendarEvents]);
     }
-
-    // Filter berdasarkan rentang tanggal
-    if ($start_date && $end_date) {
-        $events->whereBetween('event_date', [$start_date, $end_date]);
-    } elseif ($start_date) {
-        $events->where('event_date', '>=', $start_date);
-    } elseif ($end_date) {
-        $events->where('event_date', '<=', $end_date);
-    }
-
-    // Pagination
-    $events = $events->paginate(8);
-
-    return view('viewpublik.olahraga.event', compact('events', 'search', 'start_date', 'end_date'));
-}
-
-
 }

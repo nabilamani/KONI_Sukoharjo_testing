@@ -101,6 +101,30 @@
             letter-spacing: 1px;
         }
 
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+
         .count {
             color: #f39c12;
         }
@@ -223,16 +247,10 @@
     <section class="hero-section">
         <div class="hero-overlay d-flex flex-column justify-content-center align-items-center text-center px-5 py-5"
             data-aos="zoom-in" data-aos-delay="0">
-            <!-- Lottie Player -->
-            {{-- <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-            <div class="lottie-container mb-4">
-                <dotlottie-player src="https://lottie.host/57d4c8ea-7162-4113-ab37-4b6c30135c79/R0LluXh7G3.lottie"
-                    background="transparent" speed="1" style="width: 250px; height: 250px" loop
-                    autoplay></dotlottie-player>
-            </div> --}}
 
             <!-- Hero Title -->
-            <h1 class="hero-title text-gradient fst-italic" data-aos="zoom-in" data-aos-delay="200">#SUKOHARJOMAKMUR
+            <h1 class="hero-title text-gradient fst-italic mt-5" data-aos="zoom-in" data-aos-delay="200">
+                #SUKOHARJOMAKMUR
             </h1>
 
             <!-- Subtitle -->
@@ -243,24 +261,21 @@
             <!-- Button -->
             <a href="#about-section" class="btn btn-warning rounded-5" data-aos="zoom-in"
                 data-aos-delay="600">Selengkapnya</a>
+
+            <!-- Scroll Down Animation -->
+            <!-- Scroll Down Animation -->
+            <div class="scroll-indicator mt-4" data-aos="fade-up" data-aos-delay="800">
+                <a href="#statistik">
+                    <i class="mdi mdi-chevron-double-down mdi-36px text-white"></i>
+                </a>
+            </div>
+
+
         </div>
     </section>
 
-    {{-- <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="hero-overlay mt-5" data-aos="zoom-in" data-aos-delay="0">
-            <h1 class="hero-title text-gradient fst-italic" data-aos="zoom-in" data-aos-delay="200">#SUKOHARJOMAKMUR
-            </h1>
-            <p class="hero-subtitle" data-aos="zoom-in" data-aos-delay="400">KONI Sukoharjo, wujudkan olahraga yang
-                berprestasi dan menjunjung tinggi
-                sportivitas.</p>
-            <a href="#about-section" class="btn btn-warning rounded-5" data-aos="zoom-in"
-                data-aos-delay="600">Selengkapnya</a>
-        </div>
-    </section> --}}
-
     <!-- New Section for Accumulated Data (outside hero-overlay) -->
-    <div class="hero-stats py-4 bg-dark">
+    <div id="statistik" class="hero-stats py-4 bg-dark">
         <div class="container text-center">
             <h2 class="text-white mb-2" data-aos="fade-up">Statistik Olahraga Sukoharjo</h2>
             <p class="mx-5 text-light" data-aos="fade-up" data-aos-delay="100">Data terkini mengenai atlet, wasit,

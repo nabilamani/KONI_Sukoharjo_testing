@@ -213,7 +213,47 @@
                             <a href="/berita/daftar" class="btn btn-secondary">Kembali ke Daftar Berita</a>
                         </div>
                     </div>
+                    <!-- Section for additional actions or info -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Bagikan</h5>
+                            <hr>
+                            <div class="d-flex justify-content-start align-items-center">
+                                <!-- Facebook -->
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}"
+                                    target="_blank" class="me-3 text-dark">
+                                    <i class="fab fa-facebook-f fa-lg"></i>
+                                </a>
+                                <!-- Twitter -->
+                                <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ $berita->judul_berita ?? 'Berita Utama' }}"
+                                    target="_blank" class="me-3 text-dark">
+                                    <i class="fab fa-twitter fa-lg"></i>
+                                </a>
+                                <!-- WhatsApp -->
+                                <a href="https://api.whatsapp.com/send?text={{ $berita->judul_berita ?? 'Berita Utama' }} {{ request()->fullUrl() }}"
+                                    target="_blank" class="me-3 text-dark">
+                                    <i class="fab fa-whatsapp fa-lg"></i>
+                                </a>
+                                <!-- Telegram -->
+                                <a href="https://telegram.me/share/url?url={{ urlencode(request()->fullUrl()) }}&text={{ $berita->judul_berita ?? 'Berita Utama' }}"
+                                    target="_blank" class="me-3 text-dark">
+                                    <i class="fab fa-telegram-plane fa-lg"></i>
+                                </a>
+                                <!-- Email -->
+                                <a href="mailto:?subject={{ $berita->judul_berita ?? 'Berita Utama' }}&body={{ request()->fullUrl() }}"
+                                    target="_blank" class="me-3 text-dark">
+                                    <i class="fas fa-envelope fa-lg"></i>
+                                </a>
+                                <!-- Copy Link -->
+                                <button class="btn btn-light" onclick="copyToClipboard()">
+                                    <i class="fas fa-copy fa-lg"></i> Salin Tautan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                
 
 
 
@@ -332,6 +372,19 @@
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
         AOS.init();
+    </script>
+    <script>
+        function copyToClipboard() {
+            const currentUrl = "{{ request()->fullUrl() }}";
+            navigator.clipboard.writeText(currentUrl).then(() => {
+                // Tampilkan toast
+                const toastEl = document.getElementById("copyToast");
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }).catch(err => {
+                alert("Gagal menyalin tautan.");
+            });
+        }
     </script>
 </body>
 
