@@ -160,6 +160,24 @@
                 border-top-left-radius: 0.5rem;
                 border-top-right-radius: 0.5rem;
             }
+
+            .card-body .card-title {
+                font-size: 14px;
+                margin-bottom: 2px;
+            }
+
+            .card-body .card-text {
+                font-size: 10px;
+                /* Ukuran font default untuk total atlet dan gender */
+            }
+
+            .card-body .card-text strong {
+                font-size: 10px;
+                /* Ukuran font default untuk angka */
+            }
+            .gender p{
+                font-size: 6px;
+            }
         }
     </style>
 </head>
@@ -188,14 +206,23 @@
                                     <div class="card mx-2">
                                         <div class="card-body text-center">
                                             <h5 class="card-title text-dark">{{ $category->sport_category }}</h5>
-                                            <p class="card-text text-primary">
+                                            <p class="card-text text-primary mb-1">
                                                 <strong>{{ $category->total }}</strong> Atlet
                                             </p>
+                                            <div class="d-flex justify-content-between text-muted small gender">
+                                                <p class="mb-0 bg-light text-success rounded px-2 py-1">
+                                                    <strong>{{ $category->male_total }}</strong> Laki-laki
+                                                </p>
+                                                <p class="mb-0 bg-light text-danger rounded px-2 py-1">
+                                                    <strong>{{ $category->female_total }}</strong> Perempuan
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
+                        
                     </div>
                 @empty
                     <div class="carousel-item active">
@@ -220,6 +247,9 @@
                 @endforeach
             </div>
         </div>
+
+        <div id="chart" class="my-5 p-3 bg-white rounded-sm"></div>
+        <hr class="mx-4">
 
         <h2 class="text-center mb-4 text-white">Daftar Atlet KONI Sukoharjo</h2>
         <!-- Tombol untuk mengganti tampilan -->
@@ -534,7 +564,37 @@
             });
         }
     </script> --}}
-    
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var options = {
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                series: [{
+                    name: 'Jumlah Atlet',
+                    data: @json($categories->pluck('total')) // Data jumlah atlet per kategori
+                }],
+                xaxis: {
+                    categories: @json($categories->pluck('sport_category')), // Nama kategori olahraga
+                    labels: {
+                        style: {
+                            fontSize: '10px' // Ukuran font untuk label kategori
+                        }
+                    }
+                },
+                colors: ['#FFA500'], // Warna oranye
+                title: {
+                    text: 'Statistik Atlet per Kategori Olahraga',
+                    align: 'center'
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        });
+    </script>
 </body>
 
 </html>

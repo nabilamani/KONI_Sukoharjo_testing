@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('event_type'); // Kelompok cabor (contoh: ganda-putri, ganda-putra)
             $table->string('athlete_name'); // Nama atlet
             $table->text('description')->nullable(); // Keterangan prestasi
+            $table->string('region_level'); // Tingkat wilayah (contoh: kabupaten, provinsi, nasional)
+            $table->string('rank'); // Peringkat (contoh: Juara 1, Juara 2, dll.)
+            $table->date('certificate_date'); // Tanggal piagam
             $table->timestamps();
         });
     }

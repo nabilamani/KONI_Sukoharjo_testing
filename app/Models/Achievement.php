@@ -14,7 +14,10 @@ class Achievement extends Model
         'sport_category',
         'event_type',
         'athlete_name',
-        'description'
+        'description',
+        'region_level',
+        'rank',
+        'certificate_date'
     ];
 
     protected $keyType = 'string';

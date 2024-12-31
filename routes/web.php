@@ -20,6 +20,7 @@ use App\Http\Controllers\RefereeController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SportCategoryController;
 use App\Http\Controllers\VenueController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 
@@ -34,6 +35,15 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+//authentication
+
+// Route login custom
+Route::get('/konilogin', [AuthenticatedSessionController::class, 'create'])
+    ->name('login');
+Route::post('/konilogin', [AuthenticatedSessionController::class, 'store']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
 
 //Viewpublik
 Route::get('/', [Controller::class, 'home'])->name('home');
@@ -68,12 +78,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
 
 //viewpublik
 
@@ -107,6 +111,8 @@ Route::get('/profil/struktur', function () {
 
 Route::get('/api/cari-pelatih', [CoachController::class, 'cariPelatih'])->name('cari-pelatih');
 Route::get('/api/cari-atlet', [AthleteController::class, 'cariAtlet'])->name('cari-atlet');
+
+//middleware auth
 
 Route::middleware(['auth'])->group(function () {
 
@@ -154,6 +160,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/edit-achievment/{id}', [AchievementController::class, 'update']);
     Route::delete('/delete-achievment/{id}', [AchievementController::class, 'destroy']);
     Route::get('/cetak-achievement', [AchievementController::class, 'cetakPrestasi'])->name('cetak-prestasi');
+    
 
     // Rute berita
     Route::resource('beritas', BeritaController::class);

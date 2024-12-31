@@ -112,11 +112,13 @@
             .hero-subtitle {
                 font-size: 12px;
             }
+
             #table-view table th,
             #table-view table td {
                 font-size: 12px;
                 padding: 5px;
             }
+
             .list-view {
                 margin-bottom: 8px;
             }
@@ -157,6 +159,7 @@
     </section>
 
     <div id="prestasi-section" class="container my-5">
+        <div id="achievement-chart" class="my-5 p-3 bg-white rounded-sm"></div>
         <h2 class="text-center mb-4 text-white">Daftar Prestasi Atlet KONI Sukoharjo</h2>
 
         <!-- Tombol untuk mengganti tampilan -->
@@ -190,7 +193,7 @@
                         </div>
                     </div>
                 </div>
-                @empty
+            @empty
                 <div class="col-12">
                     <div class="alert alert-dark text-center p-4">
                         <div class="d-flex align-items-center justify-content-center mb-2">
@@ -355,5 +358,73 @@
 <script>
     AOS.init();
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+    var chartData = @json($chartData);
+
+    // Prepare data for the chart
+    var categories = Object.keys(chartData); // Sport categories
+    var seriesData = [{
+            name: 'Juara 1',
+            data: []
+        },
+        {
+            name: 'Juara 2',
+            data: []
+        },
+        {
+            name: 'Juara 3',
+            data: []
+        }
+    ];
+
+    // Iterate over the sport categories and fill the series data
+    categories.forEach(function(category) {
+        var rankData = chartData[category];
+
+        seriesData[0].data.push(rankData['Juara 1']);
+        seriesData[1].data.push(rankData['Juara 2']);
+        seriesData[2].data.push(rankData['Juara 3']);
+    });
+
+    // Configure the chart
+    var options = {
+        chart: {
+            type: 'bar',
+            height: 350
+        },
+        title: {
+            text: 'Jumlah Prestasi per Kategori Olahraga', // Title for the chart
+            align: 'center', // Align the title to the center
+            style: {
+                fontSize: '16px', // Font size of the title
+                fontWeight: 'bold', // Font weight of the title
+                fontFamily: 'Arial, sans-serif' // Font family of the title
+            }
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '70%', // Increased column width
+                horizontal: false,
+            }
+        },
+        xaxis: {
+            categories: categories, // Display sport categories on the x-axis
+        },
+        yaxis: {
+            title: {
+                text: 'Jumlah Prestasi'
+            }
+        },
+        series: seriesData
+    };
+
+    // Render the chart
+    var chart = new ApexCharts(document.querySelector("#achievement-chart"), options);
+    chart.render();
+</script>
+
 
 </html>

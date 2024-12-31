@@ -115,6 +115,18 @@
                     <!-- Basic Layout -->
                     <div class="col-12">
                         <div class="card">
+                            <div class="row">
+                                <!-- Left Column: Achievement Chart -->
+                                <div id="achievement-chart" class="col-12 col-md-6 mt-5"></div>
+                                
+                                <!-- Right Column: Region Chart -->
+                                <div id="region-chart" class="col-12 col-md-6 mt-5"></div>
+                            </div>
+                            
+                            
+                            
+                            <hr class="mx-4">
+                            
                             <div class="card-header">
                                 <h4 class="card-title">Daftar Prestasi</h4>
                                 <form action="{{ route('achievements.index') }}" method="GET" class="form-inline">
@@ -213,7 +225,7 @@
                                                     <div class="modal-header bg-primary text-white">
                                                         <h5 class="modal-title"
                                                             id="achievementDetailModalLabel{{ $achievement->id }}">
-                                                            Detail Prestasi: {{ $achievement->athlete_name }}
+                                                            <i class="mdi mdi-trophy-outline"></i> Detail Prestasi
                                                         </h5>
                                                         <button type="button" class="close text-white"
                                                             data-dismiss="modal" aria-label="Close">
@@ -221,16 +233,65 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p><strong>Nama Atlet:</strong>
-                                                            {{ $achievement->athlete_name }}</p>
-                                                        <p><strong>Cabang Olahraga:</strong>
-                                                            {{ $achievement->sport_category }}</p>
-                                                        <p><strong>Jenis Event:</strong> {{ $achievement->event_type }}
-                                                        </p>
-                                                        <p><strong>Deskripsi:</strong> {{ $achievement->description }}
-                                                        </p>
+                                                        <div class="row">
+                                                            <!-- Left Column -->
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3 d-flex justify-content-between">
+                                                                    <label class="text-primary">
+                                                                        <i class="mdi mdi-account"></i> Nama Atlet:
+                                                                    </label>
+                                                                    <span>{{ $achievement->athlete_name }}</span>
+                                                                </div>
+                                                                <div class="mb-3 d-flex justify-content-between">
+                                                                    <label class="text-primary">
+                                                                        <i class="mdi mdi-soccer"></i> Cabang Olahraga:
+                                                                    </label>
+                                                                    <span>{{ $achievement->sport_category }}</span>
+                                                                </div>
+                                                                <div class="mb-3 d-flex justify-content-between">
+                                                                    <label class="text-primary">
+                                                                        <i class="mdi mdi-flag-checkered"></i> Jenis
+                                                                        Event:
+                                                                    </label>
+                                                                    <span>{{ $achievement->event_type }}</span>
+                                                                </div>
+                                                                <div class="mb-3 d-flex justify-content-between">
+                                                                    <label class="text-primary">
+                                                                        <i class="mdi mdi-calendar"></i> Tanggal
+                                                                        Piagam:
+                                                                    </label>
+                                                                    <span>{{ \Carbon\Carbon::parse($achievement->certificate_date)->format('d M Y') }}</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Right Column -->
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3 d-flex justify-content-between">
+                                                                    <label class="text-primary">
+                                                                        <i class="mdi mdi-map-marker"></i> Tingkat
+                                                                        Wilayah:
+                                                                    </label>
+                                                                    <span>{{ $achievement->region_level }}</span>
+                                                                </div>
+                                                                <div class="mb-3 d-flex justify-content-between">
+                                                                    <label class="text-primary">
+                                                                        <i class="mdi mdi-star-outline"></i> Peringkat:
+                                                                    </label>
+                                                                    <span>{{ $achievement->rank }}</span>
+                                                                </div>
+                                                                <div class="mb-3 d-flex justify-content-between">
+                                                                    <label class="text-primary">
+                                                                        <i class="mdi mdi-information-outline"></i>
+                                                                        Deskripsi:
+                                                                    </label>
+                                                                    <span>{{ $achievement->description ?? 'Tidak ada deskripsi.' }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
+                                                        <small class="text-muted justify-start">ID Prestasi:
+                                                            {{ $achievement->id }}</small>
                                                         <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">Tutup</button>
                                                     </div>
@@ -248,7 +309,8 @@
                                                     <div class="modal-header bg-primary text-white">
                                                         <h5 class="modal-title"
                                                             id="achievementEditModalLabel{{ $achievement->id }}">
-                                                            Edit Prestasi: {{ $achievement->athlete_name }}
+                                                            <i class="mdi mdi-trophy-outline"></i> Edit Prestasi:
+                                                            {{ $achievement->athlete_name }}
                                                         </h5>
                                                         <button type="button" class="close text-white"
                                                             data-dismiss="modal" aria-label="Close">
@@ -261,30 +323,111 @@
                                                             @csrf
                                                             @method('PUT')
 
-                                                            <div class="form-group">
-                                                                <label for="athlete_name">Nama Atlet</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="athlete_name" name="athlete_name"
-                                                                    value="{{ $achievement->athlete_name }}" required>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="sport_category">Cabang Olahraga</label>
-                                                                <select id="sportCategorySelect" name="sport_category"
-                                                                    class="form-control sport-category-select">
-                                                                    <option value="{{ $achievement->sport_category }}"
-                                                                        selected>{{ $achievement->sport_category }}
-                                                                    </option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="event_type">Jenis Event</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="event_type" name="event_type"
-                                                                    value="{{ $achievement->event_type }}" required>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="description">Deskripsi</label>
-                                                                <textarea class="form-control" id="description" name="description" rows="3" required>{{ $achievement->description }}</textarea>
+                                                            <div class="row">
+                                                                <!-- Left Column (Label & Input) -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group mb-3">
+                                                                        <label for="athlete_name"
+                                                                            class="text-primary">
+                                                                            <i class="mdi mdi-account"></i> Nama Atlet
+                                                                        </label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="athlete_name" name="athlete_name"
+                                                                            value="{{ $achievement->athlete_name }}"
+                                                                            required>
+                                                                    </div>
+                                                                    <div class="form-group mb-3">
+                                                                        <label for="sport_category"
+                                                                            class="text-primary">
+                                                                            <i class="mdi mdi-soccer"></i> Cabang
+                                                                            Olahraga
+                                                                        </label>
+                                                                        <select id="sportCategorySelect"
+                                                                            name="sport_category"
+                                                                            class="form-control sport-category-select">
+                                                                            <option
+                                                                                value="{{ $achievement->sport_category }}"
+                                                                                selected>
+                                                                                {{ $achievement->sport_category }}
+                                                                            </option>
+                                                                            <!-- Additional options for sports categories can be added here -->
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group mb-3">
+                                                                        <label for="event_type" class="text-primary">
+                                                                            <i class="mdi mdi-flag-checkered"></i>
+                                                                            Jenis Event
+                                                                        </label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="event_type" name="event_type"
+                                                                            value="{{ $achievement->event_type }}"
+                                                                            required>
+                                                                    </div>
+                                                                    <div class="form-group mb-3">
+                                                                        <label for="region_level"
+                                                                            class="text-primary">
+                                                                            <i class="mdi mdi-map-marker"></i> Tingkat
+                                                                            Wilayah
+                                                                        </label>
+                                                                        <select id="region_level" name="region_level"
+                                                                            class="form-control" required>
+                                                                            <option
+                                                                                value="{{ $achievement->region_level }}"
+                                                                                selected>
+                                                                                {{ $achievement->region_level }}
+                                                                            </option>
+                                                                            <option value="Kota">Kota</option>
+                                                                            <option value="Kabupaten">Kabupaten
+                                                                            </option>
+                                                                            <option value="Provinsi">Provinsi</option>
+                                                                            <option value="Nasional">Nasional</option>
+                                                                            <option value="Internasional">Internasional
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Right Column (Label & Textarea) -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group mb-3">
+                                                                        <label for="description" class="text-primary">
+                                                                            <i class="mdi mdi-information-outline"></i>
+                                                                            Deskripsi
+                                                                        </label>
+                                                                        <textarea class="form-control" id="description" name="description" rows="3" required>{{ $achievement->description }}</textarea>
+                                                                    </div>
+                                                                    <div class="form-group mb-3">
+                                                                        <label for="rank" class="text-primary">
+                                                                            <i class="mdi mdi-trophy"></i> Peringkat
+                                                                        </label>
+                                                                        <select id="rank" name="rank"
+                                                                            class="form-control" required>
+                                                                            <option value="{{ $achievement->rank }}"
+                                                                                selected>{{ $achievement->rank }}
+                                                                            </option>
+                                                                            <option value="Juara 1">Juara 1</option>
+                                                                            <option value="Juara 2">Juara 2</option>
+                                                                            <option value="Juara 3">Juara 3</option>
+                                                                            <option value="Harapan 1">Harapan 1
+                                                                            </option>
+                                                                            <option value="Harapan 2">Harapan 2
+                                                                            </option>
+                                                                            <option value="Harapan 3">Harapan 3
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group mb-3">
+                                                                        <label for="certificate_date"
+                                                                            class="text-primary">
+                                                                            <i class="mdi mdi-calendar-check"></i>
+                                                                            Tanggal Piagam
+                                                                        </label>
+                                                                        <input type="date" name="certificate_date"
+                                                                            class="form-control"
+                                                                            value="{{ $achievement->certificate_date }}"
+                                                                            required />
+                                                                    </div>
+                                                                </div>
                                                             </div>
 
                                                             <div class="modal-footer">
@@ -296,6 +439,7 @@
                                                         </form>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     @endforeach
@@ -381,6 +525,118 @@
                 });
             </script>
         @endif
+
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+        <script>
+            var chartData = @json($chartData);
+        
+            // Prepare data for the chart
+            var categories = Object.keys(chartData); // Sport categories
+            var seriesData = [{
+                    name: 'Juara 1',
+                    data: []
+                },
+                {
+                    name: 'Juara 2',
+                    data: []
+                },
+                {
+                    name: 'Juara 3',
+                    data: []
+                }
+            ];
+        
+            // Iterate over the sport categories and fill the series data
+            categories.forEach(function(category) {
+                var rankData = chartData[category];
+        
+                seriesData[0].data.push(rankData['Juara 1']);
+                seriesData[1].data.push(rankData['Juara 2']);
+                seriesData[2].data.push(rankData['Juara 3']);
+            });
+        
+            // Configure the chart
+            var options = {
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                title: {
+                    text: 'Jumlah Prestasi per Kategori Olahraga', // Title for the chart
+                    align: 'center', // Align the title to the center
+                    style: {
+                        fontSize: '16px', // Font size of the title
+                        fontWeight: 'bold', // Font weight of the title
+                        fontFamily: 'Arial, sans-serif' // Font family of the title
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: '40%',
+                        horizontal: false,
+                    }
+                },
+                xaxis: {
+                    categories: categories, // Display sport categories on the x-axis
+                },
+                yaxis: {
+                    title: {
+                        text: 'Jumlah Prestasi'
+                    }
+                },
+                series: seriesData
+            };
+        
+            // Render the chart
+            var chart = new ApexCharts(document.querySelector("#achievement-chart"), options);
+            chart.render();
+        </script>
+        <script>
+            var regionData = @json($regionData);
+        
+            // Prepare data for the pie chart
+            var pieSeries = [];
+            var pieLabels = [];
+        
+            regionData.forEach(function(item) {
+                pieSeries.push(item.total); // Total achievements for each region_level
+                pieLabels.push(item.region_level); // Region levels
+            });
+        
+            // Configure the pie chart
+            var pieOptions = {
+                chart: {
+                    type: 'pie',
+                    height: 350
+                },
+                title: {
+                    text: 'Jumlah Prestasi per Tingkat Wilayah',
+                    align: 'center',
+                    style: {
+                        fontSize: '16px',
+                        fontWeight: 'bold',
+                        fontFamily: 'Arial, sans-serif'
+                    }
+                },
+                labels: pieLabels, // Region labels
+                series: pieSeries, // Data for the pie chart
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val + ' Prestasi';
+                        }
+                    }
+                }
+            };
+        
+            // Render the pie chart
+            var pieChart = new ApexCharts(document.querySelector("#region-chart"), pieOptions);
+            pieChart.render();
+        </script>
+        
+        
+
 
 </body>
 

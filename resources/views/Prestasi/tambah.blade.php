@@ -102,6 +102,12 @@
                                 <form action="/achievements" method="post">
                                     @csrf
                                     <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="athlete_name">Nama Atlet</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="athlete_name" class="form-control" placeholder="Masukkan nama atlet..." required />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
                                         <label for="sportCategorySelect" class="col-sm-2 col-form-label">Pilih Cabor</label>
                                         <div class="col-sm-4">
                                           <select id="sportCategorySelect" name="sport_category" class="form-control sport-category-select">
@@ -115,10 +121,38 @@
                                             <input type="text" name="event_type" class="form-control" placeholder="Masukkan jenis event..." required />
                                         </div>
                                     </div>
+                                    
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="athlete_name">Nama Atlet</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="athlete_name" class="form-control" placeholder="Masukkan nama atlet..." required />
+                                        <label class="col-sm-2 col-form-label" for="region_level">Tingkat Wilayah</label>
+                                        <div class="col-sm-4">
+                                            <select id="region_level" name="region_level" class="form-control" required>
+                                                <option value="" hidden selected disabled>Pilih tingkat wilayah...</option>
+                                                <option value="Kota">Kota</option>
+                                                <option value="Kabupaten">Kabupaten</option>
+                                                <option value="Provinsi">Provinsi</option>
+                                                <option value="Nasional">Nasional</option>
+                                                <option value="Internasional">Internasional</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="rank">Peringkat</label>
+                                        <div class="col-sm-4">
+                                            <select id="rank" name="rank" class="form-control" required>
+                                                <option value="" hidden selected disabled>Pilih peringkat...</option>
+                                                <option value="Juara 1">Juara 1</option>
+                                                <option value="Juara 2">Juara 2</option>
+                                                <option value="Juara 3">Juara 3</option>
+                                                <option value="Harapan 1">Harapan 1</option>
+                                                <option value="Harapan 2">Harapan 2</option>
+                                                <option value="Harapan 3">Harapan 3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="certificate_date">Tanggal Piagam</label>
+                                        <div class="col-sm-4">
+                                            <input type="date" name="certificate_date" class="form-control" required />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
