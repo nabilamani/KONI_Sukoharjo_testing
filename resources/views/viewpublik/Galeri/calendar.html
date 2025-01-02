@@ -1,0 +1,101 @@
+<style type="text/css">
+	.calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 50px);
+        gap: 5px;
+        background-color: #fff;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .calendar div {
+        text-align: center;
+        padding: 10px 0;
+        font-size: 14px;
+    }
+    .day {
+        font-weight: bold;
+        background-color: #f1f1f1;
+    }
+    .date {
+        background-color: #fff;
+        color: #333;
+    }
+    .empty {
+        background-color: #f9f9f9;
+    }
+</style>
+
+<input type="month" name="bulanTahun">
+<div class="calendar" id="calendar"></div>
+
+<script type="text/javascript">
+
+	// fungsi untuk men-generate tanggal dalam bentuk array
+	function generateMonthlyCalendar(monthYear) {
+		const [year, monthIndex] = monthYear.split('-').map(Number);
+		const date = new Date(year, monthIndex - 1, 1);
+
+		const daysInMonth = new Date(year, monthIndex, 0).getDate();
+		const firstDay = date.getDay();
+
+		const theDates = [];
+		let week = Array(firstDay).fill(undefined);
+
+		for (let day = 1; day <= daysInMonth; day++) {
+			week.push(day);
+			if (week.length === 7) {
+				theDates.push(week);
+				week = [];
+			}
+		}
+
+		if (week.length > 0) {
+			while (week.length < 7) {
+				week.push(undefined);
+			}
+			theDates.push(week);
+		}
+
+		return theDates;
+	}
+
+	// fungsi untuk merender array kalender ke HTML
+	function renderCalendarToHTML(calendarEl, weeks) {
+		const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+		calendarEl.innerHTML = '';
+
+		days.forEach(day => {
+            const dayEl = document.createElement("div");
+            dayEl.textContent = day;
+            dayEl.className = "day";
+            calendarEl.appendChild(dayEl);
+        });
+
+        weeks.forEach(week => {
+            week.forEach(date => {
+                const dateEl = document.createElement("div");
+                if (date === null) {
+                    dateEl.className = "empty";
+                } else {
+                    dateEl.textContent = date;
+                    dateEl.className = "date";
+                }
+                calendarEl.appendChild(dateEl);
+            });
+        });
+	}
+
+	// ambil elemen
+	const inputElement = document.getElementsByName('bulanTahun')[0];
+	const outputElement = document.getElementById('calendar');
+
+	// ketika input berubah render ulang calendar
+	inputElement.addEventListener('change', () => {
+		const weeks = generateMonthlyCalendar(inputElement.value);
+		renderCalendarToHTML(outputElement, weeks);
+	})
+
+</script>

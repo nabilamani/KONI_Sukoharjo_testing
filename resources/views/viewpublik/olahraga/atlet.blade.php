@@ -248,7 +248,7 @@
             </div>
         </div>
 
-        <div id="chart" class="my-5 p-3 bg-white rounded-sm"></div>
+        <div id="chart" class="my-2 p-3 bg-white rounded-sm"></div>
         <hr class="mx-4">
 
         <h2 class="text-center mb-4 text-white">Daftar Atlet KONI Sukoharjo</h2>

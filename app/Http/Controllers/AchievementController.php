@@ -37,8 +37,8 @@ class AchievementController extends Controller
             ->paginate(4); // Display 4 items per page
 
         // Fetch achievement counts per sport category, rank, and region_level
-        $categories = Achievement::select('sport_category', 'rank', 'region_level', DB::raw('COUNT(*) as total'))
-            ->groupBy('sport_category', 'rank', 'region_level')
+        $categories = Achievement::select('sport_category', 'rank', DB::raw('COUNT(*) as total'))
+            ->groupBy('sport_category', 'rank')
             ->get();
 
         // Transform data into a format suitable for the chart
@@ -213,8 +213,8 @@ class AchievementController extends Controller
         })->paginate(8);
 
         // Fetch achievement counts per sport category, rank, and region_level
-        $categories = Achievement::select('sport_category', 'rank', 'region_level', DB::raw('COUNT(*) as total'))
-            ->groupBy('sport_category', 'rank', 'region_level')
+        $categories = Achievement::select('sport_category', 'rank', DB::raw('COUNT(*) as total'))
+            ->groupBy('sport_category', 'rank')
             ->get();
 
         // Transform data into a format suitable for the chart

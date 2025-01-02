@@ -38,10 +38,13 @@ class DashboardController extends Controller
             ->get(['name', 'event_date', 'location']);
 
         // Get achievements data
-        $achievements = Achievement::all(['sport_category', 'event_type', 'athlete_name', 'description']);
+        $achievements = Achievement::orderBy('certificate_date', 'desc') // Urutkan berdasarkan tanggal sertifikat terbaru
+            ->take(5) // Ambil 5 data terakhir
+            ->get(['sport_category', 'event_type', 'athlete_name', 'description', 'certificate_date']);
+
 
 
         // Pass these counts and the upcoming events to the view
-        return view('dashboard', compact('eventCount', 'maleCount','femaleCount','coachCount', 'athleteCount', 'refereeteCount', 'venueCount', 'achievementCount', 'upcomingEvents', 'achievements', 'beritas','userCount','caborCount'));
+        return view('dashboard', compact('eventCount', 'maleCount', 'femaleCount', 'coachCount', 'athleteCount', 'refereeteCount', 'venueCount', 'achievementCount', 'upcomingEvents', 'achievements', 'beritas', 'userCount', 'caborCount'));
     }
 }

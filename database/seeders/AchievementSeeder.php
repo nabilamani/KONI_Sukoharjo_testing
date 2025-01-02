@@ -42,7 +42,8 @@ class AchievementSeeder extends Seeder
                 'description' => $faker->sentence,
                 'region_level' => $faker->randomElement($regionLevels),
                 'rank' => $faker->randomElement($ranks),
-                'certificate_date' => $faker->date('Y-m-d', 'now')
+                // Generate a date between 2015 and 2024
+                'certificate_date' => $faker->dateTimeBetween('2015-01-01', '2024-12-31')->format('Y-m-d')
             ]);
         }
     }

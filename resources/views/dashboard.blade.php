@@ -517,16 +517,17 @@
                             <div class="col-xl-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5 class="card-title">Rekapan Prestasi Cabang Olahraga</h5>
+                                        <h5 class="card-title">Prestasi Terbaru Cabang Olahraga</h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered bg-white" style="min-width: 500px;">
+                                            <table class="table table-bordered bg-white" style="min-width: 900px;">
                                                 <thead class="thead-dark">
                                                     <tr>
-                                                        <th>Cabang Olahraga</th>
-                                                        <th>Jenis Event</th>
                                                         <th>Nama Atlet/Team</th>
+                                                        <th>Cabang Olahraga</th>
+                                                        <th>Tanggal</th>
+                                                        <th>Jenis Event</th>
                                                         <th>Keterangan</th>
                                                     </tr>
                                                 </thead>
@@ -541,9 +542,10 @@
                                                     @else
                                                         @foreach ($achievements as $achievement)
                                                             <tr>
-                                                                <td>{{ $achievement->sport_category }}</td>
-                                                                <td>{{ $achievement->event_type }}</td>
                                                                 <td>{{ $achievement->athlete_name }}</td>
+                                                                <td>{{ $achievement->sport_category }}</td>
+                                                                <td>{{ $achievement->certificate_date }}</td>
+                                                                <td>{{ $achievement->event_type }}</td>
                                                                 <td>{{ $achievement->description }}</td>
                                                             </tr>
                                                         @endforeach
@@ -552,7 +554,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                </div>
+                                </div>                                
                             </div>
 
 

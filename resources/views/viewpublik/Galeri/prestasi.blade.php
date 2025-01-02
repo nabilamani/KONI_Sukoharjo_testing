@@ -294,9 +294,25 @@
                                 <td><strong>Deskripsi</strong></td>
                                 <td id="modal-description">-</td>
                             </tr>
+                            <tr>
+                                <td class="text-primary"><i class="mdi mdi-map-marker"></i></td>
+                                <td><strong>Region Level</strong></td>
+                                <td id="modal-region-level">-</td>
+                            </tr>
+                            <tr>
+                                <td class="text-primary"><i class="mdi mdi-trophy-outline"></i></td>
+                                <td><strong>Ranking</strong></td>
+                                <td id="modal-rank">-</td>
+                            </tr>
+                            <tr>
+                                <td class="text-primary"><i class="mdi mdi-calendar"></i></td>
+                                <td><strong>Tanggal Sertifikat</strong></td>
+                                <td id="modal-certificate-date">-</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     </div>
@@ -314,6 +330,10 @@
         document.getElementById('modal-sport-category').textContent = achievement.sport_category;
         document.getElementById('modal-event-type').textContent = achievement.event_type;
         document.getElementById('modal-description').textContent = achievement.description;
+        document.getElementById('modal-region-level').textContent = achievement.region_level; // Data Region Level
+        document.getElementById('modal-rank').textContent = achievement.rank; // Data Ranking
+        document.getElementById('modal-certificate-date').textContent = new Date(achievement.certificate_date)
+            .toLocaleDateString(); // Format tanggal
     }
 </script>
 <script>

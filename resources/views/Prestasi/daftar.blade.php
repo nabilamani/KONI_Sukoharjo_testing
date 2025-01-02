@@ -28,6 +28,9 @@
         border-bottom: 3px solid orange;
         /* You can adjust the width (3px) as needed */
     }
+    #achievement-chart, #region-chart {
+        overflow-x: auto; /* Aktifkan scroll horizontal jika diperlukan */
+    }
 </style>
 
 <body>
@@ -117,10 +120,10 @@
                         <div class="card">
                             <div class="row">
                                 <!-- Left Column: Achievement Chart -->
-                                <div id="achievement-chart" class="col-12 col-md-6 mt-5"></div>
+                                <div id="achievement-chart" class="col-12 col-md-6 mt-5 mx-2"></div>
                                 
                                 <!-- Right Column: Region Chart -->
-                                <div id="region-chart" class="col-12 col-md-6 mt-5"></div>
+                                <div id="region-chart" class="col-12 col-md-5 mt-5"></div>
                             </div>
                             
                             
@@ -573,7 +576,7 @@
                 },
                 plotOptions: {
                     bar: {
-                        columnWidth: '40%',
+                        columnWidth: '70%',
                         horizontal: false,
                     }
                 },
@@ -623,10 +626,14 @@
                 series: pieSeries, // Data for the pie chart
                 tooltip: {
                     y: {
-                        formatter: function(val) {
-                            return val + ' Prestasi';
+                        formatter: function(val, opts) {
+                            return val + ' Prestasi<br><small>Data berdasarkan kontribusi juara 1-3</small>';
                         }
                     }
+                },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'center'
                 }
             };
         
