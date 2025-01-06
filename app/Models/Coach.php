@@ -9,16 +9,12 @@ class Coach extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'name', 'sport_category', 'address', 'age', 'whatsapp','instagram','description', 'photo'];
-    protected $keyType = 'string';
-    public $incrementing = false;
-    
-    public function generateId()
+    protected $fillable = ['name', 'sport_category', 'address', 'age', 'whatsapp','instagram','description', 'photo'];
+
+    // Relasi ke kategori olahraga
+    public function sportCategory()
     {
-        $lastCoach = $this->max('id');
-        $lastNumber = $lastCoach ? intval(substr($lastCoach, 1)) : 0;
-        $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
-        return 'P' . $newNumber;
+        return $this->belongsTo(SportCategory::class, 'sport_category', 'id');
     }
     
 }

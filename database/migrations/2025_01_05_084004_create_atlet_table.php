@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('athletes', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('name'); // Nama atlet
-            $table->string('sport_category'); // Kategori olahraga
+            $table->unsignedBigInteger('sport_category'); // Kategori olahraga
             $table->date('birth_date'); // Tempat tanggal lahir
             $table->enum('gender', ['Laki-laki', 'Perempuan']); // Jenis kelamin
             $table->decimal('weight', 5, 2); // Berat badan (dalam kg, misal 70.5)
@@ -24,6 +24,8 @@ return new class extends Migration
             $table->text('achievements')->nullable(); // Prestasi
             $table->string('photo')->nullable();
             $table->timestamps();
+
+            $table->foreign('sport_category')->references('id')->on('sport_categories')->onDelete('cascade');
         });
     }
 

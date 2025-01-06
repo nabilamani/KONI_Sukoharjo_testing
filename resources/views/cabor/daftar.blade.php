@@ -52,7 +52,8 @@
             <a href="/coba" class="brand-logo">
                 <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt=""
                     style="margin-left: 10px; border-radius: 50%; ">
-                <span class="fw-bolder d-none d-md-inline" style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
+                <span class="fw-bolder d-none d-md-inline"
+                    style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
                     KONI</span>
             </a>
 
@@ -125,7 +126,7 @@
                                                 <th>Nama Federasi</th>
                                                 <th>Nama Kategori</th>
                                                 <th>Deskripsi</th>
-                                                <th>Pusat Latihan Cabang</th>
+                                                <th>Pusat Latihan Cabor</th>
                                                 <th>Kontak</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -243,7 +244,7 @@
                                                                     <p class="mb-3">
                                                                         <strong class="text-primary"><i
                                                                                 class="mdi mdi-tag-outline me-2"></i>
-                                                                            Nama Kategori:</strong><br>
+                                                                            Nama Federasi:</strong><br>
                                                                         <span
                                                                             class="text-dark">{{ $SportCategory->nama_cabor }}</span>
                                                                     </p>
@@ -256,16 +257,23 @@
                                                                     </p>
                                                                     <p class="mb-3">
                                                                         <strong class="text-success"><i
-                                                                                class="mdi mdi-phone-outline me-2"></i>
+                                                                                class="mdi mdi-phone me-2"></i>
                                                                             Kontak:</strong><br>
                                                                         <span
                                                                             class="text-dark">{{ $SportCategory->kontak }}</span>
+                                                                    </p>
+                                                                    <p class="mb-3">
+                                                                        <strong class="text-success"><i
+                                                                                class="mdi mdi-account me-1"></i>
+                                                                            Level Pengrus:</strong><br>
+                                                                        <span
+                                                                            class="text-dark">{{ $SportCategory->level }}</span>
                                                                     </p>
                                                                 </div>
                                                                 <div class="bg-light p-3 rounded shadow-sm">
                                                                     <p><strong class="text-primary"><i
                                                                                 class="mdi mdi-information-outline me-2"></i>
-                                                                            eskripsi:</strong></p>
+                                                                            Deskripsi:</strong></p>
                                                                     <p>{{ $SportCategory->deskripsi }}</p>
                                                                 </div>
                                                             </div>
@@ -318,15 +326,11 @@
                                                                             required>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="sport_category">Nama
-                                                                            Kategori</label>
-                                                                            <select id="sportCategorySelect" name="sport_category"
-                                                                            class="form-control sport-category-select">
-                                                                            <option
-                                                                                value="{{ $SportCategory->sport_category }}"
-                                                                                selected>{{ $SportCategory->sport_category }}
-                                                                            </option>
-                                                                        </select>
+                                                                        <label for="sport_category">Cabang Olahraga</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="sport_category" name="sport_category"
+                                                                            value="{{ $SportCategory->sport_category }}"
+                                                                            required>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="puslatcab">Pusat Latihan
@@ -341,6 +345,13 @@
                                                                         <input type="text" class="form-control"
                                                                             id="kontak" name="kontak"
                                                                             value="{{ $SportCategory->kontak }}"
+                                                                            required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="level">Level</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="level" name="level"
+                                                                            value="{{ $SportCategory->level }}"
                                                                             required>
                                                                     </div>
                                                                 </div>

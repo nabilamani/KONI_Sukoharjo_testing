@@ -136,7 +136,7 @@
                                                     <h5 class="card-title">{{ $gallery->title }}</h5>
                                                     <p class="card-text">
                                                         <strong>Kategori Olahraga :</strong>
-                                                        {{ $gallery->sport_category }}<br>
+                                                        {{ $gallery->SportCategory->sport_category }}<br>
                                                         <strong>Tanggal :</strong> {{ $gallery->date }}<br>
                                                         <strong>Lokasi :</strong> {{ $gallery->location }}
                                                     </p>
@@ -200,7 +200,8 @@
                                                             <div class="row mb-3">
                                                                 <div class="col-4"><strong>Kategori Olahraga</strong>
                                                                 </div>
-                                                                <div class="col-8">: {{ $gallery->sport_category }}
+                                                                <div class="col-8">:
+                                                                    {{ $gallery->SportCategory->sport_category }}
                                                                 </div>
                                                             </div>
                                                             <div class="row mb-3">
@@ -266,11 +267,16 @@
                                                             </div>
                                                             <div class="form-group mb-3">
                                                                 <label for="sport_category">Kategori Olahraga</label>
-                                                                <select id="sportCategorySelect" name="sport_category"
-                                                                    class="form-control sport-category-select">
-                                                                    <option value="{{ $gallery->sport_category }}"
-                                                                        selected>{{ $gallery->sport_category }}
-                                                                    </option>
+                                                                <select class="form-control" id="sport_category"
+                                                                    name="sport_category" required>
+                                                                    <option value="" disabled>
+                                                                        Pilih Cabang Olahraga</option>
+                                                                    @foreach ($sportCategories as $category)
+                                                                        <option value="{{ $category->id }}"
+                                                                            {{ $gallery->sport_category == $category->id ? 'selected' : '' }}>
+                                                                            {{ $category->sport_category }}
+                                                                        </option>
+                                                                    @endforeach
                                                                 </select>
                                                             </div>
                                                             <div class="form-group mb-3">

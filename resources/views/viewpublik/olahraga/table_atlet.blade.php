@@ -10,7 +10,7 @@
                         alt="{{ $athlete->name }}" class="athlete-photo">
                     <div class="athlete-details text-center p-3">
                         <h5 class="text-dark">{{ $athlete->name }}</h5>
-                        <p class="text-muted">Cabang: {{ $athlete->sport_category }}</p>
+                        <p class="text-muted">Cabang: {{ $athlete->SportCategory->sport_category }}</p>
                         <a href="#" class="btn btn-primary btn-sm"
                             onclick="showAthleteDetails({{ json_encode($athlete) }})" data-bs-toggle="modal"
                             data-bs-target="#athleteDetailModal">Detail</a>
@@ -51,7 +51,7 @@
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $athlete->name }}</td>
-                        <td>{{ $athlete->sport_category }}</td>
+                        <td>{{ $athlete->SportCategory->sport_category }}</td>
                         <td>
                             <img src="{{ $athlete->photo ? asset($athlete->photo) : 'https://via.placeholder.com/100x100' }}"
                                 alt="{{ $athlete->name }}" class="img-thumbnail" width="100">

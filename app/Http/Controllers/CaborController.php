@@ -28,7 +28,7 @@ class CaborController extends Controller
     $search = $request->input('search');
 
     // Ambil data atlet berdasarkan kategori olahraga yang sesuai dan filter pencarian
-    $athletes = Athlete::where('sport_category', $SportCategory->sport_category)
+    $athletes = Athlete::where('sport_category', $SportCategory->id)
         ->when($search, function ($query) use ($search) {
             // Menerapkan pencarian pada kolom nama dan prestasi
             $query->where('name', 'like', "%$search%")

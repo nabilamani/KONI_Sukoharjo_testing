@@ -130,7 +130,6 @@
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th>No</th>
-                                                <th>ID</th>
                                                 <th>Nama</th>
                                                 <th>Umur</th>
                                                 <th>Alamat</th>
@@ -149,12 +148,11 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <!-- Increment $no to continue numbering -->
-                                                    <td>{{ $coach->id }}</td>
                                                     <td><img src="{{ $coach->photo }}" width="50" alt="">
                                                         {{ $coach->name }}</td>
                                                     <td>{{ $coach->age }}</td>
                                                     <td>{{ $coach->address }}</td>
-                                                    <td>{{ $coach->sport_category }}</td>
+                                                    <td>{{ $coach->sportCategory->sport_category }}</td>
                                                     <td>{{ $coach->description }}</td>
                                                     <td>
                                                         <div class="dropdown">
@@ -285,7 +283,7 @@
                                                                                     class="mdi mdi-soccer text-primary"></i>
                                                                                 Cabang Olahraga:
                                                                             </th>
-                                                                            <td>{{ $coach->sport_category }}</td>
+                                                                            <td>{{ $coach->sportCategory->sport_category }}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <th scope="row">
@@ -361,15 +359,14 @@
                                                                     </div>
 
                                                                     <div class="form-group">
-                                                                        <label for="sport_category">Cabang
-                                                                            Olahraga</label>
-                                                                        <select id="sportCategorySelect"
-                                                                            name="sport_category"
-                                                                            class="form-control sport-category-select">
-                                                                            <option
-                                                                                value="{{ $coach->sport_category }}"
-                                                                                selected>{{ $coach->sport_category }}
-                                                                            </option>
+                                                                        <label for="sport_category">Cabang Olahraga</label>
+                                                                        <select class="form-control" id="sport_category" name="sport_category" required>
+                                                                            <option value="" disabled>Pilih Cabang Olahraga</option>
+                                                                            @foreach($sportCategories as $category)
+                                                                                <option value="{{ $category->id }}" {{ $coach->sport_category == $category->id ? 'selected' : '' }}>
+                                                                                    {{ $category->sport_category }}
+                                                                                </option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -598,7 +595,7 @@
                         data: @json($categories->pluck('total')) // Data jumlah pelatih per kategori
                     }],
                     xaxis: {
-                        categories: @json($categories->pluck('sport_category')), // Nama kategori olahraga
+                        categories: @json($categories->pluck('sportCategory.sport_category')), // Nama kategori olahraga
                         labels: {
                             style: {
                                 fontSize: '10px' // Ukuran font untuk label kategori

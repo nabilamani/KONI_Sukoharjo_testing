@@ -121,6 +121,20 @@
             color: #FF9800;
         }
 
+        .dropdown-menu {
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0f4ff;
+            color: #0d6efd;
+        }
+
+        .dropdown-item i {
+            font-size: 18px;
+        }
+
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 16px;
@@ -159,10 +173,12 @@
             .gallery-item .btn {
                 font-size: 0.75rem;
             }
+
             .timestamp {
                 font-size: 10px;
             }
-            .timestamp p{
+
+            .timestamp p {
                 font-size: 12px;
             }
         }
@@ -203,14 +219,37 @@
 
     <section class="container my-5">
         <h2 class="text-center text-uppercase mb-4 text-white">Galeri Dokumentasi</h2>
-        <div
-            class="d-flex flex-wrap align-items-center justify-content-center mb-4 p-2 rounded bg-white custom-category-menu">
-            <ul id="categoryMenu" class="nav nav-pills mb-0 me-3"></ul>
-            <button id="toggleCategories" class="btn btn-link text-decoration-none">Selengkapnya</button>
+
+        <!-- Filter Dropdown -->
+        <div class="d-flex justify-content-center mb-4">
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle px-4 py-2 rounded-pill shadow-sm" type="button"
+                    id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="mdi mdi-filter-variant me-2"></i>Filter: <span id="filterLabel">Semua Kategori</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-lg-end p-2 shadow" aria-labelledby="filterDropdown"
+                    style="min-width: 250px;">
+                    <li>
+                        <button class="dropdown-item filter-option active" data-value="all">
+                            <i class="mdi mdi-checkbox-blank-circle-outline me-2 text-muted"></i>Semua Kategori
+                        </button>
+                    </li>
+                    @foreach ($sportCategories as $category)
+                        <li>
+                            <button class="dropdown-item filter-option" data-value="{{ $category->sport_category }}">
+                                <i class="mdi mdi-menu-right text-primary me-2"></i>{{ $category->sport_category }}
+                            </button>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
-        <div class="row g-4">
+
+
+        <div class="row g-4" id="galleryContainer">
             @forelse ($galleries as $gallery)
-                <div class="col-6 col-lg-4 col-md-6 gallery-item" data-category="{{ $gallery->sport_category }}">
+                <div class="col-6 col-lg-4 col-md-6 gallery-item"
+                    data-category="{{ $gallery->sportCategory->sport_category }}">
                     <div class="card shadow-sm border-0 h-80 overflow-hidden">
                         @if ($gallery->media_type === 'photo')
                             <img src="{{ asset($gallery->media_path) }}" class="card-img-top img-fluid"
@@ -224,7 +263,8 @@
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title fw-bold text-primary">{{ $gallery->title }}</h5>
                             <p class="card-text text-muted small">
-                                <span class="badge bg-primary mb-2">{{ $gallery->sport_category }}</span>
+                                <span
+                                    class="badge bg-primary mb-2">{{ $gallery->sportCategory->sport_category }}</span>
                                 <br>
                                 <span class="timestamp">{{ $gallery->date }} | {{ $gallery->location }}</span>
                             </p>
@@ -266,7 +306,8 @@
                                 <!-- Details -->
                                 <p class="mt-4">
                                     <span class="badge bg-primary">
-                                        <i class="mdi mdi-soccer me-1"></i>{{ $gallery->sport_category }}
+                                        <i
+                                            class="mdi mdi-soccer me-1"></i>{{ $gallery->sportCategory->sport_category }}
                                     </span>
                                 </p>
                                 <div class="d-flex align-items-center timestamp">
@@ -301,8 +342,10 @@
                 </div>
             @endforelse
         </div>
-
     </section>
+
+
+
 
 
 
@@ -313,67 +356,39 @@
         AOS.init();
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const categoryMenu = document.querySelector('.custom-category-menu');
-            const navLinks = categoryMenu.querySelectorAll('.nav-link'); // Pastikan hanya menu kategori
-            const galleryItems = document.querySelectorAll('.gallery-item');
+        document.querySelectorAll('.filter-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const filterValue = this.dataset.value;
+                const filterLabel = this.textContent.trim();
 
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const category = link.getAttribute('data-category');
+                // Update dropdown label
+                document.getElementById('filterLabel').textContent = filterLabel;
 
-                    // Update active class
-                    navLinks.forEach(nav => nav.classList.remove('active'));
-                    link.classList.add('active');
-
-                    // Filter gallery items
-                    galleryItems.forEach(item => {
-                        const itemCategory = item.getAttribute('data-category');
-                        if (category === 'Semua' || category === itemCategory) {
-                            item.style.display = 'block';
-                        } else {
-                            item.style.display = 'none';
-                        }
-                    });
+                // Remove 'active' class from all options
+                document.querySelectorAll('.filter-option').forEach(opt => {
+                    opt.classList.remove('active');
                 });
+
+                // Add 'active' class to the selected option
+                this.classList.add('active');
+
+                // Call a function to filter content (replace with your logic)
+                filterContent(filterValue);
             });
         });
-    </script>
-    <script>
-        const categoryMenu = document.getElementById("categoryMenu");
-        const toggleButton = document.getElementById("toggleCategories");
-        let showAllCategories = false;
 
-        // Generate menu items dynamically
-        const maxVisibleCategories = 9; // Batas kategori yang terlihat secara default
-        sportCategories.forEach((category, index) => {
-            const isActive = index === 0 ? "active" : ""; // Set "Semua" as active by default
-            const hiddenClass = index >= maxVisibleCategories ? "d-none" : ""; // Sembunyikan kategori tambahan
-            const listItem = `
-            <li class="nav-item ${hiddenClass}">
-              <a class="nav-link ${isActive} rounded" href="#" data-category="${category}">
-                ${category}
-              </a>
-            </li>`;
-            categoryMenu.innerHTML += listItem;
-        });
-
-        // Add toggle functionality
-        toggleButton.addEventListener("click", () => {
-            showAllCategories = !showAllCategories;
-            const categoryItems = categoryMenu.querySelectorAll(".nav-item");
-
-            categoryItems.forEach((item, index) => {
-                if (index >= maxVisibleCategories) {
-                    item.classList.toggle("d-none", !showAllCategories);
+        function filterContent(category) {
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
                 }
             });
-
-            // Update button text
-            toggleButton.textContent = showAllCategories ? "Sembunyikan" : "Selengkapnya";
-        });
+        }
     </script>
+
 </body>
 
 </html>

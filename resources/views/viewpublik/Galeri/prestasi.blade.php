@@ -185,7 +185,7 @@
                     <div class="card achievement-card">
                         <div class="achievement-details text-center p-3">
                             <h5 class="text-dark">{{ $achievement->athlete_name }}</h5>
-                            <p class="text-muted">Cabang: {{ $achievement->sport_category }}</p>
+                            <p class="text-muted">Cabang: {{ $achievement->SportCategory->sport_category }}</p>
                             <p class="text-muted">Event: {{ $achievement->event_type }}</p>
                             <a href="#" class="btn btn-primary btn-sm"
                                 onclick="showAchievementDetails({{ json_encode($achievement) }})"
@@ -227,7 +227,7 @@
                         <tr>
                             <td>{{ $no++ }}</td>
                             <td>{{ $achievement->athlete_name }}</td>
-                            <td>{{ $achievement->sport_category }}</td>
+                            <td>{{ $achievement->SportCategory->sport_category }}</td>
                             <td>{{ $achievement->event_type }}</td>
                             <td>{{ Str::limit($achievement->description, 50) }}</td>
                             <td>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gallery;
+use App\Models\SportCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -30,7 +31,11 @@ class GaleriController extends Controller
             ->orderBy('date', 'desc')
             ->paginate(4);
 
-        return view('Galeri.daftar', ['galleries' => $galleries, 'search' => $search]);
+
+        // Ambil semua kategori olahraga
+        $sportCategories = SportCategory::all();
+
+        return view('Galeri.daftar', ['galleries' => $galleries, 'search' => $search, 'sportCategories' => $sportCategories]);
     }
 
     /**
@@ -40,7 +45,8 @@ class GaleriController extends Controller
      */
     public function create()
     {
-        return view('Galeri.tambah');
+        $sportCategories = SportCategory::all();
+        return view('Galeri.tambah', compact('sportCategories'));
     }
 
     /**
@@ -54,7 +60,7 @@ class GaleriController extends Controller
         // Validate the input fields
         $data = $request->validate([
             'title' => ['required', 'string'],
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'description' => ['nullable', 'string'],
             'date' => ['required', 'date'],
             'location' => ['required', 'string'],
@@ -115,7 +121,7 @@ class GaleriController extends Controller
         // Validate input
         $data = $request->validate([
             'title' => ['required', 'string'],
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'description' => ['nullable', 'string'],
             'date' => ['required', 'date'],
             'location' => ['required', 'string'],
@@ -179,6 +185,9 @@ class GaleriController extends Controller
             ->orWhere('sport_category', 'like', '%' . $search . '%')
             ->paginate(12);
 
-        return view('viewpublik.Galeri.foto', compact('galleries', 'search'));
+        // Ambil semua kategori olahraga
+        $sportCategories = SportCategory::all();
+
+        return view('viewpublik.Galeri.foto', compact('galleries', 'search','sportCategories'));
     }
 }

@@ -38,6 +38,7 @@ class SportCategoryController extends Controller
             'deskripsi' => 'nullable|string',
             'puslatcab' => 'nullable|string',
             'kontak' => 'nullable|string|max:100',
+            'level' => 'required|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -73,6 +74,7 @@ class SportCategoryController extends Controller
             'deskripsi' => 'nullable|string',
             'puslatcab' => 'nullable|string',
             'kontak' => 'nullable|string|max:100',
+            'level' => 'required|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 

@@ -112,13 +112,15 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="sportCategorySelect" class="col-sm-2 col-form-label">Pilih
-                                            Cabor</label>
+                                        <label class="col-sm-2 col-form-label">Pilih Cabor</label>
                                         <div class="col-sm-4">
-                                            <select id="sportCategorySelect" name="sport_category"
-                                                class="form-control sport-category-select">
-                                                <option value="" hidden selected disabled>Pilih kategori..
+                                            <select name="sport_category" class="form-control">
+                                                <option value="" hidden selected disabled>Pilih kategori...
                                                 </option>
+                                                @foreach ($sportCategories as $category)
+                                                    <option value="{{ $category->id }}">
+                                                        {{ $category->sport_category }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>

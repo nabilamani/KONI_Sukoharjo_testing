@@ -205,7 +205,7 @@
                                 <div class="col-6 col-md-3 mb-3">
                                     <div class="card mx-2">
                                         <div class="card-body text-center">
-                                            <h5 class="card-title text-dark">{{ $category->sport_category }}</h5>
+                                            <h5 class="card-title text-dark">{{ $category->SportCategory->sport_category }}</h5>
                                             <p class="card-text text-primary mb-1">
                                                 <strong>{{ $category->total }}</strong> Atlet
                                             </p>
@@ -269,7 +269,7 @@
                     <option value="">Semua Cabang Olahraga</option>
                     @foreach ($sportCategories as $category)
                         <option value="{{ $category }}"
-                            {{ request('sport_category') == $category ? 'selected' : '' }}>
+                            {{ request('sport_category->') == $category ? 'selected' : '' }}>
                             {{ $category }}
                         </option>
                     @endforeach
@@ -296,7 +296,7 @@
                                 alt="{{ $athlete->name }}" class="athlete-photo img-fluid">
                             <div class="athlete-details text-center p-2">
                                 <h6 class="text-dark mb-1">{{ $athlete->name }}</h6>
-                                <p class="text-muted small mb-2">Cabang: {{ $athlete->sport_category }}</p>
+                                <p class="text-muted small mb-2">Cabang: {{ $athlete->SportCategory->sport_category }}</p>
                                 <a href="#" class="btn btn-primary btn-sm"
                                     onclick="showAthleteDetails({{ json_encode($athlete) }})" data-bs-toggle="modal"
                                     data-bs-target="#athleteDetailModal">
@@ -341,7 +341,7 @@
                             <tr>
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $athlete->name }}</td>
-                                <td>{{ $athlete->sport_category }}</td>
+                                <td>{{ $athlete->SportCategory->sport_category }}</td>
                                 <td>
                                     <img src="{{ $athlete->photo ? asset($athlete->photo) : 'https://via.placeholder.com/100x100' }}"
                                         alt="{{ $athlete->name }}" class="img-thumbnail" width="100">
@@ -577,7 +577,7 @@
                     data: @json($categories->pluck('total')) // Data jumlah atlet per kategori
                 }],
                 xaxis: {
-                    categories: @json($categories->pluck('sport_category')), // Nama kategori olahraga
+                    categories: @json($categories->pluck('SportCategory.sport_category')), // Nama kategori olahraga
                     labels: {
                         style: {
                             fontSize: '10px' // Ukuran font untuk label kategori

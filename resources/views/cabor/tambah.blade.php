@@ -108,11 +108,9 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="sportCategorySelect" class="col-sm-2 col-form-label">Pilih Cabor</label>
-                                        <div class="col-sm-4">
-                                          <select id="sportCategorySelect" name="sport_category" class="form-control sport-category-select">
-                                            <option value="" hidden selected disabled>Pilih kategori..</option>
-                                          </select>
+                                        <label for="cabor" class="col-sm-2 col-form-label">Nama Cabor</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="sport_category" class="form-control" placeholder="Tulis nama cabor (ex : Sepak Bola)" />
                                         </div>
                                       </div>
                                     <div class="row mb-3">
@@ -131,6 +129,12 @@
                                         <label for="kontak" class="col-sm-2 col-form-label">Kontak</label>
                                         <div class="col-sm-10">
                                             <input type="text" name="kontak" class="form-control" placeholder="Masukkan kontak (nomor telepon/email)..." />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="level" class="col-sm-2 col-form-label">Level</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="level" class="form-control" placeholder="ex : Pengurus Cabor Sepakbola" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">

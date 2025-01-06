@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\SportCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -10,10 +11,16 @@ use Throwable;
 
 class UserController extends Controller
 {
+
     public function create()
-    {
-        return view('Akun.tambah'); // Assuming a view named 'register'
-    }
+{
+    $sportCategories = SportCategory::pluck('level', 'id'); // Ambil data level dan ID
+    return view('Akun.tambah', compact('sportCategories'));
+}
+    // public function create()
+    // {
+    //     return view('Akun.tambah'); // Assuming a view named 'register'
+    // }
 
     public function store(Request $request)
     {
@@ -22,7 +29,7 @@ class UserController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8|confirmed',
-                'level' => 'required|string',
+                'level' => 'required|exists:sport_categories,level',
             ]);
         } catch(\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withErrors($e->errors());

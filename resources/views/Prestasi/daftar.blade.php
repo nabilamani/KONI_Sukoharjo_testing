@@ -28,8 +28,11 @@
         border-bottom: 3px solid orange;
         /* You can adjust the width (3px) as needed */
     }
-    #achievement-chart, #region-chart {
-        overflow-x: auto; /* Aktifkan scroll horizontal jika diperlukan */
+
+    #achievement-chart,
+    #region-chart {
+        overflow-x: auto;
+        /* Aktifkan scroll horizontal jika diperlukan */
     }
 </style>
 
@@ -125,11 +128,12 @@
                                 <!-- Right Column: Region Chart -->
                                 <div id="region-chart" class="col-12 col-md-5 mt-5"></div>
                             </div>
-                            
-                            
-                            
+
+
+
+
                             <hr class="mx-4">
-                            
+
                             <div class="card-header">
                                 <h4 class="card-title">Daftar Prestasi</h4>
                                 <form action="{{ route('achievements.index') }}" method="GET" class="form-inline">
@@ -162,7 +166,7 @@
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $achievement->id }}</td>
                                                     <td>{{ $achievement->athlete_name }}</td>
-                                                    <td>{{ $achievement->sport_category }}</td>
+                                                    <td>{{ $achievement->sportCategory->sport_category }}</td>
                                                     <td>{{ $achievement->event_type }}</td>
                                                     <td>{{ $achievement->description }}</td>
                                                     <td>
@@ -249,7 +253,7 @@
                                                                     <label class="text-primary">
                                                                         <i class="mdi mdi-soccer"></i> Cabang Olahraga:
                                                                     </label>
-                                                                    <span>{{ $achievement->sport_category }}</span>
+                                                                    <span>{{ $achievement->sportCategory->sport_category }}</span>
                                                                 </div>
                                                                 <div class="mb-3 d-flex justify-content-between">
                                                                     <label class="text-primary">
@@ -345,15 +349,13 @@
                                                                             <i class="mdi mdi-soccer"></i> Cabang
                                                                             Olahraga
                                                                         </label>
-                                                                        <select id="sportCategorySelect"
-                                                                            name="sport_category"
-                                                                            class="form-control sport-category-select">
-                                                                            <option
-                                                                                value="{{ $achievement->sport_category }}"
-                                                                                selected>
-                                                                                {{ $achievement->sport_category }}
-                                                                            </option>
-                                                                            <!-- Additional options for sports categories can be added here -->
+                                                                        <select class="form-control" id="sport_category" name="sport_category" required>
+                                                                            <option value="" disabled>Pilih Cabang Olahraga</option>
+                                                                            @foreach($sportCategories as $category)
+                                                                                <option value="{{ $category->id }}" {{ $achievement->sport_category == $category->id ? 'selected' : '' }}>
+                                                                                    {{ $category->sport_category }}
+                                                                                </option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </div>
                                                                     <div class="form-group mb-3">
@@ -595,18 +597,20 @@
             var chart = new ApexCharts(document.querySelector("#achievement-chart"), options);
             chart.render();
         </script>
+
+
         <script>
             var regionData = @json($regionData);
-        
+
             // Prepare data for the pie chart
             var pieSeries = [];
             var pieLabels = [];
-        
+
             regionData.forEach(function(item) {
                 pieSeries.push(item.total); // Total achievements for each region_level
                 pieLabels.push(item.region_level); // Region levels
             });
-        
+
             // Configure the pie chart
             var pieOptions = {
                 chart: {
@@ -636,13 +640,13 @@
                     horizontalAlign: 'center'
                 }
             };
-        
+
             // Render the pie chart
             var pieChart = new ApexCharts(document.querySelector("#region-chart"), pieOptions);
             pieChart.render();
         </script>
-        
-        
+
+
 
 
 </body>

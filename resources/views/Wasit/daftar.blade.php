@@ -142,7 +142,7 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $referee->name }}</td>
-                                                    <td>{{ $referee->sport_category }}</td>
+                                                    <td>{{ $referee->sportCategory->sport_category }}</td>
                                                     <td>{{ $referee->gender }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($referee->birth_date)->format('d-m-Y') }}
                                                     </td>
@@ -243,7 +243,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td><i class="mdi mdi-soccer text-primary"></i> Kategori Olahraga:</td>
-                                                                            <td>{{ $referee->sport_category }}</td>
+                                                                            <td>{{ $referee->sportCategory->sport_category }}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td><i class="mdi mdi-certificate text-primary"></i> Lisensi:</td>
@@ -329,13 +329,13 @@
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label for="sport_category">Cabang Olahraga</label>
-                                                                        <select id="sportCategorySelect"
-                                                                            name="sport_category"
-                                                                            class="form-control sport-category-select">
-                                                                            <option
-                                                                                value="{{ $referee->sport_category }}"
-                                                                                selected>{{ $referee->sport_category }}
-                                                                            </option>
+                                                                        <select class="form-control" id="sport_category" name="sport_category" required>
+                                                                            <option value="" disabled>Pilih Cabang Olahraga</option>
+                                                                            @foreach($sportCategories as $category)
+                                                                                <option value="{{ $category->id }}" {{ $referee->sport_category == $category->id ? 'selected' : '' }}>
+                                                                                    {{ $category->sport_category }}
+                                                                                </option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </div>
                                                                     <div class="form-group">

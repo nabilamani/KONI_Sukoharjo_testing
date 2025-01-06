@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Achievement;
+use App\Models\SportCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,17 +21,24 @@ class AchievementController extends Controller
         $user = Auth::user();
         $search = $request->input('search'); // Capture the search input from the request
 
-        // Filter achievements based on user level and search query if provided
-        $achievements = Achievement::when($user->level !== 'Admin', function ($query) use ($user) {
-            // Extract sport category from user level if the user is not an Admin
-            $sportCategory = str_replace('Pengurus Cabor ', '', $user->level);
-            $query->where('sport_category', $sportCategory);
+        // Filter data prestasi berdasarkan level user dan pencarian
+        $achievements = Achievement::when($user->level === 'Admin', function ($query) {
+            // Jika user adalah Admin, tampilkan semua data prestasi
+            return $query;
         })
+            ->when($user->level !== 'Admin', function ($query) use ($user) {
+                // Jika user bukan Admin, filter berdasarkan kategori olahraga yang dikelola user
+                return $query->whereHas('sportCategory', function ($subQuery) use ($user) {
+                    $subQuery->where('level', $user->level);
+                });
+            })
             ->when($search, function ($query) use ($search) {
-                // Apply search filter on sport category and athlete name fields
-                $query->where(function ($query) use ($search) {
-                    $query->where('sport_category', 'like', "%$search%")
-                        ->orWhere('athlete_name', 'like', "%$search%");
+                // Terapkan pencarian pada nama atlet dan kategori olahraga
+                return $query->where(function ($query) use ($search) {
+                    $query->where('athlete_name', 'like', "%$search%")
+                        ->orWhereHas('sportCategory', function ($subQuery) use ($search) {
+                            $subQuery->where('sport_category', 'like', "%$search%");
+                        });
                 });
             })
             ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
@@ -65,12 +73,15 @@ class AchievementController extends Controller
             ->groupBy('region_level')
             ->get();
 
+        $sportCategories = SportCategory::all();
+
         // Pass the regionData to the view for rendering the pie chart
         return view('Prestasi.daftar', [
             'achievements' => $achievements,
             'search' => $search,
             'chartData' => $chartData,
-            'regionData' => $regionData, // Pass region-level data to the view
+            'regionData' => $regionData,
+            'sportCategories' => $sportCategories // Pass region-level data to the view
         ]);
     }
 
@@ -85,7 +96,8 @@ class AchievementController extends Controller
      */
     public function create()
     {
-        return view('Prestasi.tambah');
+        $sportCategories = SportCategory::all();
+        return view('Prestasi.tambah', compact('sportCategories'));
     }
 
     /**
@@ -97,7 +109,7 @@ class AchievementController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'event_type' => ['required', 'string'],
             'athlete_name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
@@ -151,7 +163,7 @@ class AchievementController extends Controller
 
         // Validate the incoming request
         $request->validate([
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'event_type' => ['required', 'string'],
             'athlete_name' => ['required', 'string'],
             'description' => ['nullable', 'string'],
@@ -236,6 +248,6 @@ class AchievementController extends Controller
             return $ranks;
         });
 
-        return view('viewpublik.Galeri.prestasi', compact('achievements','chartData'));
+        return view('viewpublik.Galeri.prestasi', compact('achievements', 'chartData'));
     }
 }

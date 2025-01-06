@@ -23,6 +23,11 @@ class Achievement extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    public function sportCategory()
+    {
+        return $this->belongsTo(SportCategory::class, 'sport_category', 'id');
+    }
+
     /**
      * Generate a custom ID for achievements.
      *

@@ -205,7 +205,7 @@
                             <tr>
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $athlete->name }}</td>
-                                <td>{{ $athlete->sport_category }}</td> <!-- assuming the relationship is defined -->
+                                <td>{{ $athlete->SportCategory->sport_category }}</td> <!-- assuming the relationship is defined -->
                                 <td>{{ \Carbon\Carbon::parse($athlete->birth_date)->format('d-m-Y') }}</td>
                                 <td>{{ $athlete->gender }}</td>
                                 <td>{{ $athlete->weight }} kg</td>

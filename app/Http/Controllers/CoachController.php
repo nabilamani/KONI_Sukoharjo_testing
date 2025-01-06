@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coach;
+use App\Models\SportCategory;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
 use Illuminate\Support\Facades\Auth;
@@ -22,15 +23,23 @@ class CoachController extends Controller
         $search = $request->input('search'); // Capture the search input from the request
 
         // Filter coaches based on user level and search query if provided
-        $coaches = Coach::when($user->level !== 'Admin', function ($query) use ($user) {
-            // Extract sport category from user level if not an Admin
-            $sportCategory = str_replace('Pengurus Cabor ', '', $user->level);
-            $query->where('sport_category', $sportCategory);
+        $coaches = Coach::when($user->level === 'Admin', function ($query) {
+            // If the user is an Admin, return all coa$coaches
+            return $query;
         })
+            ->when($user->level !== 'Admin', function ($query) use ($user) {
+                // If the user is not an Admin, filter coaches by the sport category the user manages
+                // return $query->where('sport_category', $user->sport_category); // Use 'sport_category_id' instead of 'sport_category'
+                return $query->whereHas('sportCategory', function ($subQuery) use ($user) {
+                    $subQuery->where('level', $user->level);
+                });
+            })
             ->when($search, function ($query) use ($search) {
                 // Apply search filter on name and sport category fields
-                $query->where('name', 'like', "%$search%")
-                    ->orWhere('sport_category', 'like', "%$search%");
+                return $query->where('name', 'like', "%$search%")
+                    ->orWhereHas('sportCategory', function ($subQuery) use ($search) {
+                        $subQuery->where('sport_category', 'like', "%$search%");
+                    });
             })
             ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
             ->paginate(4); // Display 4 items per page
@@ -39,12 +48,17 @@ class CoachController extends Controller
         $categories = Coach::select('sport_category')
             ->selectRaw('COUNT(*) as total')
             ->groupBy('sport_category')
+            ->with('sportCategory') // Use with() to load the related SportCategory name
             ->get();
+
+        // Ambil semua kategori olahraga
+        $sportCategories = SportCategory::all();
 
         return view('Pelatih.daftar', [
             'coaches' => $coaches,
             'search' => $search,
-            'categories' => $categories // Pass the categories data to the view
+            'categories' => $categories,
+            'sportCategories' => $sportCategories // Pass the categories data to the view
         ]);
     }
 
@@ -76,7 +90,8 @@ class CoachController extends Controller
      */
     public function create()
     {
-        return view('layouts.tambah');
+        $sportCategories = SportCategory::all();
+        return view('layouts.tambah', compact('sportCategories'));
     }
 
     /**
@@ -89,17 +104,16 @@ class CoachController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string'],
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required', 'exists:sport_categories,id'], // Validasi ID sport_category
             'age' => ['required', 'integer'],
             'address' => ['required', 'string'],
             'whatsapp' => ['required', 'string'],
             'instagram' => ['required', 'string'],
-            'description' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
             'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ]);
 
         $coach = new Coach;
-        $data['id'] = $coach->generateId();
 
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
@@ -151,7 +165,7 @@ class CoachController extends Controller
 
         $data = $request->validate([
             'name' => 'required|string',
-            'sport_category' => 'required|string',
+            'sport_category' => 'required|exists:sport_categories,id',
             'age' => 'required|integer',
             'whatsapp' => 'required|string',
             'instagram' => 'required|string',

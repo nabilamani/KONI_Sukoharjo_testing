@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Referee;
+use App\Models\SportCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -18,22 +19,47 @@ class RefereeController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $search = $request->input('search');
+        $search = $request->input('search'); // Capture the search input from the request
 
         // Filter referees based on user level and search query if provided
-        $referees = Referee::when($user->level !== 'Admin', function ($query) use ($user) {
-            $sportCategory = str_replace('Pengurus Cabor ', '', $user->level);
-            $query->where('sport_category', $sportCategory);
+        $referees = Referee::when($user->level === 'Admin', function ($query) {
+            // If the user is an Admin, return all referees
+            return $query;
         })
-            ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%$search%")
-                    ->orWhere('sport_category', 'like', "%$search%");
+            ->when($user->level !== 'Admin', function ($query) use ($user) {
+                // If the user is not an Admin, filter referees by the sport category the user manages
+                return $query->whereHas('sportCategory', function ($subQuery) use ($user) {
+                    $subQuery->where('level', $user->level);
+                });
             })
-            ->orderBy('created_at', 'asc')
-            ->paginate(4);
+            ->when($search, function ($query) use ($search) {
+                // Apply search filter on name and sport category fields
+                return $query->where('name', 'like', "%$search%")
+                    ->orWhereHas('sportCategory', function ($subQuery) use ($search) {
+                        $subQuery->where('sport_category', 'like', "%$search%");
+                    });
+            })
+            ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
+            ->paginate(4); // Display 4 items per page
 
-        return view('Wasit.daftar', ['referees' => $referees, 'search' => $search]);
+        // Calculate referee count per sport category
+        $categories = Referee::select('sport_category')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('sport_category')
+            ->with('sportCategory') // Use with() to load the related SportCategory name
+            ->get();
+
+        // Retrieve all sport categories
+        $sportCategories = SportCategory::all();
+
+        return view('Wasit.daftar', [
+            'referees' => $referees,
+            'search' => $search,
+            'categories' => $categories,
+            'sportCategories' => $sportCategories // Pass the categories data to the view
+        ]);
     }
+
 
     /**
      * Show the form for creating a new referee.
@@ -42,7 +68,8 @@ class RefereeController extends Controller
      */
     public function create()
     {
-        return view('Wasit.tambah');
+        $sportCategories = SportCategory::all();
+        return view('Wasit.tambah', compact('sportCategories'));
     }
 
     /**
@@ -55,7 +82,7 @@ class RefereeController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string'],
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'birth_date' => ['required', 'date'],
             'gender' => ['required', 'in:Laki-laki,Perempuan'],
             'license' => ['nullable', 'string'],
@@ -117,7 +144,7 @@ class RefereeController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string'],
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'birth_date' => ['required', 'date'],
             'gender' => ['required', 'in:Laki-laki,Perempuan'],
             'license' => ['nullable', 'string'],

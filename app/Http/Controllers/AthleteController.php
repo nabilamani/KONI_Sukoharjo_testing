@@ -22,29 +22,41 @@ class AthleteController extends Controller
         $search = $request->input('search'); // Capture the search input from the request
 
         // Filter athletes based on user level and search query if provided
-        $athletes = Athlete::when($user->level !== 'Admin', function ($query) use ($user) {
-            // Extract sport category from user level if not an Admin
-            $sportCategory = str_replace('Pengurus Cabor ', '', $user->level);
-            $query->where('sport_category', $sportCategory);
+        $athletes = Athlete::when($user->level === 'Admin', function ($query) {
+            // If the user is an Admin, return all athletes
+            return $query;
         })
+            ->when($user->level !== 'Admin', function ($query) use ($user) {
+                // If the user is not an Admin, filter athletes by the sport category the user manages
+                // return $query->where('sport_category', $user->sport_category); // Use 'sport_category_id' instead of 'sport_category'
+                return $query->whereHas('sportCategory', function ($subQuery) use ($user) {
+                    $subQuery->where('level', $user->level);
+                });
+            })
             ->when($search, function ($query) use ($search) {
                 // Apply search filter on name and sport category fields
-                $query->where('name', 'like', "%$search%")
-                    ->orWhere('sport_category', 'like', "%$search%");
+                return $query->where('name', 'like', "%$search%")
+                    ->orWhereHas('sportCategory', function ($subQuery) use ($search) {
+                        $subQuery->where('sport_category', 'like', "%$search%");
+                    });
             })
             ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
             ->get();
 
-        // Calculate athlete count per sport category
         $categories = Athlete::select('sport_category')
             ->selectRaw('COUNT(*) as total')
             ->groupBy('sport_category')
+            ->with('sportCategory') // Use with() to load the related SportCategory name
             ->get();
+
+        // Ambil semua kategori olahraga
+        $sportCategories = SportCategory::all();
 
         return view('atlet.daftar', [
             'athletes' => $athletes,
             'search' => $search,
-            'categories' => $categories // Pass the categories data to the view
+            'categories' => $categories,
+            'sportCategories' => $sportCategories // Pass the categories data to the view
         ]);
     }
 
@@ -56,7 +68,8 @@ class AthleteController extends Controller
      */
     public function create()
     {
-        return view('atlet.tambah');
+        $sportCategories = SportCategory::all();
+        return view('Atlet.tambah', compact('sportCategories'));
     }
 
     public function cetakAthlete()
@@ -84,7 +97,7 @@ class AthleteController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string'],
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required', 'exists:sport_categories,id'], // Validasi ID sport_category
             'birth_date' => ['required', 'date'],
             'gender' => ['required', 'in:Laki-laki,Perempuan'],
             'weight' => ['required', 'numeric'],
@@ -145,7 +158,7 @@ class AthleteController extends Controller
 
         $data = $request->validate([
             'name' => 'required|string',
-            'sport_category' => 'required|string',
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'birth_date' => 'required|date',
             'gender' => 'required|in:Laki-laki,Perempuan',
             'weight' => 'required|numeric',
@@ -235,15 +248,20 @@ class AthleteController extends Controller
 
         $query = Athlete::query();
 
-        if ($search) {
+        $query->when($search, function ($query) use ($search) {
+            // Pecah kata kunci berdasarkan spasi atau koma
             $keywords = preg_split('/[\s,]+/', $search); // Memecah kata kunci berdasarkan spasi atau koma
-            $query->where(function ($q) use ($keywords) {
+            
+            // Buat query untuk mencari di nama atlet dan kategori olahraga
+            return $query->where(function ($q) use ($keywords) {
                 foreach ($keywords as $keyword) {
                     $q->orWhere('name', 'like', "%$keyword%")
-                        ->orWhere('sport_category', 'like', "%$keyword%");
+                      ->orWhereHas('sportCategory', function ($subQuery) use ($keyword) {
+                          $subQuery->where('sport_category', 'like', "%$keyword%");
+                      });
                 }
             });
-        }
+        });
 
         if ($sportCategory) {
             $query->where('sport_category', $sportCategory);

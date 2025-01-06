@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('referees', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('name');
-            $table->string('sport_category');
+            $table->unsignedBigInteger('sport_category');
             $table->enum('gender', ['Laki-laki', 'Perempuan']);
             $table->date('birth_date');
             $table->integer('age')->nullable(); // Optional if you want to store age
@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('WhatsApp')->nullable(); // New column for contact link (e.g., social media link)
             $table->string('Instagram')->nullable(); // New column for contact link (e.g., social media link)
             $table->timestamps();
+
+            $table->foreign('sport_category')->references('id')->on('sport_categories')->onDelete('cascade');
         });
     }
 

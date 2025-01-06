@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('venue_name'); // Name of the venue
             $table->text('venue_map'); // Map iframe input for embedding Google Maps for the venue
             $table->timestamps();
+
         });
     }
-
     /**
      * Reverse the migrations.
      *

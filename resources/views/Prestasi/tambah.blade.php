@@ -42,8 +42,10 @@
         ***********************************-->
         <div class="nav-header">
             <a href="/coba" class="brand-logo">
-                <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt="" style="margin-left: 10px; border-radius: 50%;">
-                <span class="fw-bolder d-none d-md-inline" style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola KONI</span>
+                <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt=""
+                    style="margin-left: 10px; border-radius: 50%;">
+                <span class="fw-bolder d-none d-md-inline"
+                    style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola KONI</span>
             </a>
 
             <div class="nav-control">
@@ -81,7 +83,8 @@
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4>Hi, Selamat Datang kembali!</h4>
-                            <p class="mb-1"><span class="text-success">{{ Auth::user()->name }},</span> Anda login sebagai <span class="text-success">{{ Auth::user()->level }}</span></p>
+                            <p class="mb-1"><span class="text-success">{{ Auth::user()->name }},</span> Anda login
+                                sebagai <span class="text-success">{{ Auth::user()->level }}</span></p>
                         </div>
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -104,29 +107,38 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="athlete_name">Nama Atlet</label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="athlete_name" class="form-control" placeholder="Masukkan nama atlet..." required />
+                                            <input type="text" name="athlete_name" class="form-control"
+                                                placeholder="Masukkan nama atlet..." required />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="sportCategorySelect" class="col-sm-2 col-form-label">Pilih Cabor</label>
+                                        <label class="col-sm-2 col-form-label">Pilih Cabor</label>
                                         <div class="col-sm-4">
-                                          <select id="sportCategorySelect" name="sport_category" class="form-control sport-category-select">
-                                            <option value="" hidden selected disabled>Pilih kategori..</option>
-                                          </select>
+                                            <select name="sport_category" class="form-control">
+                                                <option value="" hidden selected disabled>Pilih kategori...
+                                                </option>
+                                                @foreach ($sportCategories as $category)
+                                                    <option value="{{ $category->id }}">
+                                                        {{ $category->sport_category }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                      </div>
+                                    </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="event_type">Jenis Event</label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="event_type" class="form-control" placeholder="Masukkan jenis event..." required />
+                                            <input type="text" name="event_type" class="form-control"
+                                                placeholder="Masukkan jenis event..." required />
                                         </div>
                                     </div>
-                                    
+
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="region_level">Tingkat Wilayah</label>
+                                        <label class="col-sm-2 col-form-label" for="region_level">Tingkat
+                                            Wilayah</label>
                                         <div class="col-sm-4">
                                             <select id="region_level" name="region_level" class="form-control" required>
-                                                <option value="" hidden selected disabled>Pilih tingkat wilayah...</option>
+                                                <option value="" hidden selected disabled>Pilih tingkat wilayah...
+                                                </option>
                                                 <option value="Kota">Kota</option>
                                                 <option value="Kabupaten">Kabupaten</option>
                                                 <option value="Provinsi">Provinsi</option>
@@ -139,7 +151,8 @@
                                         <label class="col-sm-2 col-form-label" for="rank">Peringkat</label>
                                         <div class="col-sm-4">
                                             <select id="rank" name="rank" class="form-control" required>
-                                                <option value="" hidden selected disabled>Pilih peringkat...</option>
+                                                <option value="" hidden selected disabled>Pilih peringkat...
+                                                </option>
                                                 <option value="Juara 1">Juara 1</option>
                                                 <option value="Juara 2">Juara 2</option>
                                                 <option value="Juara 3">Juara 3</option>
@@ -150,9 +163,11 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="certificate_date">Tanggal Piagam</label>
+                                        <label class="col-sm-2 col-form-label" for="certificate_date">Tanggal
+                                            Piagam</label>
                                         <div class="col-sm-4">
-                                            <input type="date" name="certificate_date" class="form-control" required />
+                                            <input type="date" name="certificate_date" class="form-control"
+                                                required />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -171,9 +186,9 @@
                         </div>
                     </div>
                 </div>
-                
-                
-                
+
+
+
                 <!--**********************************
                     Content body end
                 ***********************************-->

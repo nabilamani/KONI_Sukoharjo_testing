@@ -158,8 +158,10 @@
                     <a class="nav-link dropdown-toggle {{ Request::is('olahraga/*') ? 'active' : '' }}" href="#"
                         id="olahragaDropdown" role="button" data-bs-toggle="dropdown">Olahraga</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item {{ Request::is('olahraga/cabor') ? 'active' : '' }}"
-                                href="{{ url('/olahraga/cabor') }}">Cabor</a></li>
+                        <li>
+                            <a class="dropdown-item {{ Request::is('olahraga/cabor') || Request::is('olahraga/cabor/*') ? 'active' : '' }}"
+                               href="{{ url('/olahraga/cabor') }}">Cabor</a>
+                        </li>
                         <li><a class="dropdown-item {{ Request::is('olahraga/event') ? 'active' : '' }}"
                                 href="{{ url('/olahraga/event') }}">Events</a></li>
                         <li><a class="dropdown-item {{ Request::is('olahraga/atlet') ? 'active' : '' }}"

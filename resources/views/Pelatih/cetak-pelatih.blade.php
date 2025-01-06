@@ -115,7 +115,7 @@
                         <td>{{ $coach->name }}</td>
                         <td>{{ $coach->age }}</td>
                         <td>{{ $coach->address }}</td>
-                        <td>{{ $coach->sport_category }}</td>
+                        <td>{{ $coach->sportCategory->sport_category }}</td>
                         <td>{{ $coach->description }}</td>
                     </tr>
                 @endforeach

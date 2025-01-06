@@ -157,13 +157,16 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="level">Level/Pengurus</label>
-                                        <div class="col-sm-10">
-                                            <select id="level" name="level" class="form-control user-level-select" required>
-                                                <option value="" hidden selected>Pilih level...</option>
+                                        <label for="levelSelect" class="col-sm-2 col-form-label">Level</label>
+                                        <div class="col-sm-4">
+                                            <select id="levelSelect" name="level" class="form-control">
+                                                <option value="" hidden selected disabled>Pilih level...</option>
+                                                @foreach ($sportCategories as $id => $level)
+                                                    <option value="{{ $level }}">{{ $level }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
-                                    </div>                                    
+                                    </div>                                                                       
                                     <div class="row justify-content-end">
                                         <div class="col-sm-10">
                                             <button type="submit" class="btn btn-primary">Tambah Akun</button>

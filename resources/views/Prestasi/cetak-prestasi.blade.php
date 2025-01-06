@@ -113,7 +113,7 @@
                     <th>Nama Atlet</th>
                     <th>Jenis Event</th>
                     <th>Deskripsi</th>
-                    <th>Tanggal Diciptakan</th>
+                    <th>Tanggal Piagam</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,7 +125,7 @@
                         <td>{{ $achievement->athlete_name }}</td>
                         <td>{{ $achievement->event_type }}</td>
                         <td>{{ $achievement->description }}</td>
-                        <td>{{ $achievement->created_at->format('d-m-Y') }}</td>
+                        <td>{{ $achievement->certificate_date}}</td>
                     </tr>
                 @endforeach
             </tbody>

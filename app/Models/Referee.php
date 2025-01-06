@@ -37,6 +37,12 @@ class Referee extends Model
         return Carbon::parse($this->birth_date)->age;
     }
 
+    public function sportCategory()
+    {
+        return $this->belongsTo(SportCategory::class, 'sport_category', 'id');
+    }
+
+
     // Method to generate a custom ID with a prefix 'R'
     public function generateId()
     {

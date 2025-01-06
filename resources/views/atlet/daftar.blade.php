@@ -147,7 +147,7 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $athlete->name }}</td>
-                                                    <td>{{ $athlete->sport_category }}</td>
+                                                    <td>{{ $athlete->SportCategory->sport_category }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($athlete->birth_date)->format('d-m-Y') }}
                                                     </td>
                                                     <td>{{ $athlete->gender }}</td>
@@ -218,7 +218,8 @@
                                                                             {{ $athlete->name }}</p>
                                                                         <p class="mb-2"><strong>Cabang
                                                                                 Olahraga:</strong>
-                                                                            {{ $athlete->sport_category }}</p>
+                                                                            {{ $athlete->SportCategory->sport_category }}
+                                                                        </p>
                                                                         <p class="mb-2"><strong>Tanggal
                                                                                 Lahir:</strong>
                                                                             {{ \Carbon\Carbon::parse($athlete->birth_date)->format('d-m-Y') }}
@@ -282,14 +283,18 @@
                                                                             <div class="form-group">
                                                                                 <label for="sport_category">Cabang
                                                                                     Olahraga</label>
-                                                                                <select id="sportCategorySelect"
-                                                                                    name="sport_category"
-                                                                                    class="form-control sport-category-select">
-                                                                                    <option
-                                                                                        value="{{ $athlete->sport_category }}"
-                                                                                        selected>
-                                                                                        {{ $athlete->sport_category }}
-                                                                                    </option>
+                                                                                <select class="form-control"
+                                                                                    id="sport_category"
+                                                                                    name="sport_category" required>
+                                                                                    <option value="" disabled>
+                                                                                        Pilih Cabang Olahraga</option>
+                                                                                    @foreach ($sportCategories as $category)
+                                                                                        <option
+                                                                                            value="{{ $category->id }}"
+                                                                                            {{ $athlete->sport_category == $category->id ? 'selected' : '' }}>
+                                                                                            {{ $category->sport_category }}
+                                                                                        </option>
+                                                                                    @endforeach
                                                                                 </select>
                                                                             </div>
                                                                             <div class="form-group">
@@ -504,7 +509,7 @@
                         data: @json($categories->pluck('total')) // Data jumlah atlet per kategori
                     }],
                     xaxis: {
-                        categories: @json($categories->pluck('sport_category')), // Nama kategori olahraga
+                        categories: @json($categories->pluck('sportCategory.sport_category')), // Nama kategori olahraga
                         labels: {
                             style: {
                                 fontSize: '10px' // Ukuran font untuk label kategori

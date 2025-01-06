@@ -34,6 +34,11 @@ class Athlete extends Model
         return Carbon::parse($this->birth_date)->age;
     }
 
+    public function sportCategory()
+    {
+        return $this->belongsTo(SportCategory::class, 'sport_category', 'id');
+    }
+
     public function generateId()
     {
         $lastAthlete = Athlete::max('id');
