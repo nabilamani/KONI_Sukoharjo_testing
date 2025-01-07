@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\SportCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -20,20 +21,44 @@ class EventController extends Controller
         $user = Auth::user();
         $search = $request->input('search');
 
-        // Filter events based on user level and search query
-        $events = Event::when($user->level !== 'Admin', function ($query) use ($user) {
-            $sportCategory = str_replace('Pengurus Cabor ', '', $user->level);
-            $query->where('sport_category', $sportCategory);
+        $events = Event::when($user->level === 'Admin', function ($query) {
+            // If the user is an Admin, return all events
+            return $query;
         })
-            ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%$search%")
-                    ->orWhere('sport_category', 'like', "%$search%")
-                    ->orWhere('location', 'like', "%$search%");
+            ->when($user->level !== 'Admin', function ($query) use ($user) {
+                // If the user is not an Admin, filter events by the sport category the user manages
+                // return $query->where('sport_category', $user->sport_category); // Use 'sport_category_id' instead of 'sport_category'
+                return $query->whereHas('sportCategory', function ($subQuery) use ($user) {
+                    $subQuery->where('level', $user->level);
+                });
             })
-            ->orderBy('created_at', 'asc')
+            ->when($search, function ($query) use ($search) {
+                // Apply search filter on name and sport category fields
+                return $query->where('name', 'like', "%$search%")
+                    ->orWhereHas('sportCategory', function ($subQuery) use ($search) {
+                        $subQuery->where('sport_category', 'like', "%$search%");
+                    });
+            })
+            ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
             ->paginate(4);
 
-        return view('event.daftar', ['events' => $events, 'search' => $search]);
+        // // Filter events based on user level and search query
+        // $events = Event::when($user->level !== 'Admin', function ($query) use ($user) {
+        //     $sportCategory = str_replace('Pengurus Cabor ', '', $user->level);
+        //     $query->where('sport_category', $sportCategory);
+        // })
+        //     ->when($search, function ($query) use ($search) {
+        //         $query->where('name', 'like', "%$search%")
+        //             ->orWhere('sport_category', 'like', "%$search%")
+        //             ->orWhere('location', 'like', "%$search%");
+        //     })
+        //     ->orderBy('created_at', 'asc')
+        //     ->paginate(4);
+
+        // Ambil semua kategori olahraga
+        $sportCategories = SportCategory::all();
+
+        return view('event.daftar', ['events' => $events, 'search' => $search, 'sportCategories' => $sportCategories]);
     }
 
 
@@ -63,7 +88,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('event.tambah');
+        $sportCategories = SportCategory::all();
+        return view('event.tambah', compact('sportCategories'));
     }
 
     /**
@@ -77,7 +103,7 @@ class EventController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string'],
             'event_date' => ['required', 'date'],
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'location' => ['required', 'string'],
             'banner' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // Validasi banner
             'location_map' => ['required', 'string'], // Validasi iframe map lokasi
@@ -137,7 +163,7 @@ class EventController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string'],
             'event_date' => ['required', 'date'],
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'location' => ['required', 'string'],
             'banner' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // Validasi banner
             'location_map' => ['required', 'string'], // Validasi URL map lokasi

@@ -126,7 +126,7 @@
                         <td>{{ $athlete->gender }}</td>
                         <td>{{ $athlete->weight }}</td>
                         <td>{{ $athlete->height }}</td>
-                        <td>{{ $athlete->sport_category }}</td>
+                        <td>{{ $athlete->SportCategory->sport_category }}</td>
                         <td>{{ $athlete->achievements }}</td>
                     </tr>
                 @endforeach

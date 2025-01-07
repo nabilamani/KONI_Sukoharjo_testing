@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,35 +14,46 @@
             background-color: #f9f9f9;
             color: #333;
         }
+
         .header {
             display: flex;
             align-items: center;
             padding: 10px;
-            border-bottom: 4px solid #000000; /* Garis tebal di bawah header */
+            border-bottom: 4px solid #000000;
+            /* Garis tebal di bawah header */
         }
+
         .header img {
-            width: 100px; /* Sesuaikan ukuran logo */
+            width: 100px;
+            /* Sesuaikan ukuran logo */
             height: auto;
-            margin-right: 20px; /* Jarak antara logo dan teks */
+            margin-right: 20px;
+            /* Jarak antara logo dan teks */
         }
+
         .header .header-info {
             text-align: center;
         }
+
         .header .header-info h1 {
             margin: 5px 0;
             font-size: 24px;
         }
+
         .header .header-info p {
             margin: 5px 0;
             font-size: 14px;
         }
+
         .content {
             padding: 20px;
             margin-top: -30px;
         }
+
         h2 {
             text-align: center;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -50,18 +62,23 @@
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        th, td {
+
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border: 1px solid #ddd;
         }
+
         th {
             background-color: #4CAF50;
             color: white;
         }
+
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
         .footer {
             background-color: #4CAF50;
             color: white;
@@ -73,6 +90,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     {{-- <div class="header">
@@ -87,7 +105,8 @@
     <table style="width: 100%; border-bottom: 4px solid #000000;">
         <tr>
             <td style="width: 15%; border: none;">
-                <img src="{{ asset('gambar_aset/images/koni.png') }}" alt="Logo KONI Sukoharjo" style="width: 100px; height: auto;"> <!-- Adjust size as needed -->
+                <img src="{{ asset('gambar_aset/images/koni.png') }}" alt="Logo KONI Sukoharjo"
+                    style="width: 100px; height: auto;"> <!-- Adjust size as needed -->
             </td>
             <td style="text-align: center; border: none;">
                 <h2 style="margin: 0;">Komite Olahraga Nasional Indonesia (KONI)</h2>
@@ -121,11 +140,11 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $achievement->id }}</td>
-                        <td>{{ $achievement->sport_category }}</td>
+                        <td>{{ $achievement->SportCategory->sport_category }}</td>
                         <td>{{ $achievement->athlete_name }}</td>
                         <td>{{ $achievement->event_type }}</td>
                         <td>{{ $achievement->description }}</td>
-                        <td>{{ $achievement->certificate_date}}</td>
+                        <td>{{ $achievement->certificate_date }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -141,4 +160,5 @@
         window.print();
     </script>
 </body>
+
 </html>

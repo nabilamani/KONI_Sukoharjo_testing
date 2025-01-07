@@ -48,6 +48,16 @@ class SportCategory extends Model
         return $this->hasMany(Gallery::class, 'sport_category_id', 'id');
     }
 
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'sport_category_id', 'id');
+    }
+
+    public function beritas()
+    {
+        return $this->hasMany(Berita::class, 'sport_category_id', 'id');
+    }
+
 
 
     public function users()

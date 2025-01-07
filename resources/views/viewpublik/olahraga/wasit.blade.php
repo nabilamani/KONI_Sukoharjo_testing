@@ -105,12 +105,14 @@
         }
 
         @media (max-width: 768px) {
-            .hero-title{
+            .hero-title {
                 font-size: 20px;
             }
-            .hero-subtitle{
+
+            .hero-subtitle {
                 font-size: 12px;
             }
+
             #table-view table th,
             #table-view table td {
                 font-size: 12px;
@@ -135,6 +137,7 @@
             .list-view {
                 margin-bottom: 8px;
             }
+
             .referee-card {
                 height: auto;
                 /* Membiarkan kartu menyesuaikan ketinggiannya secara otomatis */
@@ -193,10 +196,9 @@
                             alt="{{ $referee->name }}" class="referee-photo">
                         <div class="referee-details text-center p-3">
                             <h6 class="text-dark mb-1">{{ $referee->name }}</h6>
-                            <p class="text-muted small mb-2">Cabang: {{ $referee->sport_category }}</p>
-                            <a href="#" class="btn btn-primary btn-sm"
-                                onclick="showRefereeDetails({{ json_encode($referee) }})" data-bs-toggle="modal"
-                                data-bs-target="#refereeDetailModal">Detail</a>
+                            <p class="text-muted small mb-2">Cabang: {{ $referee->sportCategory->sport_category }}</p>
+                            <a href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                                data-target="#refereeDetailModal{{ $referee->id }}">Detail</a>
                         </div>
                     </div>
                 </div>
@@ -233,15 +235,14 @@
                         <tr>
                             <td>{{ $no++ }}</td>
                             <td>{{ $referee->name }}</td>
-                            <td>{{ $referee->sport_category }}</td>
+                            <td>{{ $referee->sportCategory->sport_category }}</td>
                             <td>
                                 <img src="{{ $referee->photo ? asset($referee->photo) : 'https://via.placeholder.com/100x100' }}"
                                     alt="{{ $referee->name }}" class="img-thumbnail" width="100">
                             </td>
                             <td>
-                                <a href="#" class="btn btn-primary btn-sm"
-                                    onclick="showRefereeDetails({{ json_encode($referee) }})" data-bs-toggle="modal"
-                                    data-bs-target="#refereeDetailModal">Detail</a>
+                                <a href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                                    data-target="#refereeDetailModal{{ $referee->id }}">Detail</a>
                             </td>
                         </tr>
                     @empty
@@ -262,71 +263,92 @@
         <div class="mt-4">
             {{ $referees->links('layouts.pagination') }}
         </div>
-        <!-- Modal untuk Detail Wasit -->
-        <div class="modal fade mt-5 pt-2" id="refereeDetailModal" tabindex="-1"
-            aria-labelledby="refereeDetailModalLabel" aria-hidden="true">
-            <div class="modal-dialog mb-5 modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary">
-                        <h5 class="modal-title text-white" id="refereeDetailModalLabel">Detail Wasit</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12 col-md-4 mb-3 mb-md-0">
-                                <img id="refereePhoto" src="" alt="Foto Wasit" class="img-fluid rounded">
-                            </div>
-                            <div class="col-md-8">
-                                <h5 id="refereeName" class="text-dark mb-3"></h5>
-                                <table class="table table-borderless">
-                                    <tbody>
-                                        <tr>
-                                            <td><i class="mdi mdi-soccer text-primary"></i></td>
-                                            <td><strong>Cabang Olahraga</strong></td>
-                                            <td id="refereeSportCategory">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-gender-male-female text-primary"></i></td>
-                                            <td><strong>Jenis Kelamin</strong></td>
-                                            <td id="refereeGender">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-calendar text-primary"></i></td>
-                                            <td><strong>Tanggal Lahir</strong></td>
-                                            <td><span id="refereeBirthDate">-</span> (<span id="refereeAge">-</span>
-                                                tahun)</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-certificate text-primary"></i></td>
-                                            <td><strong>Lisensi</strong></td>
-                                            <td id="refereeLicense">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-whatsapp text-primary"></i></td>
-                                            <td><strong>Whatsapp</strong></td>
-                                            <td id="refereeWA">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-instagram text-primary"></i></td>
-                                            <td><strong>Instagram</strong></td>
-                                            <td id="refereeIG">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-briefcase text-primary"></i></td>
-                                            <td><strong>Pengalaman</strong></td>
-                                            <td id="refereeExperience">-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+        @foreach ($referees as $referee)
+            <!-- Modal untuk Detail Wasit -->
+            <div class="modal fade mt-5 pt-2" id="refereeDetailModal{{ $referee->id }}" tabindex="-1"
+                aria-labelledby="refereeDetailModalLabel{{ $referee->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title text-white" id="refereeDetailModalLabel{{ $referee->id }}">
+                                Detail Wasit : {{ $referee->name }}
+                            </h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <!-- Kolom kiri: Foto Wasit -->
+                                <div class="col-12 col-md-4 mb-3 mb-md-0 text-center">
+                                    <img src="{{ $referee->photo ? asset($referee->photo) : 'https://via.placeholder.com/300x200' }}"
+                                        alt="Foto Wasit" class="img-fluid rounded"
+                                        style="max-height: 300px; object-fit: cover;">
+                                </div>
+                                <!-- Kolom kanan: Detail Wasit -->
+                                <div class="col-md-8">
+                                    <table class="table table-borderless table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td><i class="mdi mdi-account text-primary"></i></td>
+                                                <td><strong>Nama</strong></td>
+                                                <td>{{ $referee->name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-cake text-primary"></i></td>
+                                                <td><strong>Tanggal Lahir</strong></td>
+                                                <td>{{ \Carbon\Carbon::parse($referee->birth_date)->format('d-m-Y') }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-calendar text-primary"></i></td>
+                                                <td><strong>Usia</strong></td>
+                                                <td>{{ $referee->age ?? '-' }} tahun</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-gender-male-female text-primary"></i></td>
+                                                <td><strong>Jenis Kelamin</strong></td>
+                                                <td>{{ $referee->gender }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-soccer text-primary"></i></td>
+                                                <td><strong>Kategori Olahraga</strong></td>
+                                                <td>{{ $referee->sportCategory->sport_category }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-certificate text-primary"></i></td>
+                                                <td><strong>Lisensi</strong></td>
+                                                <td>{{ $referee->license ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-whatsapp text-primary"></i></td>
+                                                <td><strong>WhatsApp</strong></td>
+                                                <td>{{ $referee->whatsapp ?? 'Belum diketahui' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-instagram text-primary"></i></td>
+                                                <td><strong>Instagram</strong></td>
+                                                <td>{{ $referee->instagram ?? 'Belum diketahui' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-briefcase text-primary"></i></td>
+                                                <td><strong>Pengalaman</strong></td>
+                                                <td>{{ $referee->experience ?? 'Tidak tersedia' }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer py-2">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <div class="modal-footer py-2">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endforeach
+
+
     </div>
 
 
@@ -371,26 +393,14 @@
         // Memuat tampilan saat halaman dimuat
         document.addEventListener('DOMContentLoaded', loadView);
     </script>
-    <script>
-        function showRefereeDetails(referee) {
-            document.getElementById('refereePhoto').src = referee.photo ? `{{ asset('') }}${referee.photo}` :
-                'https://via.placeholder.com/300x200';
-            document.getElementById('refereeName').textContent = referee.name;
-            document.getElementById('refereeSportCategory').textContent = referee.sport_category;
-            document.getElementById('refereeGender').textContent = referee.gender || 'Tidak Diketahui';
-            document.getElementById('refereeBirthDate').textContent = referee.birth_date;
-            document.getElementById('refereeAge').textContent = referee.age;
-            document.getElementById('refereeLicense').textContent = referee.license || 'Tidak Diketahui';
-            document.getElementById('refereeWA').textContent = referee.whatsapp || 'Tidak Diketahui';
-            document.getElementById('refereeIG').textContent = referee.instagram || 'Tidak Diketahui';
-            document.getElementById('refereeExperience').textContent = referee.experience || 'Tidak Diketahui';
-        }
-    </script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
         AOS.init();
     </script>
-
+    <!-- Required vendors -->
+    <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
+    <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
+    <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
 
 </body>
 

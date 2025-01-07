@@ -130,7 +130,7 @@
                         <tr>
                             <td>{{ $event->name }}</td>
                             <td>{{ \Carbon\Carbon::parse($event->event_date)->format('d M Y') }}</td>
-                            <td>{{ $event->sport_category }}</td>
+                            <td>{{ $event->SportCategory->sport_category }}</td>
                             <td>{{ $event->location }}</td>
                             <td>
                                 @if ($event->location_map)

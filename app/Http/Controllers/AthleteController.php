@@ -41,7 +41,7 @@ class AthleteController extends Controller
                     });
             })
             ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
-            ->get();
+            ->paginate(4);
 
         $categories = Athlete::select('sport_category')
             ->selectRaw('COUNT(*) as total')
@@ -234,7 +234,7 @@ class AthleteController extends Controller
             ->get();
 
         // Ambil semua kategori olahraga untuk dropdown filter
-        $sportCategories = Athlete::select('sport_category')->distinct()->pluck('sport_category');
+        $sportCategories = SportCategory::all();
 
         return view('viewpublik.olahraga.atlet', compact('athletes', 'categories', 'sportCategories'));
     }

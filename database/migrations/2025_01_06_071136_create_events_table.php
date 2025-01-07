@@ -17,11 +17,13 @@ return new class extends Migration
             $table->string('id')->primary();
             $table->string('name'); // Nama event
             $table->date('event_date'); // Tanggal event
-            $table->string('sport_category'); // Kategori olahraga
+            $table->unsignedBigInteger('sport_category'); // Kategori olahraga
             $table->string('location'); // Lokasi event
             $table->string('banner')->nullable(); // Path ke banner/foto/poster event
             $table->text('location_map'); // Map iframe input for embedding Google Maps for the venue
             $table->timestamps();
+
+            $table->foreign('sport_category')->references('id')->on('sport_categories')->onDelete('cascade');
         });
     }
 

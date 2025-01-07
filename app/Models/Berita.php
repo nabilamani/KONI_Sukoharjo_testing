@@ -13,6 +13,7 @@ class Berita extends Model
     protected $fillable = [
         'id',
         'judul_berita',
+        'sport_category',
         'tanggal_waktu',
         'lokasi_peristiwa',
         'isi_berita',
@@ -30,6 +31,11 @@ class Berita extends Model
     protected $casts = [
         'isi_berita' => 'string',
     ];
+
+    public function sportCategory()
+    {
+        return $this->belongsTo(SportCategory::class, 'sport_category', 'id');
+    }
     
     public function getFormattedDateAttribute()
     {

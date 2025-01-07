@@ -237,7 +237,7 @@ class CoachController extends Controller
         $coaches = $query->paginate(8);
 
         // Ambil semua kategori olahraga untuk dropdown filter
-        $sportCategories = Coach::select('sport_category')->distinct()->pluck('sport_category');
+        $sportCategories = SportCategory::all();
 
         return view('viewpublik.olahraga.pelatih', compact('coaches', 'sportCategories'));
     }

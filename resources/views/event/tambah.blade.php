@@ -89,13 +89,15 @@
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="sportCategorySelect" class="col-sm-2 col-form-label">Pilih
-                                            Cabor</label>
+                                        <label class="col-sm-2 col-form-label">Pilih Cabor</label>
                                         <div class="col-sm-4">
-                                            <select id="sportCategorySelect" name="sport_category"
-                                                class="form-control sport-category-select">
-                                                <option value="" hidden selected disabled>Pilih kategori..
+                                            <select name="sport_category" class="form-control">
+                                                <option value="" hidden selected disabled>Pilih kategori...
                                                 </option>
+                                                @foreach ($sportCategories as $category)
+                                                    <option value="{{ $category->id }}">
+                                                        {{ $category->sport_category }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -110,10 +112,13 @@
 
                                     <!-- Banner Input -->
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="banner">Banner/Foto</label>
-                                        <div class="col-sm-10">
-                                            <input type="file" name="banner" class="form-control"
-                                                accept="image/*" />
+                                        <label class="col-sm-2 col-form-label" for="gambar">Foto</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="file" name="banner" id="gambar"
+                                                onchange="previewImage()" />
+                                            <img id="preview" src="#" alt="Preview Foto"
+                                                class="img-fluid mt-3 d-none"
+                                                style="max-height: 200px; border: 1px solid #ddd; padding: 5px;" />
                                         </div>
                                     </div>
 
@@ -186,6 +191,7 @@
     <script src="{{ asset('gambar_aset/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('gambar_aset/js/plugins-init/datatables.init.js') }}"></script>
     <script src="{{ asset('gambar_aset/js/sport-category.js') }}"></script>
+    <script src="{{ asset('gambar_aset/js/imgpreview.js') }}"></script>
 </body>
 
 </html>

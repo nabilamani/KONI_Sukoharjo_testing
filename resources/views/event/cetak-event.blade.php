@@ -140,7 +140,7 @@
                         <td>{{ $event->name }}</td>
                         <td>{{ \Carbon\Carbon::parse($event->event_date)->format('d-m-Y') }}
                         </td>
-                        <td>{{ $event->sport_category }}</td>
+                        <td>{{ $event->SportCategory->sport_category }}</td>
                         <td>{{ $event->location }}</td>
                     </tr>
                 @endforeach

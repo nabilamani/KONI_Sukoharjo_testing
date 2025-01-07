@@ -27,6 +27,11 @@ class Event extends Model
         'event_date', 
     ];
 
+    public function sportCategory()
+    {
+        return $this->belongsTo(SportCategory::class, 'sport_category', 'id');
+    }
+
     public function generateId()
     {
         // Retrieve the maximum ID currently in the database, remove the prefix, and increment it

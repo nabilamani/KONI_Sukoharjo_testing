@@ -187,9 +187,8 @@
                             <h5 class="text-dark">{{ $achievement->athlete_name }}</h5>
                             <p class="text-muted">Cabang: {{ $achievement->SportCategory->sport_category }}</p>
                             <p class="text-muted">Event: {{ $achievement->event_type }}</p>
-                            <a href="#" class="btn btn-primary btn-sm"
-                                onclick="showAchievementDetails({{ json_encode($achievement) }})"
-                                data-bs-toggle="modal" data-bs-target="#achievementDetailModal">Detail</a>
+                            <a href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                                data-target="#achievementDetailModal{{ $achievement->id }}">Detail</a>
                         </div>
                     </div>
                 </div>
@@ -231,9 +230,8 @@
                             <td>{{ $achievement->event_type }}</td>
                             <td>{{ Str::limit($achievement->description, 50) }}</td>
                             <td>
-                                <a href="#" class="btn btn-primary btn-sm"
-                                    onclick="showAchievementDetails({{ json_encode($achievement) }})"
-                                    data-bs-toggle="modal" data-bs-target="#achievementDetailModal">Detail</a>
+                                <a href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                                    data-target="#achievementDetailModal{{ $achievement->id }}">Detail</a>
                             </td>
                         </tr>
                     @empty
@@ -257,65 +255,89 @@
     </div>
 
     <!-- Modal Detail -->
-    <div class="modal fade" id="achievementDetailModal" tabindex="-1" aria-labelledby="achievementDetailModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow-lg">
-                <!-- Modal Header -->
-                <div class="modal-header bg-warning d-flex justify-content-between align-items-center">
-                    <h5 class="modal-title text-white" id="achievementDetailModalLabel">
-                        <i class="mdi mdi-trophy-outline me-2 text-white"></i>Detail Prestasi
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white text-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
+    @foreach ($achievements as $achievement)
+        <!-- Modal Detail Prestasi -->
+        <div class="modal fade" id="achievementDetailModal{{ $achievement->id }}" tabindex="-1"
+            aria-labelledby="achievementDetailModalLabel{{ $achievement->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content shadow-lg">
+                    <!-- Modal Header -->
+                    <div class="modal-header bg-primary d-flex justify-content-between align-items-center text-white">
+                        <h5 class="modal-title text-white" id="achievementDetailModalLabel{{ $achievement->id }}">
+                            <i class="mdi mdi-trophy-outline me-2 text-white"></i>Detail Prestasi
+                        </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
 
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <table class="table table-borderless">
-                        <tbody>
-                            <tr>
-                                <td class="text-primary"><i class="mdi mdi-account-outline"></i></td>
-                                <td><strong>Nama Atlet</strong></td>
-                                <td id="modal-athlete-name">-</td>
-                            </tr>
-                            <tr>
-                                <td class="text-primary"><i class="mdi mdi-run-fast"></i></td>
-                                <td><strong>Cabang Olahraga</strong></td>
-                                <td id="modal-sport-category">-</td>
-                            </tr>
-                            <tr>
-                                <td class="text-primary"><i class="mdi mdi-account-group"></i></td>
-                                <td><strong>Format Team</strong></td>
-                                <td id="modal-event-type">-</td>
-                            </tr>
-                            <tr>
-                                <td class="text-primary"><i class="mdi mdi-information-outline"></i></td>
-                                <td><strong>Deskripsi</strong></td>
-                                <td id="modal-description">-</td>
-                            </tr>
-                            <tr>
-                                <td class="text-primary"><i class="mdi mdi-map-marker"></i></td>
-                                <td><strong>Region Level</strong></td>
-                                <td id="modal-region-level">-</td>
-                            </tr>
-                            <tr>
-                                <td class="text-primary"><i class="mdi mdi-trophy-outline"></i></td>
-                                <td><strong>Ranking</strong></td>
-                                <td id="modal-rank">-</td>
-                            </tr>
-                            <tr>
-                                <td class="text-primary"><i class="mdi mdi-calendar"></i></td>
-                                <td><strong>Tanggal Sertifikat</strong></td>
-                                <td id="modal-certificate-date">-</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <!-- Kolom Kiri -->
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-primary"><i class="mdi mdi-account-outline"></i></td>
+                                            <td><strong>Nama Atlet</strong></td>
+                                            <td>{{ $achievement->athlete_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-primary"><i class="mdi mdi-run-fast"></i></td>
+                                            <td><strong>Cabang Olahraga</strong></td>
+                                            <td>{{ $achievement->sportCategory->sport_category }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-primary"><i class="mdi mdi-account-group"></i></td>
+                                            <td><strong>Format Team</strong></td>
+                                            <td>{{ $achievement->event_type }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-primary"><i class="mdi mdi-calendar"></i></td>
+                                            <td><strong>Tanggal Sertifikat</strong></td>
+                                            <td>{{ \Carbon\Carbon::parse($achievement->certificate_date)->format('d M Y') }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
+                            <!-- Kolom Kanan -->
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-primary"><i class="mdi mdi-map-marker"></i></td>
+                                            <td><strong>Region Level</strong></td>
+                                            <td>{{ $achievement->region_level }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-primary"><i class="mdi mdi-star-outline"></i></td>
+                                            <td><strong>Ranking</strong></td>
+                                            <td>{{ $achievement->rank }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-primary"><i class="mdi mdi-information-outline"></i></td>
+                                            <td><strong>Deskripsi</strong></td>
+                                            <td>{{ $achievement->description ?? 'Tidak ada deskripsi.' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer py-2">
+                        <small class="text-muted justify-start">ID Prestasi: {{ $achievement->id }}</small>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    @endforeach
+
 
 
 
@@ -324,18 +346,6 @@
     @include('viewpublik/layouts/footer')
 
 </body>
-<script>
-    function showAchievementDetails(achievement) {
-        document.getElementById('modal-athlete-name').textContent = achievement.athlete_name;
-        document.getElementById('modal-sport-category').textContent = achievement.sport_category;
-        document.getElementById('modal-event-type').textContent = achievement.event_type;
-        document.getElementById('modal-description').textContent = achievement.description;
-        document.getElementById('modal-region-level').textContent = achievement.region_level; // Data Region Level
-        document.getElementById('modal-rank').textContent = achievement.rank; // Data Ranking
-        document.getElementById('modal-certificate-date').textContent = new Date(achievement.certificate_date)
-            .toLocaleDateString(); // Format tanggal
-    }
-</script>
 <script>
     // Fungsi untuk menyimpan preferensi tampilan ke localStorage
     function setAchievementView(view) {
@@ -445,6 +455,10 @@
     var chart = new ApexCharts(document.querySelector("#achievement-chart"), options);
     chart.render();
 </script>
+<!-- Required vendors -->
+<script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
+<script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
+<script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
 
 
 </html>

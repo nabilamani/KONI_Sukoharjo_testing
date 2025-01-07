@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use App\Models\Event;
+use App\Models\SportCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -28,7 +29,10 @@ class BeritaController extends Controller
             ->orderBy('tanggal_waktu', 'desc') // Sort results by date in descending order
             ->paginate(4); // Display 4 items per page
 
-        return view('berita.daftar', compact('beritas', 'search'));
+        // Ambil semua kategori olahraga
+        $sportCategories = SportCategory::all();
+
+        return view('berita.daftar', compact('beritas', 'search','sportCategories'));
     }
 
     /**
@@ -36,7 +40,8 @@ class BeritaController extends Controller
      */
     public function create()
     {
-        return view('berita.tambah');
+        $sportCategories = SportCategory::all();
+        return view('berita.tambah', compact('sportCategories'));
     }
 
     /**
@@ -47,6 +52,7 @@ class BeritaController extends Controller
         // dd($request->all());
         $data = $request->validate([
             'judul_berita' => 'required|string',
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'tanggal_waktu' => 'required|date',
             'lokasi_peristiwa' => 'required|string',
             'isi_berita' => 'required',
@@ -100,6 +106,7 @@ class BeritaController extends Controller
 
         $data = $request->validate([
             'judul_berita' => 'required|string',
+            'sport_category' => ['required', 'exists:sport_categories,id'],
             'tanggal_waktu' => 'required|date',
             'lokasi_peristiwa' => 'required|string',
             'isi_berita' => 'required',

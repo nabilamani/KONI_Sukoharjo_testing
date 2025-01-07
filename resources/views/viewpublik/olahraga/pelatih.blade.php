@@ -114,10 +114,11 @@
 
         @media (max-width: 768px) {
 
-            .hero-title{
+            .hero-title {
                 font-size: 20px;
             }
-            .hero-subtitle{
+
+            .hero-subtitle {
                 font-size: 12px;
             }
 
@@ -136,9 +137,11 @@
                 font-size: 16px;
                 text-align: center;
             }
+
             .list-view {
                 margin-bottom: 8px;
             }
+
             #coachDetailModal img {
                 width: 100%;
                 height: auto;
@@ -148,6 +151,7 @@
                 font-size: 16px;
                 text-align: center;
             }
+
             .coach-card {
                 height: auto;
                 /* Membiarkan kartu menyesuaikan ketinggiannya secara otomatis */
@@ -189,7 +193,7 @@
                 <button id="card-view-btn" class="btn btn-primary active">Card View</button>
                 <button id="table-view-btn" class="btn btn-secondary">Table View</button>
             </div>
-        
+
             <form hx-get="/api/cari-pelatih" hx-target="#data-wrapper" hx-swap="innerHTML"
                 hx-trigger="change from:select, click from:button[type='submit']" class="d-flex"
                 id="form-sport-category">
@@ -197,37 +201,36 @@
                 <select class="form-select form-select-sm me-2" name="sport_category">
                     <option value="">Semua Cabang Olahraga</option>
                     @foreach ($sportCategories as $category)
-                        <option value="{{ $category }}"
-                            {{ request('sport_category') == $category ? 'selected' : '' }}>
-                            {{ $category }}
+                        <option value="{{ $category->id }}"
+                            {{ request('sport_category') == $category->id ? 'selected' : '' }}>
+                            {{ $category->sport_category }}
                         </option>
                     @endforeach
                 </select>
                 <!-- Form Pencarian -->
-                <input type="text" name="search" class="form-control me-2"
-                    placeholder="Cari pelatih atau cabor..."
+                <input type="text" name="search" class="form-control me-2" placeholder="Cari pelatih atau cabor..."
                     value="{{ request('search') }}" id="sport-category-search">
                 <!-- View card/table -->
                 <input type="hidden" name="_view" id="active-view" value="card">
                 <button type="submit" class="btn btn-primary">Cari</button>
             </form>
         </div>
-        
+
 
         <div id="data-wrapper">
             <!-- Tampilan Card -->
             <div id="card-view" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                 @forelse ($coaches as $coach)
-                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="col-6 col-sm-4 col-md-3">
                         <div class="card coach-card">
                             <img src="{{ $coach->photo ? asset($coach->photo) : 'https://via.placeholder.com/300x200' }}"
                                 alt="{{ $coach->name }}" class="coach-photo">
                             <div class="coach-details text-center p-3">
                                 <h6 class="text-dark mb-1">{{ $coach->name }}</h6>
-                                <p class="text-muted small mb-2">Cabang: {{ $coach->sport_category }}</p>
-                                <a href="#" class="btn btn-primary btn-sm"
-                                    onclick="showCoachDetails({{ json_encode($coach) }})" data-bs-toggle="modal"
-                                    data-bs-target="#coachDetailModal">Detail</a>
+                                <p class="text-muted small mb-2">Cabang: {{ $coach->SportCategory->sport_category }}
+                                </p>
+                                <a href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                                    data-target="#coachDetailModal{{ $coach->id }}">Detail</a>
 
                             </div>
                         </div>
@@ -266,15 +269,14 @@
                             <tr>
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $coach->name }}</td>
-                                <td>{{ $coach->sport_category }}</td>
+                                <td>{{ $coach->SportCategory->sport_category }}</td>
                                 <td>
                                     <img src="{{ $coach->photo ? asset($coach->photo) : 'https://via.placeholder.com/100x100' }}"
                                         alt="{{ $coach->name }}" class="img-thumbnail" width="100">
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-sm"
-                                        onclick="showCoachDetails({{ json_encode($coach) }})" data-bs-toggle="modal"
-                                        data-bs-target="#coachDetailModal">Detail</a>
+                                    <a href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#coachDetailModal{{ $coach->id }}">Detail</a>
 
                                 </td>
                             </tr>
@@ -297,66 +299,81 @@
                 {{ $coaches->links('layouts.pagination') }}
             </div>
         </div>
-        <!-- Modal untuk Detail Pelatih -->
-        <div class="modal fade mt-5 pt-2" id="coachDetailModal" tabindex="-1"
-            aria-labelledby="coachDetailModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary">
-                        <h5 class="modal-title text-white" id="coachDetailModalLabel">Detail Pelatih</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12 col-md-4 mb-3 mb-md-0">
-                                <img id="coachPhoto" src="" alt="Foto Pelatih" class="img-fluid rounded">
-                            </div>
-                            <div class="col-md-8">
-                                <h5 id="coachName" class="text-dark mb-3"></h5>
-                                <table class="table table-borderless">
-                                    <tbody>
-                                        <tr>
-                                            <td><i class="mdi mdi-soccer text-primary"></i></td>
-                                            <td><strong>Cabang Olahraga</strong></td>
-                                            <td id="coachSportCategory">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-map-marker text-primary"></i></td>
-                                            <td><strong>Alamat</strong></td>
-                                            <td id="coachAddress">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-calendar text-primary"></i></td>
-                                            <td><strong>Usia</strong></td>
-                                            <td><span id="coachAge">-</span> tahun</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-whatsapp text-primary"></i></td>
-                                            <td><strong>WhatsApp</strong></td>
-                                            <td id="coachWhatsapp">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-instagram text-primary"></i></td>
-                                            <td><strong>Instagram</strong></td>
-                                            <td id="coachInstagram">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="mdi mdi-information text-primary"></i></td>
-                                            <td><strong>Deskripsi</strong></td>
-                                            <td id="coachDescription">-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+
+        @foreach ($coaches as $coach)
+            <!-- Modal untuk Detail Pelatih -->
+            <div class="modal fade mt-5 pt-2" id="coachDetailModal{{ $coach->id }}" tabindex="-1"
+                aria-labelledby="coachDetailModalLabel{{ $coach->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title text-white" id="coachDetailModalLabel{{ $coach->id }}">
+                                Detail Pelatih : {{ $coach->name }}
+                            </h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <!-- Kolom kiri: Foto Pelatih -->
+                                <div class="col-12 col-md-4 mb-3 mb-md-0 text-center">
+                                    <img src="{{ $coach->photo ? asset($coach->photo) : 'https://via.placeholder.com/300x200' }}"
+                                        alt="Foto Pelatih" class="img-fluid rounded"
+                                        style="max-height: 300px; object-fit: cover;">
+                                </div>
+                                <!-- Kolom kanan: Detail Pelatih -->
+                                <div class="col-md-8">
+                                    <table class="table table-borderless table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td><i class="mdi mdi-account text-primary"></i></td>
+                                                <td><strong>Nama</strong></td>
+                                                <td>{{ $coach->name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-calendar text-primary"></i></td>
+                                                <td><strong>Umur</strong></td>
+                                                <td>{{ $coach->age }} tahun</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-whatsapp text-primary"></i></td>
+                                                <td><strong>WhatsApp</strong></td>
+                                                <td>{{ $coach->whatsapp ?: 'Belum diketahui' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-instagram text-primary"></i></td>
+                                                <td><strong>Instagram</strong></td>
+                                                <td>{{ $coach->instagram ?: 'Belum diketahui' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-map-marker text-primary"></i></td>
+                                                <td><strong>Alamat</strong></td>
+                                                <td>{{ $coach->address }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-soccer text-primary"></i></td>
+                                                <td><strong>Cabang Olahraga</strong></td>
+                                                <td>{{ $coach->sportCategory->sport_category }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="mdi mdi-information text-primary"></i></td>
+                                                <td><strong>Deskripsi</strong></td>
+                                                <td>{{ $coach->description }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer py-2">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <div class="modal-footer py-2">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endforeach
+
 
     </div>
 
@@ -406,19 +423,6 @@
         document.addEventListener('DOMContentLoaded', loadView);
     </script>
     <script>
-        function showCoachDetails(coach) {
-            document.getElementById('coachPhoto').src = coach.photo ? `{{ asset('') }}${coach.photo}` :
-                'https://via.placeholder.com/300x200';
-            document.getElementById('coachName').textContent = coach.name;
-            document.getElementById('coachSportCategory').textContent = coach.sport_category;
-            document.getElementById('coachAddress').textContent = coach.address || 'Tidak Diketahui';
-            document.getElementById('coachAge').textContent = coach.age || 'Tidak Diketahui';
-            document.getElementById('coachWhatsapp').textContent = coach.whatsapp || 'Tidak Diketahui';
-            document.getElementById('coachInstagram').textContent = coach.instagram || 'Tidak Diketahui';
-            document.getElementById('coachDescription').textContent = coach.description || 'Tidak Diketahui';
-        }
-    </script>
-    <script>
         document.getElementById('table-wrapper').addEventListener('htmx:afterSwap', function(event) {
             const responseUrl = event.detail.pathInfo.responsePath;
             const nextUrl = responseUrl.replace('/api/cari-pelatih', '/olahraga/pelatih');
@@ -429,6 +433,10 @@
     <script>
         AOS.init();
     </script>
+    <!-- Required vendors -->
+    <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
+    <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
+    <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
 
 </body>
 

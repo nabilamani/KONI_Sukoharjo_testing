@@ -150,6 +150,19 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Pilih kategori</label>
+                                        <div class="col-sm-4">
+                                            <select name="sport_category" class="form-control">
+                                                <option value="" hidden selected disabled>Pilih kategori...
+                                                </option>
+                                                @foreach ($sportCategories as $category)
+                                                    <option value="{{ $category->id }}">
+                                                        {{ $category->sport_category }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="tanggal_waktu">Tanggal dan
                                             Waktu</label>
                                         <div class="col-sm-4">

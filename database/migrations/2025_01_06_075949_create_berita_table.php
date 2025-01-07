@@ -16,12 +16,15 @@ return new class extends Migration
         Schema::create('beritas', function (Blueprint $table) {
             $table->string('id')->primary(); // Auto-incrementing ID
             $table->string('judul_berita'); // Judul Berita
+            $table->unsignedBigInteger('sport_category');
             $table->date('tanggal_waktu'); // Tanggal dan Waktu
             $table->string('lokasi_peristiwa'); // Lokasi Peristiwa
             $table->longText('isi_berita')->nullable(); // Isi Berita
             $table->string('kutipan_sumber')->nullable(); // Kutipan/Sumber
             $table->string('photo')->nullable(); // Foto
             $table->timestamps(); // Timestamps for created_at and updated_at
+
+            $table->foreign('sport_category')->references('id')->on('sport_categories')->onDelete('cascade');
         });
     }
 

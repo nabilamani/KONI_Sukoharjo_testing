@@ -1,5 +1,3 @@
-{{-- @dd($coaches) --}}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +52,8 @@
             <a href="/coba" class="brand-logo">
                 <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt=""
                     style="margin-left: 10px; border-radius: 50%; ">
-                <span class="fw-bolder d-none d-md-inline" style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
+                <span class="fw-bolder d-none d-md-inline"
+                    style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
                     KONI</span>
             </a>
 
@@ -107,6 +106,8 @@
                 <!-- row -->
                 <div class="row">
                     <div class="col-12">
+                        <div id="chart" class="mt-5"></div>
+                        <hr class="mx-4">
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">Daftar Wasit</h4>
@@ -181,12 +182,15 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                @empty
+                                            @empty
                                                 <tr>
                                                     <td colspan="9" class="text-center">
-                                                        <div class="d-flex justify-content-center align-items-center my-2">
-                                                            <i class="mdi mdi-alert-circle-outline me-2" style="font-size: 20px;"></i>
-                                                            <span class="fs-8">Saat ini belum ada data daftar wasit.</span>
+                                                        <div
+                                                            class="d-flex justify-content-center align-items-center my-2">
+                                                            <i class="mdi mdi-alert-circle-outline me-2"
+                                                                style="font-size: 20px;"></i>
+                                                            <span class="fs-8">Saat ini belum ada data daftar
+                                                                wasit.</span>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -197,15 +201,19 @@
                                     <!-- Modals for each Referee -->
                                     @foreach ($referees as $referee)
                                         <!-- Modal for Referee Details -->
-                                        <div class="modal fade" id="refereeDetailModal{{ $referee->id }}" tabindex="-1" role="dialog"
-                                            aria-labelledby="refereeDetailModalLabel{{ $referee->id }}" aria-hidden="true">
+                                        <div class="modal fade" id="refereeDetailModal{{ $referee->id }}"
+                                            tabindex="-1" role="dialog"
+                                            aria-labelledby="refereeDetailModalLabel{{ $referee->id }}"
+                                            aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header bg-primary text-white">
-                                                        <h5 class="modal-title" id="refereeDetailModalLabel{{ $referee->id }}">
+                                                        <h5 class="modal-title"
+                                                            id="refereeDetailModalLabel{{ $referee->id }}">
                                                             Detail Wasit: {{ $referee->name }}
                                                         </h5>
-                                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                        <button type="button" class="close text-white"
+                                                            data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
@@ -214,10 +222,12 @@
                                                             <!-- Left column: Referee photo -->
                                                             <div class="col-md-4 text-center">
                                                                 @if ($referee->photo)
-                                                                    <img src="{{ $referee->photo }}" class="img-fluid rounded" alt="Foto Wasit"
+                                                                    <img src="{{ $referee->photo }}"
+                                                                        class="img-fluid rounded" alt="Foto Wasit"
                                                                         style="max-height: 300px; object-fit: cover;">
                                                                 @else
-                                                                    <img src="{{ asset('default-profile.png') }}" class="img-fluid rounded" alt="Foto Default"
+                                                                    <img src="{{ asset('default-profile.png') }}"
+                                                                        class="img-fluid rounded" alt="Foto Default"
                                                                         style="max-height: 300px; object-fit: cover;">
                                                                 @endif
                                                             </div>
@@ -226,39 +236,59 @@
                                                                 <table class="table table-borderless table-sm">
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td style="width: 30%;"><i class="mdi mdi-account text-primary"></i> Nama:</td>
+                                                                            <td style="width: 30%;"><i
+                                                                                    class="mdi mdi-account text-primary"></i>
+                                                                                Nama:</td>
                                                                             <td>{{ $referee->name }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><i class="mdi mdi-cake text-primary"></i> Tanggal Lahir:</td>
-                                                                            <td>{{ \Carbon\Carbon::parse($referee->birth_date)->format('d-m-Y') }}</td>
+                                                                            <td><i
+                                                                                    class="mdi mdi-cake text-primary"></i>
+                                                                                Tanggal Lahir:</td>
+                                                                            <td>{{ \Carbon\Carbon::parse($referee->birth_date)->format('d-m-Y') }}
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><i class="mdi mdi-calendar text-primary"></i> Usia:</td>
+                                                                            <td><i
+                                                                                    class="mdi mdi-calendar text-primary"></i>
+                                                                                Usia:</td>
                                                                             <td>{{ $referee->age ?? '-' }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><i class="mdi mdi-gender-male-female text-primary"></i> Jenis Kelamin:</td>
+                                                                            <td><i
+                                                                                    class="mdi mdi-gender-male-female text-primary"></i>
+                                                                                Jenis Kelamin:</td>
                                                                             <td>{{ $referee->gender }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><i class="mdi mdi-soccer text-primary"></i> Kategori Olahraga:</td>
-                                                                            <td>{{ $referee->sportCategory->sport_category }}</td>
+                                                                            <td><i
+                                                                                    class="mdi mdi-soccer text-primary"></i>
+                                                                                Kategori Olahraga:</td>
+                                                                            <td>{{ $referee->sportCategory->sport_category }}
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><i class="mdi mdi-certificate text-primary"></i> Lisensi:</td>
+                                                                            <td><i
+                                                                                    class="mdi mdi-certificate text-primary"></i>
+                                                                                Lisensi:</td>
                                                                             <td>{{ $referee->license ?? '-' }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><i class="mdi mdi-whatsapp text-primary"></i> Whatsapp:</td>
+                                                                            <td><i
+                                                                                    class="mdi mdi-whatsapp text-primary"></i>
+                                                                                Whatsapp:</td>
                                                                             <td>{{ $referee->whatsapp ?? '-' }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><i class="mdi mdi-instagram text-primary"></i> Instagram:</td>
+                                                                            <td><i
+                                                                                    class="mdi mdi-instagram text-primary"></i>
+                                                                                Instagram:</td>
                                                                             <td>{{ $referee->instagram ?? '-' }}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><i class="mdi mdi-briefcase text-primary"></i> Pengalaman:</td>
+                                                                            <td><i
+                                                                                    class="mdi mdi-briefcase text-primary"></i>
+                                                                                Pengalaman:</td>
                                                                             <td>{{ $referee->experience ?? '-' }}</td>
                                                                         </tr>
                                                                     </tbody>
@@ -267,72 +297,99 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Tutup</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
 
                                         <!-- Modal for Editing Referee -->
-                                        <div class="modal fade" id="refereeEditModal{{ $referee->id }}" tabindex="-1" role="dialog"
-                                            aria-labelledby="refereeEditModalLabel{{ $referee->id }}" aria-hidden="true">
+                                        <div class="modal fade" id="refereeEditModal{{ $referee->id }}"
+                                            tabindex="-1" role="dialog"
+                                            aria-labelledby="refereeEditModalLabel{{ $referee->id }}"
+                                            aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header bg-primary text-white">
-                                                        <h5 class="modal-title" id="refereeEditModalLabel{{ $referee->id }}">
+                                                        <h5 class="modal-title"
+                                                            id="refereeEditModalLabel{{ $referee->id }}">
                                                             Edit Wasit: {{ $referee->name }}
                                                         </h5>
-                                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                        <button type="button" class="close text-white"
+                                                            data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <!-- Form Edit Wasit -->
-                                                        <form action="/edit-referee/{{ $referee->id }}" method="POST" enctype="multipart/form-data">
+                                                        <form action="/edit-referee/{{ $referee->id }}"
+                                                            method="POST" enctype="multipart/form-data">
                                                             @csrf
                                                             @method('PUT')
-                                        
+
                                                             <div class="row">
                                                                 <!-- Left column -->
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label for="name">Nama Wasit</label>
-                                                                        <input type="text" class="form-control" id="name" name="name" value="{{ $referee->name }}" required>
+                                                                        <input type="text" class="form-control"
+                                                                            id="name" name="name"
+                                                                            value="{{ $referee->name }}" required>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="birth_date">Tanggal Lahir</label>
-                                                                        <input type="date" class="form-control" id="birth_date" name="birth_date" value="{{ $referee->birth_date }}" required>
+                                                                        <input type="date" class="form-control"
+                                                                            id="birth_date" name="birth_date"
+                                                                            value="{{ $referee->birth_date }}"
+                                                                            required>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="gender">Jenis Kelamin</label>
-                                                                        <select class="form-control" id="gender" name="gender" required>
-                                                                            <option value="Laki-laki" {{ $referee->gender == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                                                            <option value="Perempuan" {{ $referee->gender == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                                                        <select class="form-control" id="gender"
+                                                                            name="gender" required>
+                                                                            <option value="Laki-laki"
+                                                                                {{ $referee->gender == 'Laki-laki' ? 'selected' : '' }}>
+                                                                                Laki-laki</option>
+                                                                            <option value="Perempuan"
+                                                                                {{ $referee->gender == 'Perempuan' ? 'selected' : '' }}>
+                                                                                Perempuan</option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="license">Lisensi</label>
-                                                                        <input type="text" class="form-control" id="license" name="license" value="{{ $referee->license }}">
+                                                                        <input type="text" class="form-control"
+                                                                            id="license" name="license"
+                                                                            value="{{ $referee->license }}">
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="whatsapp">Whatsapp</label>
-                                                                        <input type="text" class="form-control" id="whatsapp" name="whatsapp" value="{{ $referee->whatsapp }}">
+                                                                        <input type="text" class="form-control"
+                                                                            id="whatsapp" name="whatsapp"
+                                                                            value="{{ $referee->whatsapp }}">
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="instagram">Instagram</label>
-                                                                        <input type="text" class="form-control" id="instagram" name="instagram" value="{{ $referee->instagram }}">
+                                                                        <input type="text" class="form-control"
+                                                                            id="instagram" name="instagram"
+                                                                            value="{{ $referee->instagram }}">
                                                                     </div>
                                                                 </div>
-                                        
+
                                                                 <!-- Right column -->
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <label for="sport_category">Cabang Olahraga</label>
-                                                                        <select class="form-control" id="sport_category" name="sport_category" required>
-                                                                            <option value="" disabled>Pilih Cabang Olahraga</option>
-                                                                            @foreach($sportCategories as $category)
-                                                                                <option value="{{ $category->id }}" {{ $referee->sport_category == $category->id ? 'selected' : '' }}>
+                                                                        <label for="sport_category">Cabang
+                                                                            Olahraga</label>
+                                                                        <select class="form-control"
+                                                                            id="sport_category" name="sport_category"
+                                                                            required>
+                                                                            <option value="" disabled>Pilih
+                                                                                Cabang Olahraga</option>
+                                                                            @foreach ($sportCategories as $category)
+                                                                                <option value="{{ $category->id }}"
+                                                                                    {{ $referee->sport_category == $category->id ? 'selected' : '' }}>
                                                                                     {{ $category->sport_category }}
                                                                                 </option>
                                                                             @endforeach
@@ -344,33 +401,37 @@
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="photo">Foto</label>
-                                                                        <input type="file" class="form-control-file" id="photo" name="photo">
+                                                                        <input type="file"
+                                                                            class="form-control-file" id="photo"
+                                                                            name="photo">
                                                                         <div class="mt-2">
                                                                             @if ($referee->photo)
-                                                                                <img id="photo-preview" 
-                                                                                     src="{{ $referee->photo }}" 
-                                                                                     class="img-fluid rounded" 
-                                                                                     width="100" 
-                                                                                     alt="Foto Wasit">
+                                                                                <img id="photo-preview"
+                                                                                    src="{{ $referee->photo }}"
+                                                                                    class="img-fluid rounded"
+                                                                                    width="100" alt="Foto Wasit">
                                                                             @else
-                                                                                <span class="text-muted">Tidak ada Foto</span>
+                                                                                <span class="text-muted">Tidak ada
+                                                                                    Foto</span>
                                                                             @endif
                                                                         </div>
-                                                                        <small>Biarkan kosong jika tidak ingin mengubah foto.</small>
+                                                                        <small>Biarkan kosong jika tidak ingin mengubah
+                                                                            foto.</small>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                        
+
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-primary">Simpan
+                                                                    Perubahan</button>
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
                                     @endforeach
 
                                     <!-- Pagination Links -->
@@ -404,58 +465,89 @@
 
             </div>
         </div>
-            @include('layouts/footer')
-            <!--**********************************
+        @include('layouts/footer')
+        <!--**********************************
         Main wrapper end
     ***********************************-->
 
-            <!--**********************************
+        <!--**********************************
         Scripts
     ***********************************-->
-            <!-- Required vendors -->
-            <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/sport-category.js') }}"></script>
+        <!-- Required vendors -->
+        <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/sport-category.js') }}"></script>
 
-            <!-- Vectormap -->
-            <script src="{{ asset('gambar_aset/vendor/raphael/raphael.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/morris/morris.min.js') }}"></script>
-
-
-            <script src="{{ asset('gambar_aset/vendor/circle-progress/circle-progress.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/chart.js') }}/Chart.bundle.min.js') }}"></script>
-
-            <script src="{{ asset('gambar_aset/vendor/gaugeJS/dist/gauge.min.js') }}"></script>
-
-            <!--  flot-chart js -->
-            <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.resize.js') }}"></script>
-
-            <!-- Owl Carousel -->
-            <script src="{{ asset('gambar_aset/vendor/owl-carousel/js/owl.carousel.min.js') }}"></script>
-
-            <!-- Counter Up -->
-            <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.usa.js') }}"></script>
-            <script src="{{ asset('gambar_aset/vendor/jquery.counterup/jquery.counterup.min.js') }}"></script>
+        <!-- Vectormap -->
+        <script src="{{ asset('gambar_aset/vendor/raphael/raphael.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/morris/morris.min.js') }}"></script>
 
 
-            <script src="{{ asset('gambar_aset/js/dashboard/dashboard-1.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/circle-progress/circle-progress.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/chart.js') }}/Chart.bundle.min.js') }}"></script>
 
-            <!-- Datatable -->
-            <script src="{{ asset('gambar_aset/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
-            <script src="{{ asset('gambar_aset/js/plugins-init/datatables.init.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/gaugeJS/dist/gauge.min.js') }}"></script>
 
-            @if (Session::has('message'))
-                <script>
-                    swal("Berhasil", "{{ Session::get('message') }}", 'success', {
-                        button: true,
-                        button: "Ok",
-                        timer: 5000
-                    });
-                </script>
-            @endif
+        <!--  flot-chart js -->
+        <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/flot/jquery.flot.resize.js') }}"></script>
+
+        <!-- Owl Carousel -->
+        <script src="{{ asset('gambar_aset/vendor/owl-carousel/js/owl.carousel.min.js') }}"></script>
+
+        <!-- Counter Up -->
+        <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/jqvmap/js/jquery.vmap.usa.js') }}"></script>
+        <script src="{{ asset('gambar_aset/vendor/jquery.counterup/jquery.counterup.min.js') }}"></script>
+
+
+        <script src="{{ asset('gambar_aset/js/dashboard/dashboard-1.js') }}"></script>
+
+        <!-- Datatable -->
+        <script src="{{ asset('gambar_aset/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('gambar_aset/js/plugins-init/datatables.init.js') }}"></script>
+
+        @if (Session::has('message'))
+            <script>
+                swal("Berhasil", "{{ Session::get('message') }}", 'success', {
+                    button: true,
+                    button: "Ok",
+                    timer: 5000
+                });
+            </script>
+        @endif
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var options = {
+                    chart: {
+                        type: 'bar',
+                        height: 350
+                    },
+                    series: [{
+                        name: 'Jumlah Wasit',
+                        data: @json($categories->pluck('total')) // Data jumlah Wasit per kategori
+                    }],
+                    xaxis: {
+                        categories: @json($categories->pluck('sportCategory.sport_category')), // Nama kategori olahraga
+                        labels: {
+                            style: {
+                                fontSize: '10px' // Ukuran font untuk label kategori
+                            }
+                        }
+                    },
+                    colors: ['#FFA500'],
+                    title: {
+                        text: 'Statistik Wasit per Kategori Olahraga',
+                        align: 'center'
+                    }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+            });
+        </script>
 
 </body>
 

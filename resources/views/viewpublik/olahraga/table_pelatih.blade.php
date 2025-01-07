@@ -7,10 +7,9 @@
                     alt="{{ $coach->name }}" class="coach-photo">
                 <div class="coach-details text-center p-3">
                     <h5 class="text-dark">{{ $coach->name }}</h5>
-                    <p class="text-muted">Cabang: {{ $coach->sport_category }}</p>
-                    <a href="#" class="btn btn-primary btn-sm"
-                        onclick="showCoachDetails({{ json_encode($coach) }})" data-bs-toggle="modal"
-                        data-bs-target="#coachDetailModal">Detail</a>
+                    <p class="text-muted">Cabang: {{ $coach->SportCategory->sport_category }}</p>
+                    <a href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                                    data-target="#coachDetailModal{{ $coach->id }}">Detail</a>
                 </div>
             </div>
         </div>
@@ -37,15 +36,14 @@
                 <tr>
                     <td>{{ $no++ }}</td>
                     <td>{{ $coach->name }}</td>
-                    <td>{{ $coach->sport_category }}</td>
+                    <td>{{ $coach->SportCategory->sport_category }}</td>
                     <td>
                         <img src="{{ $coach->photo ? asset($coach->photo) : 'https://via.placeholder.com/100x100' }}"
                             alt="{{ $coach->name }}" class="img-thumbnail" width="100">
                     </td>
                     <td>
-                        <a href="#" class="btn btn-primary btn-sm"
-                            onclick="showCoachDetails({{ json_encode($coach) }})" data-bs-toggle="modal"
-                            data-bs-target="#coachDetailModal">Detail</a>
+                        <a href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                            data-target="#coachDetailModal{{ $coach->id }}">Detail</a>
 
                     </td>
                 </tr>

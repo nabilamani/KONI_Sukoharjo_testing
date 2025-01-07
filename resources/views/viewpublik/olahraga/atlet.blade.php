@@ -175,7 +175,8 @@
                 font-size: 10px;
                 /* Ukuran font default untuk angka */
             }
-            .gender p{
+
+            .gender p {
                 font-size: 6px;
             }
         }
@@ -205,7 +206,8 @@
                                 <div class="col-6 col-md-3 mb-3">
                                     <div class="card mx-2">
                                         <div class="card-body text-center">
-                                            <h5 class="card-title text-dark">{{ $category->SportCategory->sport_category }}</h5>
+                                            <h5 class="card-title text-dark">
+                                                {{ $category->SportCategory->sport_category }}</h5>
                                             <p class="card-text text-primary mb-1">
                                                 <strong>{{ $category->total }}</strong> Atlet
                                             </p>
@@ -222,7 +224,7 @@
                                 </div>
                             @endforeach
                         </div>
-                        
+
                     </div>
                 @empty
                     <div class="carousel-item active">
@@ -268,9 +270,9 @@
                 <select class="form-select form-select-sm me-2" name="sport_category">
                     <option value="">Semua Cabang Olahraga</option>
                     @foreach ($sportCategories as $category)
-                        <option value="{{ $category }}"
-                            {{ request('sport_category->') == $category ? 'selected' : '' }}>
-                            {{ $category }}
+                        <option value="{{ $category->id }}"
+                            {{ request('sport_category') == $category->id ? 'selected' : '' }}>
+                            {{ $category->sport_category }}
                         </option>
                     @endforeach
                 </select>
@@ -296,10 +298,10 @@
                                 alt="{{ $athlete->name }}" class="athlete-photo img-fluid">
                             <div class="athlete-details text-center p-2">
                                 <h6 class="text-dark mb-1">{{ $athlete->name }}</h6>
-                                <p class="text-muted small mb-2">Cabang: {{ $athlete->SportCategory->sport_category }}</p>
-                                <a href="#" class="btn btn-primary btn-sm"
-                                    onclick="showAthleteDetails({{ json_encode($athlete) }})" data-bs-toggle="modal"
-                                    data-bs-target="#athleteDetailModal">
+                                <p class="text-muted small mb-2">Cabang: {{ $athlete->SportCategory->sport_category }}
+                                </p>
+                                <a href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                                    data-target="#athleteDetailModal{{ $athlete->id }}">
                                     Detail
                                 </a>
                             </div>
@@ -347,9 +349,8 @@
                                         alt="{{ $athlete->name }}" class="img-thumbnail" width="100">
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-sm"
-                                        onclick="showAthleteDetails({{ json_encode($athlete) }})"
-                                        data-bs-toggle="modal" data-bs-target="#athleteDetailModal">Detail</a>
+                                    <a href="#" class="btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#athleteDetailModal{{ $athlete->id }}">Detail</a>
                                 </td>
                             </tr>
                         @empty
@@ -371,83 +372,96 @@
             </div>
         </div>
     </div>
-    <!-- Modal untuk Detail Atlet -->
-    <div class="modal fade mt-5 pt-2" id="athleteDetailModal" tabindex="-1"
-        aria-labelledby="athleteDetailModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary d-flex align-items-center">
-                    <h5 class="modal-title text-white" id="athleteDetailModalLabel">Detail Atlet</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body position-relative">
-                    <!-- Logo di kanan atas -->
-                    <img id="athleteLogo" src="{{ asset('gambar_aset/images/koni.png') }}" alt="Logo"
-                        class="position-absolute d-none d-md-block"
-                        style="top: 0; right: 0; width: 80px; height: 80px; margin: 10px; z-index: 10;">
+    @foreach ($athletes as $index => $athlete)
+        <!-- Modal for Athlete Details -->
+        <div class="modal fade mt-5 pt-2" id="athleteDetailModal{{ $athlete->id }}" tabindex="-1"
+            aria-labelledby="athleteDetailModalLabel{{ $athlete->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title text-white" id="athleteDetailModalLabel{{ $athlete->id }}">
+                            Detail Atlet</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body position-relative">
+                        <!-- Logo at the top right -->
+                        <img src="{{ asset('gambar_aset/images/koni.png') }}" alt="Logo"
+                            class="position-absolute d-none d-md-block"
+                            style="top: 0; right: 0; width: 80px; height: 80px; margin: 10px; z-index: 10;">
 
-                    <div class="row">
-                        <div class="col-12 col-md-4 mb-3 mb-md-0 text-center">
-                            <!-- Foto Atlet -->
-                            <img id="athletePhoto" src="" alt="Foto Atlet" class="img-fluid rounded">
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <!-- Detail Atlet -->
-                            <h5 id="athleteName" class="text-dark mb-3"></h5>
-                            <table class="table table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center text-md-start"><i
-                                                class="mdi mdi-trophy text-primary"></i></td>
-                                        <td><strong>Cabang Olahraga</strong></td>
-                                        <td id="athleteSportCategory">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center text-md-start"><i
-                                                class="mdi mdi-calendar text-primary"></i></td>
-                                        <td><strong>Tanggal Lahir</strong></td>
-                                        <td>
-                                            <span id="athleteBirthDate">-</span> (<span id="athleteAge">-</span>
-                                            tahun)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center text-md-start"><i
-                                                class="mdi mdi-gender-male-female text-primary"></i></td>
-                                        <td><strong>Jenis Kelamin</strong></td>
-                                        <td id="athleteGender">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center text-md-start"><i
-                                                class="mdi mdi-human text-primary"></i></td>
-                                        <td><strong>Tinggi Badan</strong></td>
-                                        <td id="athleteHeight">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center text-md-start"><i
-                                                class="mdi mdi-weight-kilogram text-primary"></i></td>
-                                        <td><strong>Berat Badan</strong></td>
-                                        <td id="athleteWeight">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center text-md-start"><i
-                                                class="mdi mdi-medal text-primary"></i></td>
-                                        <td><strong>Prestasi</strong></td>
-                                        <td>
-                                            <ul id="athleteAchievements" class="list-unstyled mb-0"></ul>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="row">
+                            <!-- Left column: Athlete photo -->
+                            <div class="col-md-4 text-center">
+                                <img src="{{ $athlete->photo ? asset($athlete->photo) : 'https://via.placeholder.com/300x200' }}"
+                                    class="img-fluid rounded" alt="Foto Atlet"
+                                    style="max-height: 300px; object-fit: cover;">
+                            </div>
+                            <!-- Right Column: Athlete Details -->
+                            <div class="col-12 col-md-8">
+                                <h5 class="text-dark mb-3">{{ $athlete->name }}</h5>
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center text-md-start"><i
+                                                    class="mdi mdi-trophy text-primary"></i></td>
+                                            <td><strong>Cabang Olahraga</strong></td>
+                                            <td>{{ $athlete->SportCategory->sport_category }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center text-md-start"><i
+                                                    class="mdi mdi-calendar text-primary"></i></td>
+                                            <td><strong>Tanggal Lahir</strong></td>
+                                            <td>
+                                                {{ \Carbon\Carbon::parse($athlete->birth_date)->format('d-m-Y') }}
+                                                (<span>{{ \Carbon\Carbon::parse($athlete->birth_date)->age }}</span>
+                                                tahun)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center text-md-start"><i
+                                                    class="mdi mdi-gender-male-female text-primary"></i></td>
+                                            <td><strong>Jenis Kelamin</strong></td>
+                                            <td>{{ $athlete->gender }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center text-md-start"><i
+                                                    class="mdi mdi-human text-primary"></i></td>
+                                            <td><strong>Tinggi Badan</strong></td>
+                                            <td>{{ $athlete->height }} cm</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center text-md-start"><i
+                                                    class="mdi mdi-weight-kilogram text-primary"></i></td>
+                                            <td><strong>Berat Badan</strong></td>
+                                            <td>{{ $athlete->weight }} kg</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center text-md-start"><i
+                                                    class="mdi mdi-medal text-primary"></i></td>
+                                            <td><strong>Prestasi</strong></td>
+                                            <td>
+                                                <ul class="list-unstyled mb-0">
+                                                    @foreach (explode(',', $athlete->achievements) as $achievement)
+                                                        <li>{{ $achievement }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer py-2">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <div class="modal-footer py-2">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endforeach
+
 
 
 
@@ -499,30 +513,6 @@
         // Memuat tampilan saat halaman dimuat
         document.addEventListener('DOMContentLoaded', loadView);
     </script>
-    <script>
-        function showAthleteDetails(athlete) {
-            // Isi data ke modal
-            document.getElementById('athletePhoto').src = athlete.photo ? `{{ asset('') }}${athlete.photo}` :
-                'https://via.placeholder.com/300x200';
-            document.getElementById('athleteName').textContent = athlete.name;
-            document.getElementById('athleteSportCategory').textContent = athlete.sport_category;
-            document.getElementById('athleteBirthDate').textContent = athlete.birth_date;
-            document.getElementById('athleteAge').textContent = athlete.age;
-            document.getElementById('athleteGender').textContent = athlete.gender || 'Tidak Diketahui';
-            document.getElementById('athleteHeight').textContent = athlete.height;
-            document.getElementById('athleteWeight').textContent = athlete.weight;
-
-            // Prestasi
-            const achievementsList = document.getElementById('athleteAchievements');
-            achievementsList.innerHTML = ''; // Hapus list sebelumnya
-            const achievements = athlete.achievements.split(';'); // Pisahkan prestasi berdasarkan ";"
-            achievements.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item.trim();
-                achievementsList.appendChild(li);
-            });
-        }
-    </script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
         AOS.init();
@@ -535,35 +525,6 @@
         });
     </script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-    {{-- <script>
-        function filterAthletes() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
-
-            // Filter Card View
-            const cards = document.querySelectorAll('#card-view .athlete-card');
-            cards.forEach(card => {
-                const name = card.querySelector('h5').textContent.toLowerCase();
-                const category = card.querySelector('p').textContent.toLowerCase();
-                if (name.includes(input) || category.includes(input)) {
-                    card.parentElement.style.display = '';
-                } else {
-                    card.parentElement.style.display = 'none';
-                }
-            });
-
-            // Filter Table View
-            const rows = document.querySelectorAll('#table-view tbody tr');
-            rows.forEach(row => {
-                const name = row.children[1].textContent.toLowerCase();
-                const category = row.children[2].textContent.toLowerCase();
-                if (name.includes(input) || category.includes(input)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-    </script> --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -595,6 +556,10 @@
             chart.render();
         });
     </script>
+    <!-- Required vendors -->
+    <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
+    <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
+    <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
 </body>
 
 </html>
