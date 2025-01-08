@@ -521,7 +521,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered bg-white" style="min-width: 900px;">
+                                            <table class="table table-bordered bg-white" style="min-width: 750px;">
                                                 <thead class="thead-dark">
                                                     <tr>
                                                         <th>Nama Atlet/Team</th>
@@ -543,7 +543,7 @@
                                                         @foreach ($achievements as $achievement)
                                                             <tr>
                                                                 <td>{{ $achievement->athlete_name }}</td>
-                                                                <td>{{ $achievement->sport_category }}</td>
+                                                                <td>{{ $achievement->SportCategory->sport_category }}</td>
                                                                 <td>{{ $achievement->certificate_date }}</td>
                                                                 <td>{{ $achievement->event_type }}</td>
                                                                 <td>{{ $achievement->description }}</td>

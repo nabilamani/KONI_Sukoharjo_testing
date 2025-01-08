@@ -101,12 +101,30 @@
             color: #fff;
         }
 
-        .chart-box.red { background-color: #f44336; }
-        .chart-box.blue { background-color: #2196F3; }
-        .chart-box.green { background-color: #4CAF50; }
-        .chart-box.yellow { background-color: #FFEB3B; color: #333; }
-        .chart-box.brown { background-color: #795548; }
-        .chart-box.purple { background-color: #9C27B0; }
+        .chart-box.red {
+            background-color: #f44336;
+        }
+
+        .chart-box.blue {
+            background-color: #2196F3;
+        }
+
+        .chart-box.green {
+            background-color: #4CAF50;
+        }
+
+        .chart-box.yellow {
+            background-color: #FFEB3B;
+            color: #333;
+        }
+
+        .chart-box.brown {
+            background-color: #795548;
+        }
+
+        .chart-box.purple {
+            background-color: #9C27B0;
+        }
 
         .connector {
             display: flex;
@@ -125,10 +143,12 @@
             background-color: #333;
             width: 50px;
         }
+
         .breadcrumb {
             border-right: 5px solid #FF9800;
             border-radius: 15px;
         }
+
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 16px;
@@ -150,7 +170,9 @@
             data-aos="zoom-in" data-aos-delay="0">
             <!-- Lottie Player -->
             <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-            <dotlottie-player src="https://lottie.host/88704d46-e4ea-4c33-937f-76265ef2b635/GLJkwbTevF.lottie" background="transparent" speed="1" style="width: 250px; height: 250px" loop autoplay></dotlottie-player>
+            <dotlottie-player src="https://lottie.host/88704d46-e4ea-4c33-937f-76265ef2b635/GLJkwbTevF.lottie"
+                background="transparent" speed="1" style="width: 250px; height: 250px" loop
+                autoplay></dotlottie-player>
 
             <!-- Hero Title -->
             <h1 class="hero-title text-white fst-italic mb-3" data-aos="zoom-in" data-aos-delay="200">
@@ -180,12 +202,12 @@
             <div class="card shadow-sm border-0 rounded-4" data-aos="zoom-in">
                 <div class="card-body">
                     <div class="chart-container">
-                        <h2 class="fw-bold mb-4 text-center" data-aos="fade-up">Struktural Koni</h2>
+                        <h2 class="fw-bold mb-4 text-center">Struktural Koni</h2>
                         <!-- Ketua Umum -->
-                        <div class="chart-level" data-aos="fade-up" data-aos-delay="100">
+                        <div class="chart-level">
                             <div class="chart-box red">KETUA UMUM<br>Iwan Gunarto, SE</div>
                         </div>
-    
+
                         <!-- Wakil Ketua -->
                         <div class="connector" data-aos="fade-up" data-aos-delay="200">
                             <div class="line"></div>
@@ -194,7 +216,7 @@
                             <div class="chart-box blue">WAKIL KETUA UMUM I<br>Drs. H. Sukono</div>
                             <div class="chart-box blue">WAKIL KETUA UMUM II<br>Drs. H. Sukirso</div>
                         </div>
-    
+
                         <!-- Sekretaris dan Bendahara -->
                         <div class="connector" data-aos="fade-up" data-aos-delay="400">
                             <div class="line"></div>
@@ -205,7 +227,7 @@
                             <div class="chart-box yellow">BENDAHARA UMUM<br>Agus Saptono, S.H</div>
                             <div class="chart-box yellow">WAKIL BENDAHARA UMUM<br>Erna Indriastuti, A.Md</div>
                         </div>
-    
+
                         <!-- Audit Internal -->
                         <div class="connector" data-aos="fade-up" data-aos-delay="600">
                             <div class="line"></div>
@@ -213,7 +235,7 @@
                         <div class="chart-level" data-aos="fade-up" data-aos-delay="700">
                             <div class="chart-box brown">AUDIT INTERNAL<br>Agus Wahyudi, S.Pd</div>
                         </div>
-    
+
                         <!-- Bidang-Bidang -->
                         <div class="connector" data-aos="fade-up" data-aos-delay="800">
                             <div class="line"></div>
@@ -223,7 +245,8 @@
                                 BIDANG ORGANISASI & KERJASAMA<br>Suharno, S.H<br>Yudianta, SE
                             </div>
                             <div class="chart-box purple">
-                                BIDANG HUKUM KEOLAHRAGAAN<br>Sugeng Widodo, S.Sos., M.Si<br>Dwi Purwanto Wisnu Wardono Wiyono
+                                BIDANG HUKUM KEOLAHRAGAAN<br>Sugeng Widodo, S.Sos., M.Si<br>Dwi Purwanto Wisnu Wardono
+                                Wiyono
                             </div>
                             <div class="chart-box purple">
                                 BIDANG MEDIA DAN HUMAS<br>Sunarno, SE., M.Eng<br>Heru Susilo Wibowo<br>Naufal Dzaky
@@ -241,7 +264,8 @@
                                 BIDANG ORGANISASI & KERJASAMA<br>Suharno, S.H<br>Yudianta, SE
                             </div>
                             <div class="chart-box purple">
-                                BIDANG HUKUM KEOLAHRAGAAN<br>Sugeng Widodo, S.Sos., M.Si<br>Dwi Purwanto Wisnu Wardono Wiyono
+                                BIDANG HUKUM KEOLAHRAGAAN<br>Sugeng Widodo, S.Sos., M.Si<br>Dwi Purwanto Wisnu Wardono
+                                Wiyono
                             </div>
                             <div class="chart-box purple">
                                 BIDANG MEDIA DAN HUMAS<br>Sunarno, SE., M.Eng<br>Heru Susilo Wibowo<br>Naufal Dzaky
@@ -262,10 +286,10 @@
     @include('viewpublik/layouts/footer')
 
 
-<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script>
-    AOS.init();
-</script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 
 </body>
 

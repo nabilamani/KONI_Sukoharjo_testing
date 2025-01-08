@@ -32,7 +32,7 @@ class BeritaController extends Controller
         // Ambil semua kategori olahraga
         $sportCategories = SportCategory::all();
 
-        return view('berita.daftar', compact('beritas', 'search','sportCategories'));
+        return view('berita.daftar', compact('beritas', 'search', 'sportCategories'));
     }
 
     /**
@@ -52,13 +52,21 @@ class BeritaController extends Controller
         // dd($request->all());
         $data = $request->validate([
             'judul_berita' => 'required|string',
-            'sport_category' => ['required', 'exists:sport_categories,id'],
+            'sport_category' => ['required'],
             'tanggal_waktu' => 'required|date',
             'lokasi_peristiwa' => 'required|string',
             'isi_berita' => 'required',
             'kutipan_sumber' => 'nullable|string',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        if ($request->sport_category === 'all') {
+            $data['sport_category'] = null; // Atur null jika "Semua"
+        } else {
+            $request->validate([
+                'sport_category' => ['exists:sport_categories,id'],
+            ]);
+        }
 
         $data['tanggal_waktu'] = Carbon::parse($request->tanggal_waktu);
 
@@ -106,13 +114,21 @@ class BeritaController extends Controller
 
         $data = $request->validate([
             'judul_berita' => 'required|string',
-            'sport_category' => ['required', 'exists:sport_categories,id'],
+            'sport_category' => ['required'],
             'tanggal_waktu' => 'required|date',
             'lokasi_peristiwa' => 'required|string',
             'isi_berita' => 'required',
             'kutipan_sumber' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        if ($request->sport_category === 'all') {
+            $data['sport_category'] = null; // Atur null jika "Semua"
+        } else {
+            $request->validate([
+                'sport_category' => ['exists:sport_categories,id'],
+            ]);
+        }
 
         $data['tanggal_waktu'] = Carbon::parse($request->tanggal_waktu);
 
@@ -127,6 +143,7 @@ class BeritaController extends Controller
         }
 
         $berita->update($data);
+        $berita = Berita::findOrFail($id);
 
         return redirect()->back()->with('message', 'News article successfully updated!');
     }
@@ -191,26 +208,48 @@ class BeritaController extends Controller
     {
         $user = Auth::user();
         $search = $request->input('search'); // Capture the search input from the request
+        $categoryId = $request->input('category_id'); // Capture category filter
 
-        // Filter news articles based on user level and search query if provided
-        $beritas = Berita::when($search, function ($query) use ($search) {
-            $query->where('judul_berita', 'like', "%$search%")
-                ->orWhere('lokasi_peristiwa', 'like', "%$search%");
-        })
-            ->orderBy('tanggal_waktu', 'desc') // Sort results by date in descending order
-            ->paginate(4); // Display 4 items per page
+        // Filter berita berdasarkan pencarian dan kategori
+        $beritas = Berita::with('sportCategory') // Include sportCategory relation
+            ->when($search, function ($query) use ($search) {
+                $query->where('judul_berita', 'like', "%$search%")
+                    ->orWhere('lokasi_peristiwa', 'like', "%$search%");
+            })
+            ->when($categoryId, function ($query) use ($categoryId) {
+                $query->where('sport_category', $categoryId); // Filter by sport_category
+            })
+            ->orderBy('tanggal_waktu', 'desc') // Sort by date descending
+            ->paginate(3); // Paginate the results
 
-        // Ambil event mendatang (future events) yang tanggal_event > sekarang
+        // Ambil event mendatang (future events)
         $upcomingEvents = Event::where('event_date', '>=', now()->startOfDay())
-            ->orderBy('event_date', 'asc') // Urutkan berdasarkan tanggal event
-            ->take(4) // Ambil 4 event mendatang
+            ->orderBy('event_date', 'asc')
+            ->take(4)
             ->get();
 
-        return view('viewpublik.berita.daftar', compact('beritas', 'search', 'upcomingEvents'));
+        // Ambil daftar kategori hanya dari Berita
+        $categories = Berita::select('sport_category')
+            ->distinct()
+            ->with('sportCategory') // Include related category name
+            ->get();
+
+        return view('viewpublik.berita.daftar', compact('beritas', 'search', 'upcomingEvents', 'categories', 'categoryId'));
     }
-    public function detail($id)
+
+
+    public function detail(Request $request, $id)
     {
         $berita = Berita::findOrFail($id);
+        $categoryId = $request->input('category_id'); // Capture category filter
+
+        // Filter berita berdasarkan pencarian dan kategori
+        $beritas = Berita::with('sportCategory') // Include sportCategory relation
+            ->when($categoryId, function ($query) use ($categoryId) {
+                $query->where('sport_category', $categoryId); // Filter by sport_category
+            })
+            ->orderBy('tanggal_waktu', 'desc') // Sort by date descending
+            ->paginate(4);
 
         // Ambil event mendatang (future events) yang tanggal_event > sekarang
         $upcomingEvents = Event::where('event_date', '>=', now()->startOfDay()) // Menyertakan hari ini
@@ -218,7 +257,13 @@ class BeritaController extends Controller
             ->take(4) // Ambil 4 event mendatang
             ->get();
 
+        // Ambil daftar kategori hanya dari Berita
+        $categories = Berita::select('sport_category')
+            ->distinct()
+            ->with('sportCategory') // Include related category name
+            ->get();
 
-        return view('viewpublik.berita.detail', compact('berita', 'upcomingEvents'));
+
+        return view('viewpublik.berita.detail', compact('berita', 'upcomingEvents','categories', 'categoryId'));
     }
 }

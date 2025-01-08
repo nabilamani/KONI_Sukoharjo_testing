@@ -53,7 +53,8 @@
             <a href="/coba" class="brand-logo">
                 <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt=""
                     style="margin-left: 10px; border-radius: 50%; ">
-                <span class="fw-bolder d-none d-md-inline" style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
+                <span class="fw-bolder d-none d-md-inline"
+                    style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola
                     KONI</span>
             </a>
 
@@ -185,7 +186,8 @@
                                                 <p class="text-muted mb-4">
                                                     Silahkan tambahkan berita baru untuk menampilkan daftar berita.
                                                 </p>
-                                                <a href="/beritas/create" class="btn btn-primary text-white px-4 py-2">
+                                                <a href="/beritas/create"
+                                                    class="btn btn-primary text-white px-4 py-2">
                                                     Tambah Berita
                                                 </a>
                                             </div>
@@ -287,71 +289,87 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
 
 
-                <div class="modal fade" id="newsEditModal" tabindex="-1" role="dialog"
-                    aria-labelledby="newsEditModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="newsEditModalLabel">Edit Berita</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="newsEditForm" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <label for="photo">Foto</label>
-                                            <input type="file" class="form-control-file" id="photo"
-                                                name="photo" accept="image/*" onchange="previewPhoto(event)">
-                                            <img id="photoPreview"
-                                                src="{{ old('photo', isset($berita->photo) ? asset($berita->photo) : '') }}"
-                                                alt="Foto" class="img-fluid rounded mt-2"
-                                                style="width: 100%; object-fit: cover;">
+
+                    <div class="modal fade" id="newsEditModal" tabindex="-1" role="dialog"
+                        aria-labelledby="newsEditModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="newsEditModalLabel">Edit Berita</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/edit-berita/{{ $berita->id }}" id="newsEditForm" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <label for="photo">Foto</label>
+                                                <input type="file" class="form-control-file" id="photo"
+                                                    name="photo" accept="image/*" onchange="previewPhoto(event)">
+                                                <img id="photoPreview"
+                                                    src="{{ old('photo', isset($berita->photo) ? asset($berita->photo) : '') }}"
+                                                    alt="Foto" class="img-fluid rounded mt-2"
+                                                    style="width: 100%; object-fit: cover;">
+                                            </div>
+
+                                            <div class="col-md-7">
+                                                <div class="form-group">
+                                                    <label for="judul_berita">Judul Berita</label>
+                                                    <input type="text" class="form-control" id="judul_berita"
+                                                        name="judul_berita" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="tanggal_waktu">Tanggal Waktu</label>
+                                                    <input type="datetime" class="form-control" id="tanggal_waktu"
+                                                        name="tanggal_waktu" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="lokasi_peristiwa">Lokasi Peristiwa</label>
+                                                    <input type="text" class="form-control" id="lokasi_peristiwa"
+                                                        name="lokasi_peristiwa" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="sport_category">Cabang Olahraga</label>
+                                                    <select class="form-control" id="sport_category"
+                                                        name="sport_category" required>
+                                                        <option value="" disabled>
+                                                            Pilih Cabang Olahraga</option>
+                                                        <option value="all">Semua</option>
+                                                        @foreach ($sportCategories as $category)
+                                                            <option value="{{ $category->id }}"
+                                                                {{ $berita->sport_category == $category->id ? 'selected' : '' }}>
+                                                                {{ $category->sport_category }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="isi_berita">Isi Berita</label>
+                                                    <textarea class="form-control" id="isi_berita" name="isi_berita" rows="4"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="kutipan_sumber">Kutipan Sumber</label>
+                                                    <input type="text" class="form-control" id="kutipan_sumber"
+                                                        name="kutipan_sumber">
+                                                </div>
+                                            </div>
                                         </div>
-
-                                        <div class="col-md-7">
-                                            <div class="form-group">
-                                                <label for="judul_berita">Judul Berita</label>
-                                                <input type="text" class="form-control" id="judul_berita"
-                                                    name="judul_berita" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="tanggal_waktu">Tanggal Waktu</label>
-                                                <input type="datetime" class="form-control" id="tanggal_waktu"
-                                                    name="tanggal_waktu" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="lokasi_peristiwa">Lokasi Peristiwa</label>
-                                                <input type="text" class="form-control" id="lokasi_peristiwa"
-                                                    name="lokasi_peristiwa" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="isi_berita">Isi Berita</label>
-                                                <textarea class="form-control" id="isi_berita" name="isi_berita" rows="4"></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="kutipan_sumber">Kutipan Sumber</label>
-                                                <input type="text" class="form-control" id="kutipan_sumber"
-                                                    name="kutipan_sumber">
-                                            </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Batal</button>
+                                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Batal</button>
-                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
 
 
 

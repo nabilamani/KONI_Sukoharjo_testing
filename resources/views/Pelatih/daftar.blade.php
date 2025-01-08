@@ -283,7 +283,8 @@
                                                                                     class="mdi mdi-soccer text-primary"></i>
                                                                                 Cabang Olahraga:
                                                                             </th>
-                                                                            <td>{{ $coach->sportCategory->sport_category }}</td>
+                                                                            <td>{{ $coach->sportCategory->sport_category }}
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <th scope="row">
@@ -359,11 +360,16 @@
                                                                     </div>
 
                                                                     <div class="form-group">
-                                                                        <label for="sport_category">Cabang Olahraga</label>
-                                                                        <select class="form-control" id="sport_category" name="sport_category" required>
-                                                                            <option value="" disabled>Pilih Cabang Olahraga</option>
-                                                                            @foreach($sportCategories as $category)
-                                                                                <option value="{{ $category->id }}" {{ $coach->sport_category == $category->id ? 'selected' : '' }}>
+                                                                        <label for="sport_category">Cabang
+                                                                            Olahraga</label>
+                                                                        <select class="form-control"
+                                                                            id="sport_category" name="sport_category"
+                                                                            required>
+                                                                            <option value="" disabled>Pilih
+                                                                                Cabang Olahraga</option>
+                                                                            @foreach ($sportCategories as $category)
+                                                                                <option value="{{ $category->id }}"
+                                                                                    {{ $coach->sport_category == $category->id ? 'selected' : '' }}>
                                                                                     {{ $category->sport_category }}
                                                                                 </option>
                                                                             @endforeach
@@ -454,27 +460,7 @@
         <!--**********************************
         Main wrapper end
     ***********************************-->
-        <script>
-            function previewNewPhoto() {
-                const fileInput = document.getElementById('photo');
-                const preview = document.getElementById('photo-preview');
-                const noPhotoText = document.getElementById('no-photo-text');
-
-                if (fileInput.files && fileInput.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        preview.src = e.target.result;
-                        preview.classList.remove('d-none');
-                        noPhotoText.classList.add('d-none');
-                    };
-                    reader.readAsDataURL(fileInput.files[0]);
-                } else {
-                    preview.src = '#';
-                    preview.classList.add('d-none');
-                    noPhotoText.classList.remove('d-none');
-                }
-            }
-        </script>
+        <script src="{{ asset('gambar_aset/js/imgpreview.js') }}"></script>
         <!--**********************************
         Scripts
     ***********************************-->

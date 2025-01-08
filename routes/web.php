@@ -64,6 +64,7 @@ Route::get('/galeri/calender', [EventController::class, 'showCalender'])->name('
 Route::get('/olahraga/atlet', [AthleteController::class, 'showAthletes'])->name('showAthletes');
 Route::get('/olahraga/pelatih', [CoachController::class, 'showCoaches'])->name('showCoaches');
 Route::get('/olahraga/wasit', [RefereeController::class, 'showReferees'])->name('showReferees');
+Route::get('/profil/struktur', [KoniStructureController::class, 'showstruktur'])->name('showstruktur');
 Route::get('/olahraga/cabor/{id}', [CaborController::class, 'show'])->name('cabor.show');
 
 Route::get('/galeri/foto', [GaleriController::class, 'showPhoto'])->name('showPhoto');
@@ -105,9 +106,9 @@ Route::get('/tambah', function () {
     return view('layouts.tambah');
 });
 
-Route::get('/profil/struktur', function () {
-    return view('viewpublik.profil.strukturalkoni');
-});
+// Route::get('/profil/struktur', function () {
+//     return view('viewpublik.profil.strukturalkoni');
+// });
 
 Route::get('/api/cari-pelatih', [CoachController::class, 'cariPelatih'])->name('cari-pelatih');
 Route::get('/api/cari-atlet', [AthleteController::class, 'cariAtlet'])->name('cari-atlet');

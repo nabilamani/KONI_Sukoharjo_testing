@@ -42,19 +42,6 @@ class EventController extends Controller
             ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
             ->paginate(4);
 
-        // // Filter events based on user level and search query
-        // $events = Event::when($user->level !== 'Admin', function ($query) use ($user) {
-        //     $sportCategory = str_replace('Pengurus Cabor ', '', $user->level);
-        //     $query->where('sport_category', $sportCategory);
-        // })
-        //     ->when($search, function ($query) use ($search) {
-        //         $query->where('name', 'like', "%$search%")
-        //             ->orWhere('sport_category', 'like', "%$search%")
-        //             ->orWhere('location', 'like', "%$search%");
-        //     })
-        //     ->orderBy('created_at', 'asc')
-        //     ->paginate(4);
-
         // Ambil semua kategori olahraga
         $sportCategories = SportCategory::all();
 
@@ -103,11 +90,21 @@ class EventController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string'],
             'event_date' => ['required', 'date'],
-            'sport_category' => ['required', 'exists:sport_categories,id'],
+            'sport_category' => ['required'],
             'location' => ['required', 'string'],
             'banner' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // Validasi banner
             'location_map' => ['required', 'string'], // Validasi iframe map lokasi
         ]);
+
+        // Tangani opsi "Semua"
+        if ($request->sport_category === 'all') {
+            $data['sport_category'] = null; // Atur null jika opsi "Semua" dipilih
+        } else {
+            // Tetap validasi jika bukan "all"
+            $request->validate([
+                'sport_category' => ['exists:sport_categories,id'],
+            ]);
+        }
 
         // Handle the banner image upload
         if ($request->hasFile('banner')) {
@@ -163,11 +160,19 @@ class EventController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string'],
             'event_date' => ['required', 'date'],
-            'sport_category' => ['required', 'exists:sport_categories,id'],
+            'sport_category' => ['required'],
             'location' => ['required', 'string'],
             'banner' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // Validasi banner
             'location_map' => ['required', 'string'], // Validasi URL map lokasi
         ]);
+
+        if ($request->sport_category === 'all') {
+            $data['sport_category'] = null; // Atur null jika "Semua"
+        } else {
+            $request->validate([
+                'sport_category' => ['exists:sport_categories,id'],
+            ]);
+        }
 
         // Handle the banner image upload
         if ($request->hasFile('banner')) {

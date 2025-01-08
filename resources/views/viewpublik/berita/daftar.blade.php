@@ -257,15 +257,25 @@
                 <div class="col-md-4" style="margin-top: 7.2rem;">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="card-title">Kategori Populer</h5>
+                            <h5 class="card-title">Kategori Berita</h5>
                             <hr>
                             <ul class="list-group kategori-list">
-                                <li class="list-group-item">Koni</li>
-                                <li class="list-group-item">Sepak Bola</li>
-                                <li class="list-group-item">Badminton</li>
-                                <li class="list-group-item">Bola Voli</li>
-                                <li class="list-group-item">Lainnya</li>
+                                <li class="list-group-item">
+                                    <a href="{{ route('berita.daftar', ['category_id' => '', 'search' => request('search')]) }}" 
+                                       class="{{ request('category_id') == '' ? 'text-primary fw-bold' : '' }}">
+                                        Semua Kategori
+                                    </a>
+                                </li>
+                                @foreach ($categories as $category)
+                                    <li class="list-group-item">
+                                        <a href="{{ route('berita.daftar', ['category_id' => $category->sport_category, 'search' => request('search')]) }}" 
+                                           class="{{ request('category_id') == $category->sport_category ? 'text-primary fw-bold' : '' }}">
+                                            {{ $category->sportCategory->sport_category ?? $category->sport_category }}
+                                        </a>
+                                    </li>
+                                @endforeach
                             </ul>
+                            
                         </div>
                     </div>
                     <div class="card mb-4">
@@ -288,7 +298,7 @@
                                     data-event_date="{{ \Carbon\Carbon::parse($event->event_date)->format('d F Y') }}"
                                     data-banner="{{ asset($event->banner) }}"
                                     data-location_map="{{ $event->location_map }}"
-                                    data-sport_category="{{ $event->sport_category }}">
+                                    data-sport_category="{{ $event->sportCategory->sport_category ?? 'Semua' }}">
 
                                     <!-- Banner -->
                                     <img src="{{ asset($event->banner ?? 'https://via.placeholder.com/80x80') }}"
@@ -310,7 +320,7 @@
                                         <!-- Sport Category -->
                                         <small class="text-muted">
                                             <i
-                                                class="mdi mdi-soccer me-2"></i>{{ $event->SportCategory->sport_category }}
+                                                class="mdi mdi-soccer me-2"></i>{{ $event->sportCategory->sport_category ?? 'Semua' }}
                                         </small>
                                     </div>
                                 </div>

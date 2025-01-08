@@ -23,8 +23,9 @@
 </head>
 <style>
     .card {
-    border-bottom: 3px solid orange; /* You can adjust the width (3px) as needed */
-}
+        border-bottom: 3px solid orange;
+        /* You can adjust the width (3px) as needed */
+    }
 </style>
 
 <body>
@@ -113,13 +114,15 @@
                             <div class="card-header">
                                 <h4 class="card-title">Daftar Struktur KONI</h4>
                                 <form action="{{ route('konistructures.index') }}" method="GET" class="form-inline">
-                                    <input type="text" name="search" class="form-control mr-2" placeholder="Cari anggota..." value="{{ request('search') }}">
+                                    <input type="text" name="search" class="form-control mr-2"
+                                        placeholder="Cari anggota..." value="{{ request('search') }}">
                                     <button type="submit" class="btn btn-outline-primary">Cari</button>
                                 </form>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="structureTable" class="table table-striped table-hover" style="min-width: 845px;">
+                                    <table id="structureTable" class="table table-striped table-hover"
+                                        style="min-width: 845px;">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th>No</th>
@@ -134,33 +137,47 @@
                                         </thead>
                                         <tbody class="text-dark">
                                             @php
-                                                $no = ($konistructures->currentPage() - 1) * $konistructures->perPage() + 1;
+                                                $no =
+                                                    ($konistructures->currentPage() - 1) * $konistructures->perPage() +
+                                                    1;
                                             @endphp
-                                            @foreach ($konistructures as $structure)
+                                            @foreach ($konistructures as $konistructure)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
-                                                    <td>{{ $structure->name }}</td>
-                                                    <td>{{ $structure->position }}</td>
-                                                    <td>{{ $structure->age }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($structure->birth_date)->format('d-m-Y') }}</td>
-                                                    <td>{{ $structure->gender }}</td>
-                                                    <td><img src="{{ asset($structure->photo) }}" width="50" alt="Foto"></td>
+                                                    <td>{{ $konistructure->name }}</td>
+                                                    <td>{{ $konistructure->position }}</td>
+                                                    <td>{{ $konistructure->age }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($konistructure->birth_date)->format('d-m-Y') }}
+                                                    </td>
+                                                    <td>{{ $konistructure->gender }}</td>
+                                                    <td><img src="{{ asset($konistructure->photo) }}" width="50"
+                                                            alt="Foto"></td>
                                                     <td>
                                                         <div class="dropdown">
-                                                            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                            <button
+                                                                class="btn btn-outline-primary btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-expanded="false">
                                                                 Aksi
                                                             </button>
                                                             <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#structureDetailModal{{ $structure->id }}">
+                                                                <a class="dropdown-item" href="#"
+                                                                    data-toggle="modal"
+                                                                    data-target="#structureDetailModal{{ $konistructure->id }}">
                                                                     <i class="bx bx-info-circle"></i> Lihat Detail
                                                                 </a>
-                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#structureEditModal{{ $structure->id }}">
+                                                                <a class="dropdown-item" href="#"
+                                                                    data-toggle="modal"
+                                                                    data-target="#structureEditModal{{ $konistructure->id }}">
                                                                     <i class="bx bx-edit-alt"></i> Edit
                                                                 </a>
-                                                                <form action="{{ route('konistructures.destroy', $structure->id) }}" method="POST" class="d-inline">
+                                                                <form
+                                                                    action="{{ route('konistructures.destroy', $konistructure->id) }}"
+                                                                    method="POST" class="d-inline">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit" class="dropdown-item" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                                    <button type="submit" class="dropdown-item"
+                                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                                                         <i class="bx bx-trash"></i> Hapus
                                                                     </button>
                                                                 </form>
@@ -168,91 +185,199 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                
+
                                                 <!-- Detail Modal -->
-                                                <div class="modal fade" id="structureDetailModal{{ $structure->id }}" tabindex="-1" role="dialog" aria-labelledby="structureDetailModalLabel{{ $structure->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                <div class="modal fade"
+                                                    id="structureDetailModal{{ $konistructure->id }}" tabindex="-1"
+                                                    role="dialog"
+                                                    aria-labelledby="structureDetailModalLabel{{ $konistructure->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg"
+                                                        role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header bg-primary text-white">
-                                                                <h5 class="modal-title" id="structureDetailModalLabel{{ $structure->id }}">Detail Struktur KONI: {{ $structure->name }}</h5>
-                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                <h5 class="modal-title"
+                                                                    id="structureDetailModalLabel{{ $konistructure->id }}">
+                                                                    Detail Struktur KONI: {{ $konistructure->name }}
+                                                                </h5>
+                                                                <button type="button" class="close text-white"
+                                                                    data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="row">
                                                                     <div class="col-md-4 text-center">
-                                                                        <img src="{{ asset($structure->photo) }}" class="img-fluid rounded" alt="Foto" style="max-height: 300px; object-fit: cover;">
+                                                                        <img src="{{ asset($konistructure->photo) }}"
+                                                                            class="img-fluid rounded" alt="Foto"
+                                                                            style="max-height: 300px; object-fit: cover;">
                                                                     </div>
                                                                     <div class="col-md-8">
-                                                                        <p><strong>Nama:</strong> {{ $structure->name }}</p>
-                                                                        <p><strong>Jabatan:</strong> {{ $structure->position }}</p>
-                                                                        <p><strong>Umur:</strong> {{ $structure->age }}</p>
-                                                                        <p><strong>Tanggal Lahir:</strong> {{ $structure->birth_date }}</p>
-                                                                        <p><strong>Jenis Kelamin:</strong> {{ $structure->gender }}</p>
+                                                                        <p><strong>Nama:</strong>
+                                                                            {{ $konistructure->name }}</p>
+                                                                        <p><strong>Jabatan:</strong>
+                                                                            {{ $konistructure->position }}</p>
+                                                                        <p><strong>Umur:</strong>
+                                                                            {{ $konistructure->age }}</p>
+                                                                        <p><strong>Tanggal Lahir:</strong>
+                                                                            {{ $konistructure->birth_date }}</p>
+                                                                        <p><strong>Jenis Kelamin:</strong>
+                                                                            {{ $konistructure->gender }}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Tutup</button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                
+
                                                 <!-- Edit Modal -->
-                                                <div class="modal fade" id="structureEditModal{{ $structure->id }}" tabindex="-1" role="dialog" aria-labelledby="structureEditModalLabel{{ $structure->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                <div class="modal fade"
+                                                    id="structureEditModal{{ $konistructure->id }}" tabindex="-1"
+                                                    role="dialog"
+                                                    aria-labelledby="structureEditModalLabel{{ $konistructure->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg"
+                                                        role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header bg-primary text-white">
-                                                                <h5 class="modal-title" id="structureEditModalLabel{{ $structure->id }}">Edit Struktur KONI: {{ $structure->name }}</h5>
-                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                <h5 class="modal-title"
+                                                                    id="structureEditModalLabel{{ $konistructure->id }}">
+                                                                    Edit Struktur KONI: {{ $konistructure->name }}</h5>
+                                                                <button type="button" class="close text-white"
+                                                                    data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="{{ route('konistructures.update', $structure->id) }}" method="POST" enctype="multipart/form-data">
+                                                                <form
+                                                                    action="edit-konistructure/{{ $konistructure->id }}"
+                                                                    method="POST" enctype="multipart/form-data">
                                                                     @csrf
                                                                     @method('PUT')
                                                                     <div class="row">
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label for="name">Nama</label>
-                                                                                <input type="text" class="form-control" id="name" name="name" value="{{ $structure->name }}" required>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    id="name" name="name"
+                                                                                    value="{{ $konistructure->name }}"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="position">Jabatan</label>
-                                                                                <input type="text" class="form-control" id="position" name="position" value="{{ $structure->position }}" required>
+                                                                                <select name="position"
+                                                                                    class="form-control" required>
+                                                                                    <option value="">{{ $konistructure->position }}</option>
+                                                                                    <option value="Ketua Umum">Ketua
+                                                                                        Umum</option>
+                                                                                    <option value="Wakil Ketua Umum I">
+                                                                                        Wakil Ketua Umum I</option>
+                                                                                    <option
+                                                                                        value="Wakil Ketua Umum II">
+                                                                                        Wakil Ketua Umum II</option>
+                                                                                    <option value="Sekretaris Umum">
+                                                                                        Sekretaris Umum</option>
+                                                                                    <option
+                                                                                        value="Wakil Sekretaris Umum">
+                                                                                        Wakil Sekretaris Umum</option>
+                                                                                    <option value="Bendahara Umum">
+                                                                                        Bendahara Umum</option>
+                                                                                    <option
+                                                                                        value="Wakil Bendahara Umum">
+                                                                                        Wakil Bendahara Umum</option>
+                                                                                    <option value="Audit Internal">
+                                                                                        Audit Internal</option>
+                                                                                    <option
+                                                                                        value="Bidang Organisasi & Kerjasama Antar Lembaga">
+                                                                                        Bidang
+                                                                                        Organisasi & Kerjasama Antar
+                                                                                        Lembaga</option>
+                                                                                    <option
+                                                                                        value="Bidang Pembinaan Prestasi">
+                                                                                        Bidang Pembinaan Prestasi
+                                                                                    </option>
+                                                                                    <option
+                                                                                        value="Bidang Hukum Keolahragaan">
+                                                                                        Bidang Hukum Keolahragaan
+                                                                                    </option>
+                                                                                    <option
+                                                                                        value="Bidang Pendidikan, Penataran dan Litbang">
+                                                                                        Bidang
+                                                                                        Pendidikan, Penataran dan
+                                                                                        Litbang</option>
+                                                                                    <option
+                                                                                        value="Bidang Media dan Humas">
+                                                                                        Bidang Media dan Humas</option>
+                                                                                    <option
+                                                                                        value="Bidang Sport Science dan IPTEK">
+                                                                                        Bidang Sport Science dan
+                                                                                        IPTEK</option>
+                                                                                    <option
+                                                                                        value="Bidang Pengumpulan dan Pengolahan Data">
+                                                                                        Bidang
+                                                                                        Pengumpulan dan Pengolahan Data
+                                                                                    </option>
+                                                                                    <option
+                                                                                        value="Bidang Perencanaan dan Anggaran">
+                                                                                        Bidang Perencanaan dan
+                                                                                        Anggaran</option>
+                                                                                </select>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label for="birth_date">Tanggal Lahir</label>
-                                                                                <input type="date" class="form-control" id="birth_date" name="birth_date" value="{{ $structure->birth_date }}" required>
+                                                                                <label for="birth_date">Tanggal
+                                                                                    Lahir</label>
+                                                                                <input type="date"
+                                                                                    class="form-control"
+                                                                                    id="birth_date" name="birth_date"
+                                                                                    value="{{ $konistructure->birth_date }}"
+                                                                                    required>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label for="age">Umur</label>
-                                                                                <input type="number" class="form-control" id="age" name="age" value="{{ $structure->age }}" required>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="gender">Jenis Kelamin</label>
-                                                                                <select class="form-control" id="gender" name="gender" required>
-                                                                                    <option value="Laki-Laki" {{ $structure->gender == 'Laki-Laki' ? 'selected' : '' }}>Laki-Laki</option>
-                                                                                    <option value="Perempuan" {{ $structure->gender == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                                                                <label for="gender">Jenis
+                                                                                    Kelamin</label>
+                                                                                <select name="gender"
+                                                                                    class="form-control" required>
+                                                                                    <option value="Laki-laki"
+                                                                                        {{ $konistructure->gender == 'Laki-laki' ? 'selected' : '' }}>
+                                                                                        Laki-laki</option>
+                                                                                    <option value="Perempuan"
+                                                                                        {{ $konistructure->gender == 'Perempuan' ? 'selected' : '' }}>
+                                                                                        Perempuan</option>
                                                                                 </select>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="photo">Foto</label>
-                                                                                <input type="file" class="form-control-file" id="photo" name="photo">
+                                                                                <input type="file"
+                                                                                    class="form-control-file"
+                                                                                    id="photo" name="photo"
+                                                                                    onchange="previewNewPhoto()">
                                                                                 <div class="mt-2">
-                                                                                    <img src="{{ asset($structure->photo) }}" class="img-fluid rounded" width="100" alt="Foto">
+                                                                                    <img id="photo-preview"
+                                                                                        src="{{ $konistructure->photo ? asset($konistructure->photo) : '#' }}"
+                                                                                        class="img-fluid rounded {{ $konistructure->photo ? '' : 'd-none' }}"
+                                                                                        width="100"
+                                                                                        alt="Foto Pelatih">
+                                                                                    <span id="no-photo-text"
+                                                                                        class="text-muted {{ $konistructure->photo ? 'd-none' : '' }}">Tidak
+                                                                                        ada Foto</span>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-secondary"
+                                                                            data-dismiss="modal">Batal</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Simpan
+                                                                            Perubahan</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -266,14 +391,16 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <a href="{{ route('konistructures.create') }}" class="btn btn-rounded btn-primary">Tambah Anggota</a>
-                                <a href="{{ route('cetak-konistructure') }}" target="_blank" class="btn btn-rounded btn-primary mx-2">Cetak Laporan</a>
+                                <a href="{{ route('konistructures.create') }}"
+                                    class="btn btn-rounded btn-primary">Tambah Pengurus</a>
+                                <a href="{{ route('cetak-konistructure') }}" target="_blank"
+                                    class="btn btn-rounded btn-primary mx-2">Cetak Laporan</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                
+
+
                 <!--**********************************
             Content body end
         ***********************************-->
@@ -301,6 +428,7 @@
             <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
             <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>
             <script src="{{ asset('gambar_aset/js/custom.min.js') }}"></script>
+            <script src="{{ asset('gambar_aset/js/imgpreview.js') }}"></script>
 
 
             <!-- Vectormap -->

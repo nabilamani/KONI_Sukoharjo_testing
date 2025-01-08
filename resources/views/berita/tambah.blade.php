@@ -155,6 +155,7 @@
                                             <select name="sport_category" class="form-control">
                                                 <option value="" hidden selected disabled>Pilih kategori...
                                                 </option>
+                                                <option value="all">Semua/Koni</option>
                                                 @foreach ($sportCategories as $category)
                                                     <option value="{{ $category->id }}">
                                                         {{ $category->sport_category }}</option>

@@ -145,7 +145,7 @@
                                                     <td>{{ $event->name }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($event->event_date)->format('d-m-Y') }}
                                                     </td>
-                                                    <td>{{ $event->SportCategory->sport_category }}</td>
+                                                    <td>{{ $event->sportCategory->sport_category ?? 'Semua' }}</td>
                                                     <td>{{ $event->location }}</td>
                                                     <!-- Add View Map Button -->
                                                     <td>
@@ -274,7 +274,7 @@
                                             <p><strong>Tanggal Acara:</strong>
                                                 {{ \Carbon\Carbon::parse($event->event_date)->format('d-m-Y') }}</p>
                                             <p><strong>Cabang Olahraga:</strong>
-                                                {{ $event->SportCategory->sport_category }}</p>
+                                                {{ $event->sportCategory->sport_category ?? 'Semua' }}</p>
                                             <p><strong>Lokasi:</strong> {{ $event->location }}</p>
                                         </div>
                                         <div class="col-md-6 text-center">
@@ -355,6 +355,7 @@
                                                         name="sport_category" required>
                                                         <option value="" disabled>
                                                             Pilih Cabang Olahraga</option>
+                                                        <option value="all">Semua</option>
                                                         @foreach ($sportCategories as $category)
                                                             <option value="{{ $category->id }}"
                                                                 {{ $event->sport_category == $category->id ? 'selected' : '' }}>

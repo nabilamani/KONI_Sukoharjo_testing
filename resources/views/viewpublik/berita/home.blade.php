@@ -354,7 +354,7 @@
 
                                             <!-- Sport Category -->
                                             <small class="text-muted">
-                                                <i class="mdi mdi-soccer me-2"></i>{{ $event->SportCategory->sport_category }}
+                                                <i class="mdi mdi-soccer me-2"></i>{{ $event->sportCategory->sport_category ?? 'Semua' }}
                                             </small>
                                         </div>
                                     </div>

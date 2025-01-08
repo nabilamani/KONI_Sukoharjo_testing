@@ -129,22 +129,6 @@ class GaleriController extends Controller
             // 'media_path' => ['nullable', 'file', 'mimes:jpeg,png,jpg,mp4,avi,mkv', 'max:20480'], // Optional file
         ]);
 
-        // Handle file upload
-        // if ($request->hasFile('media_path')) {
-        //     // Delete the old file if it exists
-        //     if ($gallery->media_path) {
-        //         Storage::delete(str_replace('storage/', 'public/', $gallery->media_path));
-        //     }
-
-        //     $file = $request->file('media_path');
-        //     $filename = time() . '_' . Str::slug($file->getClientOriginalName());
-        //     $path = $file->storeAs('public/uploads/galleries', $filename); // Save new file
-        //     $data['media_path'] = str_replace('public/', 'storage/', $path); // Public path
-        // } else {
-        //     // Preserve the current media path if no new file is uploaded
-        //     $data['media_path'] = $gallery->media_path;
-        // }
-
         // Update gallery data
         $gallery->update($data);
 
@@ -183,7 +167,7 @@ class GaleriController extends Controller
         // Query pencarian berdasarkan nama atau cabang olahraga
         $galleries = Gallery::where('title', 'like', '%' . $search . '%')
             ->orWhere('sport_category', 'like', '%' . $search . '%')
-            ->paginate(12);
+            ->get();
 
         // Ambil semua kategori olahraga
         $sportCategories = SportCategory::all();
