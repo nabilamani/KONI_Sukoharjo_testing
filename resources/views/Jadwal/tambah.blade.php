@@ -42,8 +42,10 @@
         ***********************************-->
         <div class="nav-header">
             <a href="/coba" class="brand-logo">
-                <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt="" style="margin-left: 10px; border-radius: 50%;">
-                <span class="fw-bolder d-none d-md-inline" style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola KONI</span>
+                <img class="logo-abbr" src="{{ asset('gambar_aset/images/koni.png') }}" alt=""
+                    style="margin-left: 10px; border-radius: 50%;">
+                <span class="fw-bolder d-none d-md-inline"
+                    style="margin-left: 10px; font-size: 18px; font-weight: 300">Sistem Kelola KONI</span>
             </a>
 
             <div class="nav-control">
@@ -81,7 +83,8 @@
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4>Hi, Selamat Datang kembali!</h4>
-                            <p class="mb-1"><span class="text-success">{{ Auth::user()->name }},</span> Anda login sebagai <span class="text-success">{{ Auth::user()->level }}</span></p>
+                            <p class="mb-1"><span class="text-success">{{ Auth::user()->name }},</span> Anda login
+                                sebagai <span class="text-success">{{ Auth::user()->level }}</span></p>
                         </div>
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -101,45 +104,76 @@
                             <div class="card-body">
                                 <form action="/schedules" method="post">
                                     @csrf
+                                    <!-- Input untuk Kebutuhan Latihan -->
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="name">Nama Pertandingan</label>
+                                        <label class="col-sm-2 col-form-label" for="name">Kebutuhan Latihan</label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="name" class="form-control" placeholder="Masukkan nama pertandingan..." required />
+                                            <input type="text" name="name" class="form-control"
+                                                placeholder="Masukkan kebutuhan latihan..." required />
                                         </div>
                                     </div>
+
+                                    <!-- Input untuk Tanggal dan Waktu -->
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="date">Tanggal Pertandingan</label>
+                                        <label class="col-sm-2 col-form-label" for="date">Tanggal Latihan</label>
                                         <div class="col-sm-4">
                                             <input type="date" name="date" class="form-control" required />
                                         </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="sportCategorySelect" class="col-sm-2 col-form-label">Pilih
-                                            Cabor</label>
+                                        <label class="col-sm-2 col-form-label" for="time">Waktu Latihan</label>
                                         <div class="col-sm-4">
-                                            <select id="sportCategorySelect" name="sport_category"
-                                                class="form-control sport-category-select">
-                                                <option value="" hidden selected disabled>Pilih kategori..
+                                            <input type="time" name="time" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <!-- Input untuk Kategori Olahraga -->
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Pilih Cabor</label>
+                                        <div class="col-sm-4">
+                                            <select name="sport_category" class="form-control">
+                                                <option value="" hidden selected disabled>Pilih kategori...
                                                 </option>
+                                                <option value="all">Semua</option> <!-- Opsi Semua -->
+                                                @foreach ($sportCategories as $category)
+                                                    <option value="{{ $category->id }}">
+                                                        {{ $category->sport_category }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
+
+                                    <!-- Input untuk Tempat Latihan -->
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="venue_name">Nama Tempat</label>
+                                        <label class="col-sm-2 col-form-label" for="venue_name">Tempat Latihan</label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="venue_name" class="form-control" placeholder="Masukkan nama tempat..." required />
+                                            <input type="text" name="venue_name" class="form-control"
+                                                placeholder="Masukkan nama tempat latihan..." required />
                                         </div>
                                     </div>
+
+                                    <!-- Input untuk Lokasi Peta -->
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="venue_map">Peta (iframe)</label>
                                         <div class="col-sm-10">
                                             <textarea name="venue_map" class="form-control" placeholder="Masukkan iframe peta..." required></textarea>
-                                            <small class="form-text text-muted">Masukkan kode iframe dari Google Maps.</small>
+                                            <small class="form-text text-muted">Masukkan kode iframe dari Google
+                                                Maps.</small>
                                         </div>
                                     </div>
+
+                                    <!-- Input untuk Catatan Tambahan -->
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="notes">Catatan Tambahan</label>
+                                        <div class="col-sm-10">
+                                            <textarea name="notes" class="form-control" placeholder="Masukkan catatan tambahan..." rows="3"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tombol Submit -->
                                     <div class="row justify-content-end">
                                         <div class="col-sm-10">
-                                            <button type="submit" class="btn btn-primary">Tambah Schedule</button>
+                                            <button type="submit" class="btn btn-primary">Tambah Jadwal
+                                                Latihan</button>
                                         </div>
                                     </div>
                                 </form>
@@ -147,11 +181,11 @@
                         </div>
                     </div>
                 </div>
-                
-                
-                
-                
-                
+
+
+
+
+
                 <!--**********************************
                     Content body end
                 ***********************************-->

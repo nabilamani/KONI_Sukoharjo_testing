@@ -123,8 +123,9 @@
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th>No</th>
-                                                <th>Nama Pertandingan</th>
+                                                <th>Keperluan Latihan</th>
                                                 <th>Tanggal</th>
+                                                <th>Waktu</th>
                                                 <th>Kategori Olahraga</th>
                                                 <th>Tempat</th>
                                                 <th>Peta</th>
@@ -139,8 +140,11 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $schedule->name }}</td>
-                                                    <td>{{ $schedule->date }}</td>
-                                                    <td>{{ $schedule->sport_category }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }}
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($schedule->time)->format('H:i') }}
+                                                    </td>
+                                                    <td>{{ $schedule->sportCategory->sport_category ?? 'Semua' }}</td>
                                                     <td>{{ $schedule->venue_name }}</td>
                                                     <td>
                                                         <a href="#scheduleMapModal{{ $schedule->id }}"
@@ -232,34 +236,96 @@
                                             aria-labelledby="scheduleDetailModalLabel{{ $schedule->id }}"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
+                                                <div class="modal-content shadow-lg">
+                                                    <!-- Modal Header -->
                                                     <div class="modal-header bg-primary text-white">
-                                                        <h5 class="modal-title"
-                                                            id="scheduleDetailModalLabel{{ $schedule->id }}">Detail
-                                                            Pertandingan: {{ $schedule->name }}</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
+                                                        <h5 class="modal-title d-flex align-items-center"
+                                                            id="scheduleDetailModalLabel{{ $schedule->id }}">
+                                                            <i class="mdi mdi-calendar-check-outline mr-2"></i>
+                                                            Detail Jadwal: {{ $schedule->name }}
+                                                        </h5>
+                                                        <button type="button" class="close text-white"
+                                                            data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body p-3">
-                                                        <p><strong>Nama Pertandingan:</strong> {{ $schedule->name }}
-                                                        </p>
-                                                        <p><strong>Tanggal:</strong> {{ $schedule->date }}</p>
-                                                        <p><strong>Kategori Olahraga:</strong>
-                                                            {{ $schedule->sport_category }}</p>
-                                                        <p><strong>Tempat:</strong> {{ $schedule->venue_name }}</p>
-                                                        <p><strong>Peta:</strong></p>
-                                                        <iframe src="{{ $schedule->venue_map }}" width="100%"
-                                                            height="400" style="border:0;" allowfullscreen
-                                                            loading="lazy"></iframe>
+
+                                                    <!-- Modal Body -->
+                                                    <div class="modal-body p-4">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <p>
+                                                                    <strong class="text-primary">
+                                                                        <i class="mdi mdi-trophy-outline"></i> Nama
+                                                                        Pertandingan:
+                                                                    </strong>
+                                                                </p>
+                                                                <p class="text-muted">{{ $schedule->name }}</p>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <p>
+                                                                    <strong class="text-primary">
+                                                                        <i class="mdi mdi-calendar"></i> Tanggal:
+                                                                    </strong>
+                                                                </p>
+                                                                <p class="text-muted">
+                                                                    {{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <p>
+                                                                    <strong class="text-primary">
+                                                                        <i class="mdi mdi-football"></i> Kategori
+                                                                        Olahraga:
+                                                                    </strong>
+                                                                </p>
+                                                                <p class="text-muted">
+                                                                    {{ $schedule->sportCategory->sport_category }}
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <p>
+                                                                    <strong class="text-primary">
+                                                                        <i class="mdi mdi-map-marker"></i> Tempat:
+                                                                    </strong>
+                                                                </p>
+                                                                <p class="text-muted">{{ $schedule->venue_name }}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <p>
+                                                                    <strong class="text-primary">
+                                                                        <i class="mdi mdi-map"></i> Peta Lokasi:
+                                                                    </strong>
+                                                                </p>
+                                                                <div
+                                                                    class="embed-responsive embed-responsive-16by9 border rounded">
+                                                                    <iframe src="{{ $schedule->venue_map }}"
+                                                                        class="embed-responsive-item" frameborder="0"
+                                                                        allowfullscreen loading="lazy"></iframe>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="modal-footer">
+
+                                                    <!-- Modal Footer -->
+                                                    <div class="modal-footer justify-content-between bg-light">
+                                                        <small class="text-muted">
+                                                            <i class="mdi mdi-information-outline text-primary"></i>
+                                                            Detail pertandingan diperbarui pada
+                                                            {{ \Carbon\Carbon::parse($schedule->updated_at)->format('d M Y, H:i') }}
+                                                        </small>
                                                         <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Tutup</button>
+                                                            data-dismiss="modal">
+                                                            <i class="mdi mdi-close-circle-outline"></i> Tutup
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
 
                                         <!-- Modal for Editing Schedule -->
@@ -278,47 +344,100 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body p-3">
+                                                    <div class="modal-body p-4">
                                                         <form action="/edit-schedule/{{ $schedule->id }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('PUT')
-                                                            <div class="form-group mb-3">
-                                                                <label for="name">Nama Pertandingan</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="name" name="name"
-                                                                    value="{{ $schedule->name }}" required>
+
+                                                            <!-- Nama Pertandingan -->
+                                                            <div class="form-group">
+                                                                <label for="name"
+                                                                    class="text-primary font-weight-bold">
+                                                                    <i class="mdi mdi-trophy-outline"></i> Nama
+                                                                    Pertandingan
+                                                                </label>
+                                                                <input type="text"
+                                                                    class="form-control border-primary" id="name"
+                                                                    name="name" value="{{ $schedule->name }}"
+                                                                    placeholder="Masukkan nama pertandingan" required>
                                                             </div>
-                                                            <div class="form-group mb-3">
-                                                                <label for="date">Tanggal</label>
-                                                                <input type="date" class="form-control"
-                                                                    id="date" name="date"
-                                                                    value="{{ $schedule->date }}" required>
+
+                                                            <!-- Tanggal -->
+                                                            <!-- Tanggal dan Waktu -->
+                                                            <div class="form-group">
+                                                                <label for="date"
+                                                                    class="text-primary font-weight-bold">
+                                                                    <i class="mdi mdi-calendar-clock"></i> Tanggal dan
+                                                                    Waktu
+                                                                </label>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input type="date"
+                                                                        class="form-control border-primary mr-2"
+                                                                        id="date" name="date"
+                                                                        value="{{ $schedule->date }}" required>
+                                                                    <input type="time"
+                                                                        class="form-control border-primary"
+                                                                        id="time" name="time"
+                                                                        value="{{ $schedule->time ?? '00:00' }}"
+                                                                        required>
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group mb-3">
-                                                                <label for="sport_category">Kategori Olahraga</label>
-                                                                <select id="sportCategorySelect" name="sport_category"
-                                                                    class="form-control sport-category-select">
-                                                                    <option value="{{ $schedule->sport_category }}"
-                                                                        selected>{{ $schedule->sport_category }}
-                                                                    </option>
+
+                                                            <!-- Kategori Olahraga -->
+                                                            <div class="form-group">
+                                                                <label for="sport_category"
+                                                                    class="text-primary font-weight-bold">
+                                                                    <i class="mdi mdi-football"></i> Kategori Olahraga
+                                                                </label>
+                                                                <select class="form-control border-primary"
+                                                                    id="sport_category" name="sport_category"
+                                                                    required>
+                                                                    <option value="" disabled>
+                                                                        Pilih Cabang Olahraga</option>
+                                                                    <option value="all">Semua</option>
+                                                                    @foreach ($sportCategories as $category)
+                                                                        <option value="{{ $category->id }}"
+                                                                            {{ $schedule->sport_category == $category->id ? 'selected' : '' }}>
+                                                                            {{ $category->sport_category }}
+                                                                        </option>
+                                                                    @endforeach
                                                                 </select>
                                                             </div>
-                                                            <div class="form-group mb-3">
-                                                                <label for="venue_name">Nama Tempat</label>
-                                                                <input type="text" class="form-control"
+
+                                                            <!-- Nama Tempat -->
+                                                            <div class="form-group">
+                                                                <label for="venue_name"
+                                                                    class="text-primary font-weight-bold">
+                                                                    <i class="mdi mdi-map-marker"></i> Nama Tempat
+                                                                </label>
+                                                                <input type="text"
+                                                                    class="form-control border-primary"
                                                                     id="venue_name" name="venue_name"
-                                                                    value="{{ $schedule->venue_name }}" required>
+                                                                    value="{{ $schedule->venue_name }}"
+                                                                    placeholder="Masukkan nama tempat" required>
                                                             </div>
-                                                            <div class="form-group mb-3">
-                                                                <label for="venue_map">Peta (iframe)</label>
-                                                                <textarea class="form-control" id="venue_map" name="venue_map" required>{{ $schedule->venue_map }}</textarea>
+
+                                                            <!-- Peta -->
+                                                            <div class="form-group">
+                                                                <label for="venue_map"
+                                                                    class="text-primary font-weight-bold">
+                                                                    <i class="mdi mdi-map"></i> Peta Lokasi (iframe)
+                                                                </label>
+                                                                <textarea class="form-control border-primary" id="venue_map" name="venue_map" rows="3"
+                                                                    placeholder="Masukkan iframe Google Maps untuk lokasi" required>{{ $schedule->venue_map }}</textarea>
                                                             </div>
+
+                                                            <!-- Modal Footer -->
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Batal</button>
-                                                                <button type="submit" class="btn btn-primary">Simpan
-                                                                    Perubahan</button>
+                                                                    data-dismiss="modal">
+                                                                    <i class="mdi mdi-close-circle-outline"></i> Batal
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary">
+                                                                    <i class="mdi mdi-content-save-outline"></i> Simpan
+                                                                    Perubahan
+                                                                </button>
                                                             </div>
                                                         </form>
                                                     </div>

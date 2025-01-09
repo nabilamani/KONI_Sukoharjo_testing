@@ -60,6 +60,7 @@ Route::get('/profil/tentang', function () {
 
 Route::get('/olahraga/cabor', [CaborController::class, 'home'])->name('home');
 Route::get('/olahraga/event', [EventController::class, 'showEvents'])->name('showEvents');
+Route::get('/olahraga/latihan', [ScheduleController::class, 'showlatihan'])->name('showlatihan');
 Route::get('/galeri/calender', [EventController::class, 'showCalender'])->name('showCalender');
 Route::get('/olahraga/atlet', [AthleteController::class, 'showAthletes'])->name('showAthletes');
 Route::get('/olahraga/pelatih', [CoachController::class, 'showCoaches'])->name('showCoaches');

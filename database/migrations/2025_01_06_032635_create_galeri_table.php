@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
             $table->string('title'); // Judul galeri
-            $table->unsignedBigInteger('sport_category'); // Kategori olahraga
+            $table->unsignedBigInteger('sport_category')->nullable(); // Kategori olahraga
             $table->text('description')->nullable(); // Deskripsi galeri
             $table->date('date'); // Tanggal event
             $table->string('location'); // Lokasi event

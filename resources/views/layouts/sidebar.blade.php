@@ -50,7 +50,7 @@
                             </li>
                             <li>
                                 <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                                    <i class="mdi mdi-calendar-clock"></i><span class="nav-text">Jadwal Pertandingan</span>
+                                    <i class="mdi mdi-calendar-clock"></i><span class="nav-text">Jadwal Latihan</span>
                                 </a>
                                 <ul aria-expanded="false">
                                     <li><a href="/schedules/create"><i class="mdi mdi-calendar-edit"></i>Tambah Jadwal</a></li>

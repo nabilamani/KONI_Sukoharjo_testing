@@ -263,8 +263,14 @@
                                                         Peristiwa:</strong><br>
                                                     <span class="text-dark">{{ $berita->lokasi_peristiwa }}</span>
                                                 </p>
-                                                <p class="mb-0">
+                                                <p class="mb-3">
                                                     <strong class="text-warning"><i
+                                                            class="mdi mdi-volleyball me-2"></i>
+                                                        Kategori Berita:</strong><br>
+                                                    <span class="text-dark">{{ $berita->SportCategory->sport_category }}</span>
+                                                </p>
+                                                <p class="mb-0">
+                                                    <strong class="text-success"><i
                                                             class="mdi mdi-source-branch me-2"></i>Kutipan
                                                         Sumber:</strong><br>
                                                     <span class="text-muted">{{ $berita->kutipan_sumber }}</span>

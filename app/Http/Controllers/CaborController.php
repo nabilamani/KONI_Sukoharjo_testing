@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cabor; // Pastikan model Cabor sudah ada
 use App\Models\Athlete;
 use App\Models\Coach;
 use App\Models\Event;

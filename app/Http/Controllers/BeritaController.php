@@ -22,18 +22,37 @@ class BeritaController extends Controller
         $search = $request->input('search'); // Capture the search input from the request
 
         // Filter news articles based on user level and search query if provided
-        $beritas = Berita::when($search, function ($query) use ($search) {
-            $query->where('judul_berita', 'like', "%$search%")
-                ->orWhere('lokasi_peristiwa', 'like', "%$search%");
+        $beritas = Berita::when($user->level === 'Admin', function ($query) {
+            // If the user is an Admin, return all news articles
+            return $query;
         })
+            ->when($user->level !== 'Admin', function ($query) use ($user) {
+                // If the user is not an Admin, filter news by the sport category the user manages
+                return $query->whereHas('sportCategory', function ($subQuery) use ($user) {
+                    $subQuery->where('id', $user->sport_category); // Assuming user has sport_category_id
+                });
+            })
+            ->when($search, function ($query) use ($search) {
+                // Apply search filter on title, location, and sport category
+                return $query->where('judul_berita', 'like', "%$search%")
+                    ->orWhere('lokasi_peristiwa', 'like', "%$search%")
+                    ->orWhereHas('sportCategory', function ($subQuery) use ($search) {
+                        $subQuery->where('sport_category', 'like', "%$search%");
+                    });
+            })
             ->orderBy('tanggal_waktu', 'desc') // Sort results by date in descending order
             ->paginate(4); // Display 4 items per page
 
         // Ambil semua kategori olahraga
         $sportCategories = SportCategory::all();
 
-        return view('berita.daftar', compact('beritas', 'search', 'sportCategories'));
+        return view('berita.daftar', [
+            'beritas' => $beritas,
+            'search' => $search,
+            'sportCategories' => $sportCategories,
+        ]);
     }
+
 
     /**
      * Show the form for creating a new news article.
@@ -220,7 +239,7 @@ class BeritaController extends Controller
                 $query->where('sport_category', $categoryId); // Filter by sport_category
             })
             ->orderBy('tanggal_waktu', 'desc') // Sort by date descending
-            ->paginate(3); // Paginate the results
+            ->paginate(4); // Paginate the results
 
         // Ambil event mendatang (future events)
         $upcomingEvents = Event::where('event_date', '>=', now()->startOfDay())
@@ -264,6 +283,6 @@ class BeritaController extends Controller
             ->get();
 
 
-        return view('viewpublik.berita.detail', compact('berita', 'upcomingEvents','categories', 'categoryId'));
+        return view('viewpublik.berita.detail', compact('berita', 'upcomingEvents', 'categories', 'categoryId'));
     }
 }

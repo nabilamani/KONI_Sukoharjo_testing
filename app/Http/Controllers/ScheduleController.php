@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Schedule;
+use App\Models\SportCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,28 +15,31 @@ class ScheduleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-{
-    $user = Auth::user();  // Mendapatkan data pengguna yang sedang login
-    $search = $request->input('search');
+    {
+        $user = Auth::user();  // Mendapatkan data pengguna yang sedang login
+        $search = $request->input('search');
 
-    // Filter schedules berdasarkan level pengguna dan query pencarian
-    $schedules = Schedule::when($user->level !== 'Admin', function ($query) use ($user) {
+        // Filter schedules berdasarkan level pengguna dan query pencarian
+        $schedules = Schedule::when($user->level !== 'Admin', function ($query) use ($user) {
             // Menghapus prefix "Pengurus Cabor " untuk mendapatkan kategori olahraga
             $sportCategory = str_replace('Pengurus Cabor ', '', $user->level);
             $query->where('sport_category', $sportCategory);
         })
-        ->when($search, function ($query) use ($search) {
-            $query->where(function ($query) use ($search) {
-                $query->where('name', 'like', "%$search%")
-                      ->orWhere('sport_category', 'like', "%$search%")
-                      ->orWhere('venue_name', 'like', "%$search%");
-            });
-        })
-        ->orderBy('date', 'asc')
-        ->paginate(4);
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%$search%")
+                        ->orWhere('sport_category', 'like', "%$search%")
+                        ->orWhere('venue_name', 'like', "%$search%");
+                });
+            })
+            ->orderBy('date', 'asc')
+            ->paginate(4);
 
-    return view('Jadwal.daftar', ['schedules' => $schedules, 'search' => $search]);
-}
+        // Ambil semua kategori olahraga
+        $sportCategories = SportCategory::all();
+
+        return view('Jadwal.daftar', ['schedules' => $schedules, 'search' => $search, 'sportCategories' => $sportCategories,]);
+    }
 
 
     /**
@@ -45,7 +49,8 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        return view('Jadwal.tambah');
+        $sportCategories = SportCategory::all();
+        return view('Jadwal.tambah', compact('sportCategories'));
     }
 
     /**
@@ -59,9 +64,11 @@ class ScheduleController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string'],
             'date' => ['required', 'date'],
+            'time' => ['required', 'date_format:H:i'],
             'sport_category' => ['required', 'string'],
             'venue_name' => ['required', 'string'],
             'venue_map' => ['required', 'string'],
+            'notes' => ['nullable', 'string'],
         ]);
 
         Schedule::create($data);
@@ -130,5 +137,16 @@ class ScheduleController extends Controller
         $schedule->delete();
 
         return redirect()->back()->with('message', 'Schedule data successfully deleted!');
+    }
+    public function showlatihan(Request $request)
+    {
+        $search = $request->input('search');
+
+        // Query pencarian berdasarkan nama atau cabang olahraga
+        $schedules = Schedule::where('name', 'like', '%' . $search . '%')
+            ->orWhere('sport_category', 'like', '%' . $search . '%')
+            ->paginate(12);
+
+        return view('viewpublik.olahraga.latihan', compact('schedules', 'search'));
     }
 }

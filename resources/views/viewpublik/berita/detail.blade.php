@@ -208,6 +208,10 @@
                             <div class="text-dark">
                                 {!! $berita->isi_berita !!}
                             </div>
+                            <!-- Quote Source -->
+                            <p class="card-text font-italic text-muted">
+                                <strong>Sumber :</strong> {{ $berita->kutipan_sumber }}
+                            </p>
                         </div>
                         <div class="card-footer text-muted">
                             <a href="/berita/daftar" class="btn btn-secondary">Kembali ke Daftar Berita</a>

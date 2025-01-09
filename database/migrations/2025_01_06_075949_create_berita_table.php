@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('beritas', function (Blueprint $table) {
             $table->string('id')->primary(); // Auto-incrementing ID
             $table->string('judul_berita'); // Judul Berita
-            $table->unsignedBigInteger('sport_category');
+            $table->unsignedBigInteger('sport_category')->nullable();
             $table->date('tanggal_waktu'); // Tanggal dan Waktu
             $table->string('lokasi_peristiwa'); // Lokasi Peristiwa
             $table->longText('isi_berita')->nullable(); // Isi Berita

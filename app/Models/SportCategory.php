@@ -34,28 +34,33 @@ class SportCategory extends Model
     // Relasi ke referee
     public function referees()
     {
-        return $this->hasMany(Referee::class, 'sport_category_id', 'id');
+        return $this->hasMany(Referee::class, 'sport_category', 'id');
     }
 
     // Relasi ke referee
     public function achievements()
     {
-        return $this->hasMany(Achievement::class, 'sport_category_id', 'id');
+        return $this->hasMany(Achievement::class, 'sport_category', 'id');
     }
 
     public function galleries()
     {
-        return $this->hasMany(Gallery::class, 'sport_category_id', 'id');
+        return $this->hasMany(Gallery::class, 'sport_category', 'id');
     }
 
     public function events()
     {
-        return $this->hasMany(Event::class, 'sport_category_id', 'id');
+        return $this->hasMany(Event::class, 'sport_category', 'id');
     }
 
     public function beritas()
     {
-        return $this->hasMany(Berita::class, 'sport_category_id', 'id');
+        return $this->hasMany(Berita::class, 'sport_category', 'id');
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class, 'sport_category', 'id');
     }
 
 

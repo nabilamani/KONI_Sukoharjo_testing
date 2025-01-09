@@ -170,6 +170,8 @@
                                 href="{{ url('/olahraga/pelatih') }}">Pelatih</a></li>
                         <li><a class="dropdown-item {{ Request::is('olahraga/wasit') ? 'active' : '' }}"
                                 href="{{ url('/olahraga/wasit') }}">Wasit</a></li>
+                        <li><a class="dropdown-item {{ Request::is('olahraga/latihan') ? 'active' : '' }}"
+                                href="{{ url('/olahraga/latihan') }}">Jadwal Latihan</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
