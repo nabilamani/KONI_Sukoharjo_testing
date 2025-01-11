@@ -160,6 +160,9 @@
 
     <div id="prestasi-section" class="container my-5">
         <div id="achievement-chart" class="my-5 p-3 bg-white rounded-sm"></div>
+        <div class="chart-container bg-white p-3 rounded-sm mb-5">
+            <canvas id="lineChart"></canvas>
+        </div>
         <h2 class="text-center mb-4 text-white">Daftar Prestasi Atlet KONI Sukoharjo</h2>
 
         <!-- Tombol untuk mengganti tampilan -->
@@ -455,6 +458,81 @@
     var chart = new ApexCharts(document.querySelector("#achievement-chart"), options);
     chart.render();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Data for Line Chart
+    const lineChartData = @json($lineChartData);
+
+    const labels = Object.keys(lineChartData); // Years as X-axis
+    const kabupatenData = Object.values(lineChartData).map(item => item['kabupaten']);
+    const provinsiData = Object.values(lineChartData).map(item => item['provinsi']);
+    const nasionalData = Object.values(lineChartData).map(item => item['nasional']);
+    const internasionalData = Object.values(lineChartData).map(item => item['internasional']);
+
+    const ctx = document.getElementById('lineChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                    label: 'Kabupaten',
+                    data: kabupatenData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.4
+                },
+                {
+                    label: 'Provinsi',
+                    data: provinsiData,
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    tension: 0.4
+                },
+                {
+                    label: 'Nasional',
+                    data: nasionalData,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    tension: 0.4
+                },
+                {
+                    label: 'Internasional',
+                    data: internasionalData,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Kontribusi Prestasi Berdasarkan Tahun dan Regional Level'
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Tahun'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Jumlah Prestasi'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
 <!-- Required vendors -->
 <script src="{{ asset('gambar_aset/vendor/global/global.min.js') }}"></script>
 <script src="{{ asset('gambar_aset/js/quixnav-init.js') }}"></script>

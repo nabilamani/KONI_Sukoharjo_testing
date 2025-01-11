@@ -50,14 +50,13 @@ class AchievementController extends Controller
             ->get();
 
         // Transform data into a format suitable for the chart
-        $chartData = $categories->groupBy('sport_category')->map(function ($item) {
+        $chartData = $categories->groupBy('SportCategory.sport_category')->map(function ($item) {
             $ranks = [
                 'Juara 1' => 0,
                 'Juara 2' => 0,
                 'Juara 3' => 0,
             ];
 
-            // Fill the counts for each rank
             foreach ($item as $entry) {
                 $rank = $entry->rank;
                 if (array_key_exists($rank, $ranks)) {
@@ -230,7 +229,7 @@ class AchievementController extends Controller
             ->get();
 
         // Transform data into a format suitable for the chart
-        $chartData = $categories->groupBy('sport_category')->map(function ($item) {
+        $chartData = $categories->groupBy('SportCategory.sport_category')->map(function ($item) {
             $ranks = [
                 'Juara 1' => 0,
                 'Juara 2' => 0,
@@ -248,6 +247,33 @@ class AchievementController extends Controller
             return $ranks;
         });
 
-        return view('viewpublik.Galeri.prestasi', compact('achievements', 'chartData'));
+        // Data for line chart
+        $lineChartData = Achievement::select(
+            DB::raw('YEAR(certificate_date) as year'),
+            'region_level',
+            DB::raw('COUNT(*) as total')
+        )
+            ->groupBy('year', 'region_level')
+            ->get()
+            ->groupBy('year') // Group by year for easier processing
+            ->map(function ($item) {
+                $regions = [
+                    'kabupaten' => 0,
+                    'provinsi' => 0,
+                    'nasional' => 0,
+                    'internasional' => 0,
+                ];
+
+                foreach ($item as $entry) {
+                    $region = $entry->region_level;
+                    if (array_key_exists($region, $regions)) {
+                        $regions[$region] = $entry->total;
+                    }
+                }
+
+                return $regions;
+            });
+
+        return view('viewpublik.Galeri.prestasi', compact('achievements', 'chartData', 'lineChartData'));
     }
 }
