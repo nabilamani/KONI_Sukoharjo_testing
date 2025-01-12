@@ -276,11 +276,11 @@
                                     <form action="{{ url()->current() }}" method="GET">
                                         <label for="search" class="form-label">Cari Berita</label>
                                         <div class="input-group shadow-sm">
-                                            <input type="text" class="form-control" id="search" name="search" 
+                                            <input type="text" class="form-control" id="search" name="search"
                                                 placeholder="Cari berita..." value="{{ request('search') }}">
                                             <button type="submit" class="btn btn-primary text-white">Cari</button>
                                         </div>
-                                    </form>                                    
+                                    </form>
                                 </div>
                                 @forelse ($beritaLatepost as $berita)
                                     <div class="d-flex align-items-start mb-3 berita-item p-1"
@@ -330,7 +330,7 @@
                                 @forelse ($upcomingEvents as $event)
                                     <div class="d-flex align-items-start event-item p-1"
                                         data-id="{{ $event->id }}" data-name="{{ $event->name }}"
-                                        data-event_date="{{ \Carbon\Carbon::parse($event->event_date)->format('d F Y') }}"
+                                        data-start_date="{{ \Carbon\Carbon::parse($event->start_date)->format('d F Y') }}"
                                         data-banner="{{ asset($event->banner) }}"
                                         data-location_map="{{ $event->location_map }}"
                                         data-sport_category="{{ $event->sport_category }}">
@@ -349,12 +349,13 @@
                                             <!-- Event Date -->
                                             <small class="text-muted">
                                                 <i
-                                                    class="mdi mdi-calendar me-2"></i>{{ \Carbon\Carbon::parse($event->event_date)->format('d F Y') }}
+                                                    class="mdi mdi-calendar me-2"></i>{{ \Carbon\Carbon::parse($event->start_date)->format('d F Y') }}
                                             </small><br>
 
                                             <!-- Sport Category -->
                                             <small class="text-muted">
-                                                <i class="mdi mdi-soccer me-2"></i>{{ $event->sportCategory->sport_category ?? 'Semua' }}
+                                                <i
+                                                    class="mdi mdi-soccer me-2"></i>{{ $event->sportCategory->sport_category ?? 'Semua' }}
                                             </small>
                                         </div>
                                     </div>

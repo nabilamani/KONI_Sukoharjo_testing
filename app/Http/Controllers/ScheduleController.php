@@ -65,11 +65,19 @@ class ScheduleController extends Controller
             'name' => ['required', 'string'],
             'date' => ['required', 'date'],
             'time' => ['required', 'date_format:H:i'],
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required'],
             'venue_name' => ['required', 'string'],
             'venue_map' => ['required', 'string'],
             'notes' => ['nullable', 'string'],
         ]);
+
+        if ($request->sport_category === 'all') {
+            $data['sport_category'] = null; // Atur null jika "Semua"
+        } else {
+            $request->validate([
+                'sport_category' => ['exists:sport_categories,id'],
+            ]);
+        }
 
         Schedule::create($data);
 
@@ -114,10 +122,18 @@ class ScheduleController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string'],
             'date' => ['required', 'date'],
-            'sport_category' => ['required', 'string'],
+            'sport_category' => ['required'],
             'venue_name' => ['required', 'string'],
             'venue_map' => ['required', 'string'],
         ]);
+
+        if ($request->sport_category === 'all') {
+            $data['sport_category'] = null; // Atur null jika "Semua"
+        } else {
+            $request->validate([
+                'sport_category' => ['exists:sport_categories,id'],
+            ]);
+        }
 
         $schedule->fill($data);
         $schedule->save();

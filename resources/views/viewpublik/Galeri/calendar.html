@@ -1,101 +1,94 @@
-<style type="text/css">
-	.calendar {
-        display: grid;
-        grid-template-columns: repeat(7, 50px);
-        gap: 5px;
-        background-color: #fff;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .calendar div {
-        text-align: center;
-        padding: 10px 0;
-        font-size: 14px;
-    }
-    .day {
-        font-weight: bold;
-        background-color: #f1f1f1;
-    }
-    .date {
-        background-color: #fff;
-        color: #333;
-    }
-    .empty {
-        background-color: #f9f9f9;
-    }
-</style>
+<div style="position: relative; z-index: 2;">
+    <div class="container">
+        <div class="row">
+            <!-- Konten Utama -->
+            <div class="col-md-8" style="margin-top: 4.5rem;">
+                <nav class="breadcrumb bg-transparent p-0 mb-2">
+                    <a class="breadcrumb-item text-decoration-none" href="/">Home</a>
+                    <span class="breadcrumb-item active text-primary" style="color: #FF6924;">Berita</span>
+                </nav>
+                <div id="calendar-wrap" style="max-width: 800px; margin: 0 auto;">
+                    <!-- Batasi ukuran kalender -->
+                    <div id="calendar" style="height: 600px;"></div>
+                    <!-- Atur tinggi -->
+                </div>
 
-<input type="month" name="bulanTahun">
-<div class="calendar" id="calendar"></div>
+            <!-- Sidebar -->
+            <div class="col-md-4" style="margin-top: 7.2rem;">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Event Mendatang</h5>
+                        <hr>
+                        <div class="mb-4">
+                            <form>
+                                <div class="input-group shadow-sm">
+                                    <input type="text" class="form-control" id="search"
+                                        placeholder="Cari event...">
+                                    <button type="submit" class="btn btn-primary text-white">Cari</button>
+                                </div>
+                            </form>
+                        </div>
 
-<script type="text/javascript">
+                        @forelse ($upcomingEvents as $event)
+                            <div class="d-flex align-items-start event-item p-1"
+                                data-id="{{ $event->id }}" data-name="{{ $event->name }}"
+                                data-start_event="{{ \Carbon\Carbon::parse($event->start_event)->format('d F Y') }}"
+                                data-banner="{{ asset($event->banner) }}"
+                                data-location_map="{{ $event->location_map }}"
+                                data-sport_category="{{ $event->sport_category }}">
 
-	// fungsi untuk men-generate tanggal dalam bentuk array
-	function generateMonthlyCalendar(monthYear) {
-		const [year, monthIndex] = monthYear.split('-').map(Number);
-		const date = new Date(year, monthIndex - 1, 1);
+                                <!-- Banner -->
+                                <img src="{{ asset($event->banner ?? 'https://via.placeholder.com/80x80') }}"
+                                    class="me-3 rounded" alt="Banner Event"
+                                    style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;">
 
-		const daysInMonth = new Date(year, monthIndex, 0).getDate();
-		const firstDay = date.getDay();
+                                <!-- Event Details -->
+                                <div>
+                                    <h6 class="mb-1 text-dark text-decoration-none">
+                                        {{ $event->name }}
+                                    </h6>
 
-		const theDates = [];
-		let week = Array(firstDay).fill(undefined);
+                                    <!-- Event Date -->
+                                    <small class="text-muted">
+                                        <i
+                                            class="mdi mdi-calendar me-2"></i>{{ \Carbon\Carbon::parse($event->start_event)->format('d F Y') }}
+                                    </small><br>
 
-		for (let day = 1; day <= daysInMonth; day++) {
-			week.push(day);
-			if (week.length === 7) {
-				theDates.push(week);
-				week = [];
-			}
-		}
+                                    <!-- Sport Category -->
+                                    <small class="text-muted">
+                                        <i
+                                            class="mdi mdi-soccer me-2"></i>{{ $event->sportCategory->sport_category ?? 'Semua' }}
+                                    </small>
+                                </div>
+                            </div>
+                            <hr class="my-1">
+                        @empty
+                            <!-- Pesan Jika Tidak Ada Event -->
+                            <div class="text-center py-5">
+                                <i class="mdi mdi-calendar-remove text-warning display-4 mb-3"></i>
+                                <h6 class="text-muted">Belum ada event yang tersedia.</h6>
+                            </div>
+                        @endforelse
 
-		if (week.length > 0) {
-			while (week.length < 7) {
-				week.push(undefined);
-			}
-			theDates.push(week);
-		}
 
-		return theDates;
-	}
+                        <a href="/olahraga/event" class="btn btn-primary w-100">
+                            Lihat Semua Event
+                        </a>
+                    </div>
+                </div>
+                <div class="modal fade" id="imageModal" data-bs-backdrop="false" tabindex="-1"
+                    aria-labelledby="imageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <img id="modalImage" src="" alt="Full Banner"
+                                    class="img-fluid rounded">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-	// fungsi untuk merender array kalender ke HTML
-	function renderCalendarToHTML(calendarEl, weeks) {
-		const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-		calendarEl.innerHTML = '';
-
-		days.forEach(day => {
-            const dayEl = document.createElement("div");
-            dayEl.textContent = day;
-            dayEl.className = "day";
-            calendarEl.appendChild(dayEl);
-        });
-
-        weeks.forEach(week => {
-            week.forEach(date => {
-                const dateEl = document.createElement("div");
-                if (date === null) {
-                    dateEl.className = "empty";
-                } else {
-                    dateEl.textContent = date;
-                    dateEl.className = "date";
-                }
-                calendarEl.appendChild(dateEl);
-            });
-        });
-	}
-
-	// ambil elemen
-	const inputElement = document.getElementsByName('bulanTahun')[0];
-	const outputElement = document.getElementById('calendar');
-
-	// ketika input berubah render ulang calendar
-	inputElement.addEventListener('change', () => {
-		const weeks = generateMonthlyCalendar(inputElement.value);
-		renderCalendarToHTML(outputElement, weeks);
-	})
-
-</script>
+            </div>
+        </div>
+    </div>
+</div>

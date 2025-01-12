@@ -301,7 +301,7 @@
                             @forelse ($upcomingEvents as $event)
                                 <div class="d-flex align-items-start event-item p-1" data-id="{{ $event->id }}"
                                     data-name="{{ $event->name }}"
-                                    data-event_date="{{ \Carbon\Carbon::parse($event->event_date)->format('d F Y') }}"
+                                    data-start_date="{{ \Carbon\Carbon::parse($event->start_date)->format('d F Y') }}"
                                     data-banner="{{ asset($event->banner) }}"
                                     data-location_map="{{ $event->location_map }}"
                                     data-sport_category="{{ $event->sport_category }}">
@@ -320,7 +320,7 @@
                                         <!-- Event Date -->
                                         <small class="text-muted">
                                             <i
-                                                class="mdi mdi-calendar me-2"></i>{{ \Carbon\Carbon::parse($event->event_date)->format('d F Y') }}
+                                                class="mdi mdi-calendar me-2"></i>{{ \Carbon\Carbon::parse($event->start_date)->format('d F Y') }}
                                         </small><br>
 
                                         <!-- Sport Category -->

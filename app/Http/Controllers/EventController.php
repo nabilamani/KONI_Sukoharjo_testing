@@ -89,7 +89,8 @@ class EventController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string'],
-            'event_date' => ['required', 'date'],
+            'start_date' => ['required', 'date'], // Validasi tanggal mulai event
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             'sport_category' => ['required'],
             'location' => ['required', 'string'],
             'banner' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // Validasi banner
@@ -159,7 +160,8 @@ class EventController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string'],
-            'event_date' => ['required', 'date'],
+            'start_date' => ['required', 'date'], // Validasi tanggal mulai event
+            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             'sport_category' => ['required'],
             'location' => ['required', 'string'],
             'banner' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif', 'max:2048'], // Validasi banner
@@ -226,11 +228,11 @@ class EventController extends Controller
 
         // Filter berdasarkan rentang tanggal
         if ($start_date && $end_date) {
-            $events->whereBetween('event_date', [$start_date, $end_date]);
+            $events->whereBetween('start_date', [$start_date, $end_date]);
         } elseif ($start_date) {
-            $events->where('event_date', '>=', $start_date);
+            $events->where('start_date', '>=', $start_date);
         } elseif ($end_date) {
-            $events->where('event_date', '<=', $end_date);
+            $events->where('start_date', '<=', $end_date);
         }
 
         // Pagination
@@ -238,20 +240,20 @@ class EventController extends Controller
 
         return view('viewpublik.olahraga.event', compact('events', 'search', 'start_date', 'end_date'));
     }
-    public function showCalender()
-    {
-        $events = Event::all(['id', 'name', 'event_date', 'location']);
+    // public function showCalender()
+    // {
+    //     $events = Event::all(['id', 'name', 'start_date', 'location']);
 
-        // Format data event untuk FullCalendar
-        $calendarEvents = $events->map(function ($event) {
-            return [
-                'id' => $event->id,
-                'title' => $event->name,
-                'start' => $event->event_date,
-                'description' => $event->location, // Opsional untuk tooltip
-            ];
-        });
+    //     // Format data event untuk FullCalendar
+    //     $calendarEvents = $events->map(function ($event) {
+    //         return [
+    //             'id' => $event->id,
+    //             'title' => $event->name,
+    //             'start' => $event->start_date,
+    //             'description' => $event->location, // Opsional untuk tooltip
+    //         ];
+    //     });
 
-        return view('viewpublik.Galeri.calender', ['calendarEvents' => $calendarEvents]);
-    }
+    //     return view('viewpublik.Galeri.calender', ['calendarEvents' => $calendarEvents]);
+    // }
 }

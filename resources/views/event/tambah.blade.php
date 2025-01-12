@@ -81,11 +81,19 @@
                                         </div>
                                     </div>
 
+                                    <!-- Start Date -->
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="event_date">Tanggal</label>
+                                        <label class="col-sm-2 col-form-label" for="start_date">Tanggal Mulai</label>
                                         <div class="col-sm-4">
-                                            <input type="date" name="event_date" class="form-control"
-                                                placeholder="Masukkan durasi event..." required />
+                                            <input type="date" name="start_date" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <!-- End Date -->
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="end_date">Tanggal Selesai</label>
+                                        <div class="col-sm-4">
+                                            <input type="date" name="end_date" class="form-control" required />
                                         </div>
                                     </div>
 

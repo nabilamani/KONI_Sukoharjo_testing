@@ -13,7 +13,8 @@ class Event extends Model
     protected $fillable = [
         'id',
         'name',
-        'event_date',
+        'start_date',
+        'end_date',
         'sport_category',
         'location',
         'banner',

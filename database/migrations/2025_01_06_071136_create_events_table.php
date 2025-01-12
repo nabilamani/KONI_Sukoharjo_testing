@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('name'); // Nama event
-            $table->date('event_date'); // Tanggal event
+            $table->date('start_date'); // Tanggal mulai event
+            $table->date('end_date'); // Tanggal selesai event
             $table->unsignedBigInteger('sport_category')->nullable(); // Kategori olahraga
             $table->string('location'); // Lokasi event
             $table->string('banner')->nullable(); // Path ke banner/foto/poster event
@@ -26,10 +27,6 @@ return new class extends Migration
             $table->foreign('sport_category')->references('id')->on('sport_categories')->onDelete('cascade');
         });
     }
-
-
-
-
     /**
      * Reverse the migrations.
      *

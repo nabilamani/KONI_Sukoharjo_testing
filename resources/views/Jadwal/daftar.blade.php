@@ -282,7 +282,7 @@
                                                                     </strong>
                                                                 </p>
                                                                 <p class="text-muted">
-                                                                    {{ $schedule->sportCategory->sport_category }}
+                                                                    {{ $schedule->sportCategory->sport_category ?? 'Semua' }}
                                                                 </p>
                                                             </div>
                                                             <div class="col-md-6">

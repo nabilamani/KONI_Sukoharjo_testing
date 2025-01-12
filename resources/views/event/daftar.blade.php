@@ -143,7 +143,7 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>{{ $event->name }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($event->event_date)->format('d-m-Y') }}
+                                                    <td>{{ \Carbon\Carbon::parse($event->start_date)->format('d-m-Y') }}
                                                     </td>
                                                     <td>{{ $event->sportCategory->sport_category ?? 'Semua' }}</td>
                                                     <td>{{ $event->location }}</td>
@@ -272,7 +272,7 @@
                                         <div class="col-md-6">
                                             <p><strong>Nama Acara:</strong> {{ $event->name }}</p>
                                             <p><strong>Tanggal Acara:</strong>
-                                                {{ \Carbon\Carbon::parse($event->event_date)->format('d-m-Y') }}</p>
+                                                {{ \Carbon\Carbon::parse($event->start_date)->format('d-m-Y') }}</p>
                                             <p><strong>Cabang Olahraga:</strong>
                                                 {{ $event->sportCategory->sport_category ?? 'Semua' }}</p>
                                             <p><strong>Lokasi:</strong> {{ $event->location }}</p>
@@ -343,11 +343,14 @@
                                                         name="name" value="{{ $event->name }}" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="event_date">Tanggal Acara</label>
-                                                    <input type="date" class="form-control" id="event_date"
-                                                        name="event_date"
-                                                        value="{{ \Carbon\Carbon::parse($event->event_date)->format('Y-m-d') }}"
-                                                        required>
+                                                    <label for="start_date">Tanggal Mulai</label>
+                                                    <input type="date" class="form-control" id="start_date" name="start_date"
+                                                        value="{{ \Carbon\Carbon::parse($event->start_date)->format('Y-m-d') }}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="end_date">Tanggal Selesai</label>
+                                                    <input type="date" class="form-control" id="end_date" name="end_date"
+                                                        value="{{ \Carbon\Carbon::parse($event->end_date)->format('Y-m-d') }}" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="sport_category">Cabang Olahraga</label>

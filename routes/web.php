@@ -21,6 +21,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SportCategoryController;
 use App\Http\Controllers\VenueController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\FullCalenderController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 
@@ -61,7 +62,7 @@ Route::get('/profil/tentang', function () {
 Route::get('/olahraga/cabor', [CaborController::class, 'home'])->name('home');
 Route::get('/olahraga/event', [EventController::class, 'showEvents'])->name('showEvents');
 Route::get('/olahraga/latihan', [ScheduleController::class, 'showlatihan'])->name('showlatihan');
-Route::get('/galeri/calender', [EventController::class, 'showCalender'])->name('showCalender');
+Route::get('/galeri/calender', [FullCalenderController::class, 'index'])->name('index');
 Route::get('/olahraga/atlet', [AthleteController::class, 'showAthletes'])->name('showAthletes');
 Route::get('/olahraga/pelatih', [CoachController::class, 'showCoaches'])->name('showCoaches');
 Route::get('/olahraga/wasit', [RefereeController::class, 'showReferees'])->name('showReferees');

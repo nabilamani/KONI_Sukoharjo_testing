@@ -233,9 +233,6 @@
     <script>
         AOS.init();
     </script>
-    <!-- FullCalendar JS -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/id.js"></script>
 
 </body>
 

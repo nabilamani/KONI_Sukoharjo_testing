@@ -213,8 +213,8 @@ class BeritaController extends Controller
         }
 
         // Ambil event mendatang (future events) yang tanggal_event > sekarang
-        $upcomingEvents = Event::where('event_date', '>=', now()->startOfDay())
-            ->orderBy('event_date', 'asc') // Urutkan berdasarkan tanggal event
+        $upcomingEvents = Event::where('start_date', '>=', now()->startOfDay())
+            ->orderBy('start_date', 'asc') // Urutkan berdasarkan tanggal event
             ->take(4) // Ambil 4 event mendatang
             ->get();
 
@@ -242,8 +242,8 @@ class BeritaController extends Controller
             ->paginate(4); // Paginate the results
 
         // Ambil event mendatang (future events)
-        $upcomingEvents = Event::where('event_date', '>=', now()->startOfDay())
-            ->orderBy('event_date', 'asc')
+        $upcomingEvents = Event::where('start_date', '>=', now()->startOfDay())
+            ->orderBy('start_date', 'asc')
             ->take(4)
             ->get();
 
@@ -271,8 +271,8 @@ class BeritaController extends Controller
             ->paginate(4);
 
         // Ambil event mendatang (future events) yang tanggal_event > sekarang
-        $upcomingEvents = Event::where('event_date', '>=', now()->startOfDay()) // Menyertakan hari ini
-            ->orderBy('event_date', 'asc') // Urutkan berdasarkan tanggal event
+        $upcomingEvents = Event::where('start_date', '>=', now()->startOfDay()) // Menyertakan hari ini
+            ->orderBy('start_date', 'asc') // Urutkan berdasarkan tanggal event
             ->take(4) // Ambil 4 event mendatang
             ->get();
 
