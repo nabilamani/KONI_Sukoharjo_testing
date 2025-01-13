@@ -129,7 +129,7 @@
                     @forelse ($events as $event)
                         <tr>
                             <td>{{ $event->name }}</td>
-                            <td>{{ \Carbon\Carbon::parse($event->event_date)->format('d M Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($event->start_date)->format('d M Y') }}</td>
                             <td>{{ $event->sportCategory->sport_category ?? ($event->sport_category === null ? 'Semua' : 'Kategori Tidak Ditemukan') }}</td>
                             <td>{{ $event->location }}</td>
                             <td>

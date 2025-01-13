@@ -52,6 +52,6 @@ class FullCalenderController extends Controller
             ->get();
 
         // Kirim data ke view
-        return view('viewpublik.Galeri.calender', ['calendarEvents' => $calendarEvents, 'events' => $events, 'upcomingEvents' => $upcomingEvents,]);
+        return view('viewpublik.Galeri.calender', ['calendarEvents' => $calendarEvents, 'events' => $events, 'upcomingEvents' => $upcomingEvents, 'schedules' => $schedules,]);
     }
 }

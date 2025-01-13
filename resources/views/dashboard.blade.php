@@ -585,7 +585,7 @@
                                                     @foreach ($upcomingEvents as $event)
                                                         <tr>
                                                             <td>{{ $event->name }}</td>
-                                                            <td>{{ \Carbon\Carbon::parse($event->event_date)->format('d-m-Y') }}
+                                                            <td>{{ \Carbon\Carbon::parse($event->start_date)->format('d-m-Y') }}
                                                             </td>
                                                             <td>{{ $event->location }}</td>
                                                         </tr>

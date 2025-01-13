@@ -33,9 +33,9 @@ class DashboardController extends Controller
         // Retrieve the latest news (adjust the number as needed)
         $beritas = Berita::orderBy('tanggal_waktu', 'desc')->take(3)->get();
 
-        $upcomingEvents = Event::where('event_date', '>=', now()->startOfDay())
-            ->orderBy('event_date', 'asc')
-            ->get(['name', 'event_date', 'location']);
+        $upcomingEvents = Event::where('start_date', '>=', now()->startOfDay())
+            ->orderBy('start_date', 'asc')
+            ->get(['name', 'start_date', 'location']);
 
         // Get achievements data
         $achievements = Achievement::orderBy('certificate_date', 'desc') // Urutkan berdasarkan tanggal sertifikat terbaru

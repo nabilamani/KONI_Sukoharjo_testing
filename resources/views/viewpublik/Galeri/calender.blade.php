@@ -207,7 +207,7 @@
     </section>
     <div>
         <div class="container">
-            <div class="row mt-5">
+            <div class="row mt-4">
                 <!-- Konten Utama (Kalender) -->
                 <div class="col-md-8">
                     <nav class="breadcrumb bg-transparent p-0 mb-2">
@@ -215,7 +215,7 @@
                         <span class="breadcrumb-item active text-primary" style="color: #FF6924;">Calender</span>
                     </nav>
                     <div id="calendar-wrap">
-                        <div id="calendar" style="height: 600px;"></div>
+                        <div id="calendar" style="height: 600px; color:#333;"></div>
                     </div>
                 </div>
 
@@ -269,16 +269,43 @@
 
                             <a href="/olahraga/event" class="btn btn-primary w-100">Lihat Semua Event</a>
                         </div>
-                    </div>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="imageModal" data-bs-backdrop="false" tabindex="-1"
-                        aria-labelledby="imageModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-body text-center">
-                                    <img id="modalImage" src="" alt="Full Banner" class="img-fluid rounded">
-                                </div>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Jadwal Latihan</h5>
+                                <hr>
+                                @forelse ($schedules as $schedule)
+                                    <div class="d-flex align-items-start p-1" data-id="{{ $schedule->id }}"
+                                        data-name="{{ $schedule->name }}"
+                                        data-date="{{ \Carbon\Carbon::parse($schedule->date)->format('d F Y') }}"
+                                        data-time="{{ $schedule->time }}"
+                                        data-sport_category="{{ $schedule->sport_category }}"
+                                        data-venue_name="{{ $schedule->venue_name }}"
+                                        data-notes="{{ $schedule->notes }}">
+                                        <!-- Sport Icon -->
+                                        <i class="mdi mdi-soccer me-3 text-primary" style="font-size: 2rem;"></i>
+                                        <!-- Schedule Details -->
+                                        <div>
+                                            <h6 class="mb-1 text-dark">{{ $schedule->name }}</h6>
+                                            <small class="text-muted">
+                                                <i
+                                                    class="mdi mdi-calendar me-2"></i>{{ \Carbon\Carbon::parse($schedule->date)->format('d F Y') }}
+                                            </small><br>
+                                            <small class="text-muted">
+                                                <i class="mdi mdi-clock-outline me-2"></i>{{ $schedule->time }}
+                                            </small><br>
+                                            <small class="text-muted">
+                                                <i class="mdi mdi-map-marker me-2"></i>{{ $schedule->venue_name }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <hr class="my-1">
+                                @empty
+                                    <div class="text-center py-5">
+                                        <i class="mdi mdi-calendar-remove text-warning display-4 mb-3"></i>
+                                        <h6 class="text-muted">Belum ada jadwal latihan yang tersedia.</h6>
+                                    </div>
+                                @endforelse
+                                <a href="/olahraga/jadwal" class="btn btn-primary w-100">Lihat Semua Jadwal</a>
                             </div>
                         </div>
                     </div>

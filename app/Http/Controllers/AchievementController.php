@@ -248,11 +248,16 @@ class AchievementController extends Controller
         });
 
         // Data for line chart
+        // Data for line chart
+        $currentYear = now()->year; // Tahun sekarang
+        $startYear = $currentYear - 9; // Tahun 10 tahun terakhir
+
         $lineChartData = Achievement::select(
             DB::raw('YEAR(certificate_date) as year'),
             'region_level',
             DB::raw('COUNT(*) as total')
         )
+            ->whereYear('certificate_date', '>=', $startYear) // Filter hanya untuk 10 tahun terakhir
             ->groupBy('year', 'region_level')
             ->get()
             ->groupBy('year') // Group by year for easier processing
@@ -273,6 +278,10 @@ class AchievementController extends Controller
 
                 return $regions;
             });
+
+        // Optional: Sort the results by year in descending order (if needed)
+        $lineChartData = $lineChartData->sortKeysDesc();
+
 
         return view('viewpublik.Galeri.prestasi', compact('achievements', 'chartData', 'lineChartData'));
     }
