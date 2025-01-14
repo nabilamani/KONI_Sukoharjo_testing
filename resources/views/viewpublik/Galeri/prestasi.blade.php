@@ -104,6 +104,10 @@
             /* Konten dinamis rata kiri */
         }
 
+        #lineChart {
+            padding: 20px 30px;
+        }
+
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 16px;
@@ -121,6 +125,11 @@
 
             .list-view {
                 margin-bottom: 8px;
+            }
+
+            #lineChart {
+                max-width: 100%;
+                padding: 7px;
             }
         }
     </style>
@@ -160,9 +169,8 @@
 
     <div id="prestasi-section" class="container my-5">
         <div id="achievement-chart" class="my-5 p-3 bg-white rounded-sm"></div>
-        <div class="chart-container bg-white p-3 rounded-sm mb-5">
-            <canvas id="lineChart"></canvas>
-        </div>
+        <canvas class="mb-4 bg-white rounded-sm" id="lineChart"></canvas>
+
         <h2 class="text-center mb-4 text-white">Daftar Prestasi Atlet KONI Sukoharjo</h2>
 
         <!-- Tombol untuk mengganti tampilan -->
@@ -265,7 +273,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content shadow-lg">
                     <!-- Modal Header -->
-                    <div class="modal-header bg-primary d-flex justify-content-between align-items-center text-white">
+                    <div class="modal-header bg-primary d-flex align-items-center text-white">
                         <h5 class="modal-title text-white" id="achievementDetailModalLabel{{ $achievement->id }}">
                             <i class="mdi mdi-trophy-outline me-2 text-white"></i>Detail Prestasi
                         </h5>
@@ -445,6 +453,11 @@
         },
         xaxis: {
             categories: categories, // Display sport categories on the x-axis
+            labels: {
+                style: {
+                    fontSize: '10px',
+                }
+            }
         },
         yaxis: {
             title: {
@@ -464,10 +477,10 @@
     const lineChartData = @json($lineChartData);
 
     const labels = Object.keys(lineChartData); // Years as X-axis
-    const kabupatenData = Object.values(lineChartData).map(item => item['kabupaten']);
-    const provinsiData = Object.values(lineChartData).map(item => item['provinsi']);
-    const nasionalData = Object.values(lineChartData).map(item => item['nasional']);
-    const internasionalData = Object.values(lineChartData).map(item => item['internasional']);
+    const kabupatenData = Object.values(lineChartData).map(item => item['Kabupaten']);
+    const provinsiData = Object.values(lineChartData).map(item => item['Provinsi']);
+    const nasionalData = Object.values(lineChartData).map(item => item['Nasional']);
+    const internasionalData = Object.values(lineChartData).map(item => item['Internasional']);
 
     const ctx = document.getElementById('lineChart').getContext('2d');
     new Chart(ctx, {
@@ -479,7 +492,7 @@
                     data: kabupatenData,
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    tension: 0.4
+                    tension: 0.2
                 },
                 {
                     label: 'Provinsi',
@@ -509,23 +522,49 @@
             plugins: {
                 legend: {
                     position: 'top',
+                    labels: {
+                        boxWidth: window.innerWidth < 768 ? 30 : 50, // Lebar kotak untuk mobile (<768px) dan desktop
+                        boxHeight: window.innerWidth < 768 ? 8 : 12,
+                        font: {
+                            size: window.innerWidth < 768 ? 8 : 12 // Ukuran font berdasarkan lebar layar
+                        }
+                    }
                 },
                 title: {
                     display: true,
-                    text: 'Kontribusi Prestasi Berdasarkan Tahun dan Regional Level'
+                    text: 'Kontribusi Prestasi Berdasarkan Tahun dan Regional Level',
+                    font: {
+                        size: window.innerWidth < 768 ? 10 : 18 // Ukuran font judul berdasarkan lebar layar
+                    }
                 }
             },
             scales: {
                 x: {
                     title: {
                         display: true,
-                        text: 'Tahun'
+                        text: 'Tahun',
+                        font: {
+                            size: window.innerWidth < 768 ? 6 : 14 // Ukuran font label X
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: window.innerWidth < 768 ? 6 : 12 // Ukuran font ticks X
+                        }
                     }
                 },
                 y: {
                     title: {
                         display: true,
-                        text: 'Jumlah Prestasi'
+                        text: 'Jumlah Prestasi',
+                        font: {
+                            size: window.innerWidth < 768 ? 6 : 12 // Ukuran font label Y
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: window.innerWidth < 768 ? 6 : 12 // Ukuran font ticks Y
+                        }
                     }
                 }
             }

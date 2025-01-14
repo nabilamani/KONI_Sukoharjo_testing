@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Athlete;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
+use Faker\Factory as Faker;
 
 class AthleteSeeder extends Seeder
 {
@@ -16,32 +16,27 @@ class AthleteSeeder extends Seeder
      */
     public function run()
     {
-        // Generate 80 athletes with IDs starting from A0005
-        $startingIdNumber = 5; // Mulai dari A0005
-        $athleteCount = 80;
+        $faker = Faker::create();
 
-        // Kategori olahraga yang diambil dari sport-category.js
-        $sports = [
-            "Badminton", "Sepak Bola", "Bola Basket", "Bola Voli",
-            "Balap Sepeda", "Atletik", "Renang", "Tinju", "Pencak Silat"
-        ];
+        $athletes = [];
 
-        $genders = ['Laki-laki', 'Perempuan'];
-
-        for ($i = 0; $i < $athleteCount; $i++) {
-            $newId = 'A' . str_pad($startingIdNumber + $i, 4, '0', STR_PAD_LEFT);
-
-            Athlete::create([
-                'id' => $newId,
-                'name' => 'Atlet ' . Str::random(5),
-                'sport_category' => $sports[array_rand($sports)], // Pilih kategori olahraga secara acak
-                'birth_date' => Carbon::today()->subYears(rand(18, 35))->format('Y-m-d'),
-                'gender' => $genders[array_rand($genders)],
-                'weight' => round(rand(5000, 9000) / 100, 2), // Berat dalam kg (50.00 - 90.00)
-                'height' => round(rand(1500, 2000) / 10, 2),  // Tinggi dalam cm (150.0 - 200.0)
-                'achievements' => 'Prestasi ' . Str::random(10),
-                'photo' => null,
-            ]);
+        for ($i = 0; $i < 200; $i++) {
+            $athletes[] = [
+                'id' => Str::uuid(),
+                'name' => $faker->name,
+                'sport_category' => $faker->numberBetween(1, 4), // ID kategori olahraga antara 1-4
+                'birth_date' => $faker->date('Y-m-d', '-18 years'), // Usia minimal 18 tahun
+                'gender' => $faker->randomElement(['Laki-laki', 'Perempuan']),
+                'weight' => $faker->randomFloat(2, 45, 120), // Berat badan antara 45kg hingga 120kg
+                'height' => $faker->randomFloat(2, 150, 210), // Tinggi badan antara 150cm hingga 210cm
+                'achievements' => $faker->optional()->sentence(6), // Prestasi opsional
+                'photo' => $faker->optional()->imageUrl(200, 200, 'sports', true, 'athlete'), // URL foto opsional
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
         }
+
+        // Insert data ke tabel athletes
+        DB::table('athletes')->insert($athletes);
     }
 }

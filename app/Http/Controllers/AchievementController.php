@@ -248,7 +248,6 @@ class AchievementController extends Controller
         });
 
         // Data for line chart
-        // Data for line chart
         $currentYear = now()->year; // Tahun sekarang
         $startYear = $currentYear - 9; // Tahun 10 tahun terakhir
 
@@ -263,10 +262,10 @@ class AchievementController extends Controller
             ->groupBy('year') // Group by year for easier processing
             ->map(function ($item) {
                 $regions = [
-                    'kabupaten' => 0,
-                    'provinsi' => 0,
-                    'nasional' => 0,
-                    'internasional' => 0,
+                    'Kabupaten' => 0,
+                    'Provinsi' => 0,
+                    'Nasional' => 0,
+                    'Internasional' => 0,
                 ];
 
                 foreach ($item as $entry) {

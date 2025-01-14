@@ -157,12 +157,23 @@ class ScheduleController extends Controller
     public function showlatihan(Request $request)
     {
         $search = $request->input('search');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
-        // Query pencarian berdasarkan nama atau cabang olahraga
-        $schedules = Schedule::where('name', 'like', '%' . $search . '%')
-            ->orWhere('sport_category', 'like', '%' . $search . '%')
+        // Query pencarian berdasarkan nama, cabang olahraga, dan filter tanggal
+        $schedules = Schedule::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('sport_category', 'like', '%' . $search . '%');
+            })
+            ->when($startDate, function ($query) use ($startDate) {
+                $query->whereDate('date', '>=', $startDate);
+            })
+            ->when($endDate, function ($query) use ($endDate) {
+                $query->whereDate('date', '<=', $endDate);
+            })
             ->paginate(12);
 
-        return view('viewpublik.olahraga.latihan', compact('schedules', 'search'));
+        return view('viewpublik.olahraga.latihan', compact('schedules', 'search', 'startDate', 'endDate'));
     }
 }

@@ -152,7 +152,7 @@
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div
-                                                class="modal-header bg-primary d-flex justify-content-between align-items-center">
+                                                class="modal-header bg-primary d-flex align-items-center">
                                                 <h5 class="modal-title" id="bannerModalLabel">Banner Event -
                                                     {{ $event->name }}</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"

@@ -179,6 +179,11 @@
             .gender p {
                 font-size: 6px;
             }
+            .nama h5{
+                margin-top: 10px;
+                display: flex;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -399,7 +404,7 @@
                                     style="max-height: 300px; object-fit: cover;">
                             </div>
                             <!-- Right Column: Athlete Details -->
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-8 nama">
                                 <h5 class="text-dark mb-3">{{ $athlete->name }}</h5>
                                 <table class="table table-borderless">
                                     <tbody>

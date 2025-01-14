@@ -1,14 +1,46 @@
 <style>
     .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
         margin: 0;
         gap: 5px;
     }
 
-    .text-center {
-        text-align: left;
+    .pagination .page-item {
+        margin: 0;
     }
-    /* Responsif untuk layar kecil */
-    @media (max-width: 576px) {
+
+    .pagination .page-link {
+        text-decoration: none;
+        padding: 6px 12px;
+        color: white;
+        background-color: #FF9800;
+        border: 1px solid #FF9800;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #FF9800;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        pointer-events: none;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #FF9800;
+        border-color: #FF9800;
+    }
+
+    .results-info {
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
         .d-flex.justify-content-between {
             flex-direction: column;
             align-items: flex-start;
@@ -18,104 +50,69 @@
             margin-bottom: 10px;
         }
 
-        .pagination {
-            justify-content: flex-start;
-        }
-
-        .page-link {
-            font-size: 12px;
-            padding: 4px 6px;
+        .pagination .page-link {
+            font-size: 12px !important;
+            padding: 6px 10px !important;
         }
     }
 </style>
+
 @if ($paginator->hasPages())
     <div class="d-flex justify-content-between align-items-center mt-2">
-        {{-- Teks Menampilkan Jumlah Data --}}
         <div class="results-info">
             Showing {{ ($paginator->currentPage() - 1) * $paginator->perPage() + 1 }}
             to {{ min($paginator->currentPage() * $paginator->perPage(), $paginator->total()) }}
-            of {{ $paginator->total() }} result
+            of {{ $paginator->total() }} results
         </div>
 
-        {{-- Navigasi Paginasi --}}
-        <nav>
-            <ul class="pagination mb-0">
-                {{-- Tombol Previous --}}
-                @if ($paginator->onFirstPage())
-                    <li class="page-item disabled"><span class="page-link text-white rounded">&laquo;</span></li>
-                @else
-                    <li class="page-item"><a class="page-link text-white rounded" href="{{ $paginator->previousPageUrl() }}"
-                            rel="prev">&laquo;</a></li>
+        <ul class="pagination">
+            {{-- Previous Button --}}
+            <li class="page-item {{ $paginator->onFirstPage() ? 'disabled' : '' }}">
+                <a class="page-link text-white rounded-sm" href="{{ $paginator->previousPageUrl() }}"
+                    rel="prev">&laquo;</a>
+            </li>
+
+            {{-- Page Numbers --}}
+            @php
+                $currentPage = $paginator->currentPage();
+                $lastPage = $paginator->lastPage();
+                $start = max(1, $currentPage - 2);
+                $end = min($lastPage, $currentPage + 2);
+            @endphp
+
+            {{-- First Page and Ellipsis --}}
+            @if ($start > 1)
+                <li class="page-item">
+                    <a class="page-link text-white rounded-sm" href="{{ $paginator->url(1) }}">1</a>
+                </li>
+                @if ($start > 2)
+                    <li class="page-item disabled"><span class="page-link text-white rounded-sm">...</span></li>
                 @endif
+            @endif
 
-                {{-- Nomor Halaman --}}
-                @foreach ($elements as $element)
-                    {{-- Tanda Elipsis --}}
-                    @if (is_string($element))
-                        <li class="page-item disabled">
-                            <span class="page-link bg-secondary text-white rounded">{{ $element }}</span>
-                        </li>
-                    @endif
+            {{-- Visible Page Numbers --}}
+            @for ($i = $start; $i <= $end; $i++)
+                <li class="page-item {{ $i == $currentPage ? 'active' : '' }}">
+                    <a class="page-link text-white rounded-sm" href="{{ $paginator->url($i) }}">{{ $i }}</a>
+                </li>
+            @endfor
 
-                    {{-- Link Halaman --}}
-                    @if (is_array($element))
-                        @php
-                            $current = $paginator->currentPage();
-                            $lastPage = $paginator->lastPage();
-                        @endphp
-
-                        {{-- Halaman Awal --}}
-                        @if ($current > 4)
-                            <li class="page-item">
-                                <a class="page-link text-white rounded"
-                                    href="{{ $paginator->url(1) }}">1</a>
-                            </li>
-                            @if ($current > 5)
-                                <li class="page-item disabled">
-                                    <span class="page-link text-white rounded">...</span>
-                                </li>
-                            @endif
-                        @endif
-
-                        {{-- Halaman Tengah (± 2 dari halaman aktif) --}}
-                        @for ($i = max(1, $current - 2); $i <= min($lastPage, $current + 2); $i++)
-                            @if ($i == $current)
-                                <li class="page-item active">
-                                    <span class="page-link text-white rounded">{{ $i }}</span>
-                                </li>
-                            @else
-                                <li class="page-item">
-                                    <a class="page-link text-white rounded"
-                                        href="{{ $paginator->url($i) }}">{{ $i }}</a>
-                                </li>
-                            @endif
-                        @endfor
-
-                        {{-- Halaman Akhir --}}
-                        @if ($current < $lastPage - 3)
-                            @if ($current < $lastPage - 4)
-                                <li class="page-item disabled">
-                                    <span class="page-link text-white rounded">...</span>
-                                </li>
-                            @endif
-                            <li class="page-item">
-                                <a class="page-link text-white  rounded"
-                                    href="{{ $paginator->url($lastPage) }}">{{ $lastPage }}</a>
-                            </li>
-                        @endif
-                    @endif
-                @endforeach
-
-
-
-                {{-- Tombol Next --}}
-                @if ($paginator->hasMorePages())
-                    <li class="page-item"><a class="page-link text-white rounded" href="{{ $paginator->nextPageUrl() }}"
-                            rel="next">&raquo;</a></li>
-                @else
-                    <li class="page-item disabled"><span class="page-link text-white rounded">&raquo;</span></li>
+            {{-- Last Page and Ellipsis --}}
+            @if ($end < $lastPage)
+                @if ($end < $lastPage - 1)
+                    <li class="page-item disabled"><span class="page-link text-white rounded-sm">...</span></li>
                 @endif
-            </ul>
-        </nav>
+                <li class="page-item">
+                    <a class="page-link text-white rounded-sm"
+                        href="{{ $paginator->url($lastPage) }}">{{ $lastPage }}</a>
+                </li>
+            @endif
+
+            {{-- Next Button --}}
+            <li class="page-item {{ $paginator->hasMorePages() ? '' : 'disabled' }}">
+                <a class="page-link text-white rounded-sm" href="{{ $paginator->nextPageUrl() }}"
+                    rel="next">&raquo;</a>
+            </li>
+        </ul>
     </div>
 @endif

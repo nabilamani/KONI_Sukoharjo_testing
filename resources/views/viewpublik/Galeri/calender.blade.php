@@ -167,14 +167,33 @@
                 padding: 5px;
             }
 
-            .fc-toolbar-title {
-                font-size: 1.2rem;
+            .fc-toolbar {
+                font-size: 0.5rem;
+                /* Perkecil ukuran teks toolbar */
+                margin: 5px 10px;
             }
 
-            .fc-button {
-                font-size: 0.8rem;
-                padding: 5px;
+            .fc-toolbar .fc-button {
+                padding: 0.1rem 0.2rem;
+                /* Perkecil tombol */
             }
+
+            .fc-daygrid-day-number {
+                font-size: 0.4rem;
+                /* Sesuaikan ukuran */
+            }
+
+            /* Perkecil ukuran font untuk event */
+            .fc-event {
+                font-size: 0.5rem;
+                /* Sesuaikan ukuran */
+            }
+
+            .fc-day-header {
+                font-size: 0.4rem;
+                /* Sesuaikan ukuran */
+            }
+
         }
     </style>
 </head>
@@ -210,7 +229,7 @@
             <div class="row mt-4">
                 <!-- Konten Utama (Kalender) -->
                 <div class="col-md-8">
-                    <nav class="breadcrumb bg-transparent p-0 mb-2">
+                    <nav class="breadcrumb bg-transparent pb-0 mb-0">
                         <a class="breadcrumb-item text-decoration-none" href="/galeri/foto">Galeri</a>
                         <span class="breadcrumb-item active text-primary" style="color: #FF6924;">Calender</span>
                     </nav>
@@ -305,7 +324,7 @@
                                         <h6 class="text-muted">Belum ada jadwal latihan yang tersedia.</h6>
                                     </div>
                                 @endforelse
-                                <a href="/olahraga/jadwal" class="btn btn-primary w-100">Lihat Semua Jadwal</a>
+                                <a href="/olahraga/latihan" class="btn btn-primary w-100">Lihat Semua Jadwal</a>
                             </div>
                         </div>
                     </div>
@@ -395,13 +414,7 @@
                     modal.show();
                 },
 
-                windowResize: function() {
-                    if (window.innerWidth <= 768) {
-                        calendar.changeView('listWeek');
-                    } else {
-                        calendar.changeView('dayGridMonth');
-                    }
-                }
+
             });
 
             calendar.render();

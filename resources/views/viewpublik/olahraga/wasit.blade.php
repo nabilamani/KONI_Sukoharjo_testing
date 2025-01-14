@@ -153,6 +153,11 @@
                 border-top-left-radius: 0.5rem;
                 border-top-right-radius: 0.5rem;
             }
+            .nama h5{
+                margin-top: 10px;
+                display: flex;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -286,14 +291,10 @@
                                         style="max-height: 300px; object-fit: cover;">
                                 </div>
                                 <!-- Kolom kanan: Detail Wasit -->
-                                <div class="col-md-8">
+                                <div class="col-md-8 nama">
+                                    <h5 class="text-dark mb-3">{{ $referee->name }}</h5>
                                     <table class="table table-borderless table-sm">
                                         <tbody>
-                                            <tr>
-                                                <td><i class="mdi mdi-account text-primary"></i></td>
-                                                <td><strong>Nama</strong></td>
-                                                <td>{{ $referee->name }}</td>
-                                            </tr>
                                             <tr>
                                                 <td><i class="mdi mdi-cake text-primary"></i></td>
                                                 <td><strong>Tanggal Lahir</strong></td>

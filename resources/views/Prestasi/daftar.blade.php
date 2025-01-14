@@ -124,7 +124,7 @@
                             <div class="row">
                                 <!-- Left Column: Achievement Chart -->
                                 <div id="achievement-chart" class="col-12 col-md-6 mt-5 mx-2"></div>
-                                
+
                                 <!-- Right Column: Region Chart -->
                                 <div id="region-chart" class="col-12 col-md-5 mt-5"></div>
                             </div>
@@ -349,10 +349,14 @@
                                                                             <i class="mdi mdi-soccer"></i> Cabang
                                                                             Olahraga
                                                                         </label>
-                                                                        <select class="form-control" id="sport_category" name="sport_category" required>
-                                                                            <option value="" disabled>Pilih Cabang Olahraga</option>
-                                                                            @foreach($sportCategories as $category)
-                                                                                <option value="{{ $category->id }}" {{ $achievement->sport_category == $category->id ? 'selected' : '' }}>
+                                                                        <select class="form-control"
+                                                                            id="sport_category" name="sport_category"
+                                                                            required>
+                                                                            <option value="" disabled>Pilih
+                                                                                Cabang Olahraga</option>
+                                                                            @foreach ($sportCategories as $category)
+                                                                                <option value="{{ $category->id }}"
+                                                                                    {{ $achievement->sport_category == $category->id ? 'selected' : '' }}>
                                                                                     {{ $category->sport_category }}
                                                                                 </option>
                                                                             @endforeach
@@ -535,7 +539,7 @@
 
         <script>
             var chartData = @json($chartData);
-        
+
             // Prepare data for the chart
             var categories = Object.keys(chartData); // Sport categories
             var seriesData = [{
@@ -551,16 +555,16 @@
                     data: []
                 }
             ];
-        
+
             // Iterate over the sport categories and fill the series data
             categories.forEach(function(category) {
                 var rankData = chartData[category];
-        
+
                 seriesData[0].data.push(rankData['Juara 1']);
                 seriesData[1].data.push(rankData['Juara 2']);
                 seriesData[2].data.push(rankData['Juara 3']);
             });
-        
+
             // Configure the chart
             var options = {
                 chart: {
@@ -583,7 +587,12 @@
                     }
                 },
                 xaxis: {
-                    categories: categories, // Display sport categories on the x-axis
+                    categories: categories,
+                    labels: {
+                        style: {
+                            fontSize: '9px',
+                        }
+                    }
                 },
                 yaxis: {
                     title: {
@@ -592,7 +601,7 @@
                 },
                 series: seriesData
             };
-        
+
             // Render the chart
             var chart = new ApexCharts(document.querySelector("#achievement-chart"), options);
             chart.render();

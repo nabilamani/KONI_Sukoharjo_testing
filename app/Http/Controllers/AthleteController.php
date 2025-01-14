@@ -223,7 +223,7 @@ class AthleteController extends Controller
             $query->where('sport_category', $sportCategory);
         }
 
-        $athletes = $query->paginate(8);
+        $athletes = $query->orderBy('created_at', 'asc')->paginate(8);
 
         // Hitung akumulasi atlet per cabang olahraga
         $categories = Athlete::select('sport_category')
