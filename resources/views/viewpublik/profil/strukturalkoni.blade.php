@@ -200,83 +200,27 @@
                 <span class="breadcrumb-item active text-primary">Struktural Koni</span>
             </nav>
             <div class="card shadow-sm border-0 rounded-4" data-aos="zoom-in">
-                <div class="card-body">
-                    <div class="chart-container">
-                        <h2 class="fw-bold mb-4 text-center">Struktural Koni</h2>
-                        <!-- Ketua Umum -->
-                        <div class="chart-level">
-                            <div class="chart-box red">KETUA UMUM<br>Iwan Gunarto, SE</div>
-                        </div>
-
-                        <!-- Wakil Ketua -->
-                        <div class="connector" data-aos="fade-up" data-aos-delay="200">
-                            <div class="line"></div>
-                        </div>
-                        <div class="chart-level" data-aos="fade-up" data-aos-delay="300">
-                            <div class="chart-box blue">WAKIL KETUA UMUM I<br>Drs. H. Sukono</div>
-                            <div class="chart-box blue">WAKIL KETUA UMUM II<br>Drs. H. Sukirso</div>
-                        </div>
-
-                        <!-- Sekretaris dan Bendahara -->
-                        <div class="connector" data-aos="fade-up" data-aos-delay="400">
-                            <div class="line"></div>
-                        </div>
-                        <div class="chart-level" data-aos="fade-up" data-aos-delay="500">
-                            <div class="chart-box green">SEKRETARIS UMUM<br>Iwan Setyono, S.STP, M.Hum</div>
-                            <div class="chart-box green">WAKIL SEKRETARIS UMUM<br>Herdis Kurnia Wijaya, S.Sos</div>
-                            <div class="chart-box yellow">BENDAHARA UMUM<br>Agus Saptono, S.H</div>
-                            <div class="chart-box yellow">WAKIL BENDAHARA UMUM<br>Erna Indriastuti, A.Md</div>
-                        </div>
-
-                        <!-- Audit Internal -->
-                        <div class="connector" data-aos="fade-up" data-aos-delay="600">
-                            <div class="line"></div>
-                        </div>
-                        <div class="chart-level" data-aos="fade-up" data-aos-delay="700">
-                            <div class="chart-box brown">AUDIT INTERNAL<br>Agus Wahyudi, S.Pd</div>
-                        </div>
-
-                        <!-- Bidang-Bidang -->
-                        <div class="connector" data-aos="fade-up" data-aos-delay="800">
-                            <div class="line"></div>
-                        </div>
-                        <div class="chart-level" data-aos="fade-up" data-aos-delay="900">
-                            <div class="chart-box purple">
-                                BIDANG ORGANISASI & KERJASAMA<br>Suharno, S.H<br>Yudianta, SE
-                            </div>
-                            <div class="chart-box purple">
-                                BIDANG HUKUM KEOLAHRAGAAN<br>Sugeng Widodo, S.Sos., M.Si<br>Dwi Purwanto Wisnu Wardono
-                                Wiyono
-                            </div>
-                            <div class="chart-box purple">
-                                BIDANG MEDIA DAN HUMAS<br>Sunarno, SE., M.Eng<br>Heru Susilo Wibowo<br>Naufal Dzaky
-                            </div>
-                            <div class="chart-box purple">
-                                BIDANG PERENCANAAN DAN ANGGARAN<br>Drs. Suratman, MM<br>Agus Wahyu Nugroho
-                            </div>
-                        </div>
-                        <!-- Bidang-Bidang -->
-                        <div class="connector" data-aos="fade-up" data-aos-delay="1000">
-                            <div class="line"></div>
-                        </div>
-                        <div class="chart-level" data-aos="fade-up" data-aos-delay="1100">
-                            <div class="chart-box purple">
-                                BIDANG ORGANISASI & KERJASAMA<br>Suharno, S.H<br>Yudianta, SE
-                            </div>
-                            <div class="chart-box purple">
-                                BIDANG HUKUM KEOLAHRAGAAN<br>Sugeng Widodo, S.Sos., M.Si<br>Dwi Purwanto Wisnu Wardono
-                                Wiyono
-                            </div>
-                            <div class="chart-box purple">
-                                BIDANG MEDIA DAN HUMAS<br>Sunarno, SE., M.Eng<br>Heru Susilo Wibowo<br>Naufal Dzaky
-                            </div>
-                            <div class="chart-box purple">
-                                BIDANG PERENCANAAN DAN ANGGARAN<br>Drs. Suratman, MM<br>Agus Wahyu Nugroho
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-body text-center">
+                    <h2 class="fw-bold mb-4">Struktural Terakhir Ditambahkan</h2>
+            
+                    @if ($lastStructure)
+                        <img 
+                            src="{{ asset($lastStructure->photo) }}" 
+                            alt="{{ $lastStructure->name }}" 
+                            class="img-fluid rounded-4 shadow-sm mb-4"
+                            style="max-width: 100%; height: auto;"
+                        >
+                        <h5 class="fw-bold">{{ $lastStructure->name }}</h5>
+                        <p>{{ $lastStructure->position }}</p>
+                        <p>Umur: {{ $lastStructure->age }} tahun</p>
+                        <p>Tanggal Lahir: {{ \Carbon\Carbon::parse($lastStructure->birth_date)->format('d M Y') }}</p>
+                        <p>Jenis Kelamin: {{ $lastStructure->gender }}</p>
+                    @else
+                        <p>Belum ada data struktural yang ditambahkan.</p>
+                    @endif
                 </div>
             </div>
+                                    
         </div>
     </section>
 

@@ -41,7 +41,7 @@ class AthleteController extends Controller
                     });
             })
             ->orderBy('created_at', 'asc') // Sort results by creation date in ascending order
-            ->paginate(4);
+            ->get();
 
         $categories = Athlete::select('sport_category')
             ->selectRaw('COUNT(*) as total')

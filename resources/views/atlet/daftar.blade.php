@@ -309,7 +309,7 @@
                                                                             <div class="form-group">
                                                                                 <label
                                                                                     for="achievements">Prestasi</label>
-                                                                                <textarea class="form-control" id="achievements" name="achievements" required>{{ $athlete->achievements }}</textarea>
+                                                                                <textarea class="form-control" id="achievements" name="achievements">{{ $athlete->achievements }}</textarea>
                                                                             </div>
                                                                         </div>
 

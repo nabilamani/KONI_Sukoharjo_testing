@@ -157,8 +157,9 @@ class KoniStructureController extends Controller
     }
     public function showstruktur()
     {
-        $konistructures = KoniStructures::all();        
+        // Ambil data terakhir berdasarkan created_at
+        $lastStructure = KoniStructures::latest()->first();
 
-        return view('viewpublik.profil.strukturalkoni', compact('konistructures'));
+        return view('viewpublik.profil.strukturalkoni', compact('lastStructure'));
     }
 }

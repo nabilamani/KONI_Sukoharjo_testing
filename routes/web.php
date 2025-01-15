@@ -121,6 +121,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Rute dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
 
     // Rute pelatih
     Route::resource('coaches', CoachController::class);
@@ -166,39 +167,39 @@ Route::middleware(['auth'])->group(function () {
     
 
     // Rute berita
-    Route::resource('beritas', BeritaController::class);
+    Route::resource('beritas', BeritaController::class)->middleware('role:admin');
     Route::put('/edit-berita/{id}', [BeritaController::class, 'update']);
     Route::delete('/delete-berita/{id}', [BeritaController::class, 'destroy']);
     Route::get('/cetak-berita', [BeritaController::class, 'cetakBerita'])->name('cetak-berita');
 
     // Rute galeri
-    Route::resource('galleries', GaleriController::class);
+    Route::resource('galleries', GaleriController::class)->middleware('role:admin');
     Route::put('/edit-gallery/{id}', [GaleriController::class, 'update']);
     Route::delete('/delete-gallery/{id}', [GaleriController::class, 'destroy']);
     Route::get('/cetak-gallery', [GaleriController::class, 'cetakGaleri'])->name('cetak-geleri');
 
-    Route::resource('konistructures', KoniStructureController::class);
+    Route::resource('konistructures', KoniStructureController::class)->middleware('role:admin');
     Route::put('/edit-konistructure/{id}', [KoniStructureController::class, 'update']);
     Route::delete('/delete-konistructure/{id}', [KoniStructureController::class, 'destroy']);
     Route::get('/cetak-konistructure', [KoniStructureController::class, 'cetakStructure'])->name('cetak-konistructure');
 
-    Route::resource('sportcategories', SportCategoryController::class);
+    Route::resource('sportcategories', SportCategoryController::class)->middleware('role:admin');
     Route::put('/edit-sportcategory/{id}', [SportCategoryController::class, 'update']);
     Route::delete('/delete-sportcategory/{id}', [SportCategoryController::class, 'destroy']);
 
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->middleware('role:admin');
     Route::put('/edit-user/{id}', [UserController::class, 'update']);
     Route::delete('/delete-user/{id}', [UserController::class, 'destroy']);
 
     
-    Route::put('/edit-message/{id}', [MessageController::class, 'update']);
+    Route::put('/edit-message/{id}', [MessageController::class, 'update'])->middleware('role:admin');
     Route::delete('/delete-message/{id}', [MessageController::class, 'destroy']);
     Route::patch('/messages/{message}/update-status', [MessageController::class, 'updateStatus'])->name('messages.updateStatus');
 
 
 
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
 
     // Rute lainnya sesuai kebutuhan...
 });
